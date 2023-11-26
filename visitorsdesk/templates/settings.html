@@ -1,0 +1,2062 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Visitors Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+    <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+</head>
+
+<style>
+     .error{
+        color: #ff3860;
+        border-color: #ff3860;
+        font-size: 11px;
+    }
+
+     .settings-form .form-control .error input {
+        border-color: #ff3860;
+    }
+
+    .settings-form .form-control .success input {
+        border-color: #09c372;
+    }
+</style>
+
+<body>
+
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-chase">
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="layout-wrapper">
+
+
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex align-items-center">
+                    <div class="navbar-brand-box">
+                        <a href="{% url 'dashboard' %}" class="logo">
+                            <span class="logo-lg">
+                                <img src="{% static 'images/logo.png' %}" alt="" height="23">
+                            </span>
+                        </a>
+                    </div>
+                    <button type="button" class="btn btn-sm font-size-16 d-lg-none header-item waves-effect waves-light"
+                        data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+                    <div class="topnav">
+                        <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+                            <div class="collapse navbar-collapse" id="topnav-menu-content">
+                                <ul class="navbar-nav">
+
+                                    <li class="nav-item">
+                                        <a class="nav-link arrow-none" href="{% url 'dashboard' %}"
+                                            id="topnav-dashboard" role="button">
+                                            <span key="t-dashboards">Dashboard</span>
+                                        </a>
+                                    </li>
+
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'visitors' %}"
+                                            id="topnav-pages" role="button">
+                                            <span>Visitors</span>
+                                            
+                                        </a>                                    
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle arrow-none" href="{% url 'settings' %}"
+                                            id="topnav-pages" role="button">
+                                            <span>Settings</span>
+
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+
+                </div>
+
+                <div class="d-flex align-items-center header-rightside-btns">
+
+                    <div>
+                        
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                            aria-labelledby="page-header-notifications-dropdown">
+                            
+                            <div data-simplebar style="max-height: 230px;">
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">James Lemire</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-simplified">It will seem like simplified
+                                                    English.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">Salena Layfield</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
+                                                    of mine occidental.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">James Lemire</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-simplified">It will seem like simplified
+                                                    English.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">Salena Layfield</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
+                                                    of mine occidental.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="p-2 border-top d-grid">
+                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
+                                        More..</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'checkin_visitor' %}">
+                        <button type="button" class="btn btn-success waves-effect waves-light">CHECKIN</button>
+                    </a> 
+                    <div class="dropdown d-inline-block user-dropdown">
+                        
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0"
+                            aria-labelledby="page-header-notifications-dropdown">
+                            <div class="p-3">
+                                <div class="row align-items-center noti-heading">
+                                    <div class="col">
+                                        <h5 class="m-0" key="t-notifications">GLOBAL ACTIONS</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-simplebar style="max-height: 230px;">
+
+                                <div class="global-action-btns">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#log-call"><button type="button"
+                                            class="btn btn-orange waves-effect waves-light me-2"><i
+                                                class="bx bx-phone-call"></i></button>Log a Call</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-task"><button type="button"
+                                            class="btn btn-info waves-effect waves-light me-2"><i
+                                                class="bx bxs-edit"></i></button>New task</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-event"><button type="button"
+                                            class="btn btn-success waves-effect waves-light me-2"><i
+                                                class="bx bx-calendar-plus"></i></button>New Event</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="dropdown d-inline-block user-dropdown">
+                        <button type="button" class="btn header-item btn-success waves-effect waves-light"
+                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <i class="bx bx-bell"></i>
+
+                        </button>
+                        <span class="badge bg-warning">30</span>
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
+                            aria-labelledby="page-header-notifications-dropdown">
+                            <div class="p-3">
+                                <div class="row align-items-center noti-heading">
+                                    <div class="col">
+                                        <h5 class="m-0" key="t-notifications"> Notifications </h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <a href="#!" key="t-view-all"> View All</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-simplebar style="max-height: 230px;">
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">James Lemire</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-simplified">It will seem like simplified
+                                                    English.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">Salena Layfield</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
+                                                    of mine occidental.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">James Lemire</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-simplified">It will seem like simplified
+                                                    English.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+
+                                <a href="javascript: void(0);" class="text-reset notification-item">
+                                    <div class="d-flex">
+                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
+                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
+                                        <div class="flex-grow-1">
+                                            <h5 class="mb-1">Salena Layfield</h5>
+                                            <div class="font-size-12 text-muted">
+                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
+                                                    of mine occidental.</p>
+                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
+                                                        key="t-hours-ago">1 hours ago</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="p-2 border-top d-grid">
+                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
+                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
+                                        More..</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dropdown d-inline-block user-dropdown ms-2">
+                        <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            <img class="rounded-circle header-profile-user"
+                                src="{% static 'images/dummy.png' %}" alt="Header Avatar">
+
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- <a class="dropdown-item" href="profile.html"><i
+                                    class="bx bx-user font-size-16 align-middle me-1"></i>
+                                <span key="t-profile">Profile</span></a>
+                            <a class="dropdown-item d-block" href="#"><i
+                                    class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                                    key="t-settings">Settings</span></a>
+                            <div class="dropdown-divider"></div> -->
+                            <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i
+                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                    key="t-logout">Logout</span></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+
+
+
+        <div class="page-content">
+            <div class="container-fluid px-0">
+                <div class="settings-tabs">
+                    <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
+
+                        
+
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#users-tab" role="tab">
+                                <div>
+                                    <i class='bx bxs-user stns-tab-icon-3'></i>
+                                    <h4 class="stngs-tab-head">Users</h4>
+                                </div>
+                            </a>
+                        </li>
+
+                        
+
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
+                                <div>
+                                    <i class="bx bx-stats stns-tab-icon-6"></i>
+                                    <h4 class="stngs-tab-head">Branches</h4>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-bs-toggle="tab" href="#Desk-tab" role="tab">
+                                <div>
+                                    <i class="bx bx-stats stns-tab-icon-6"></i>
+                                    <h4 class="stngs-tab-head">Desk</h4>
+                                </div>
+                            </a>
+                        </li>
+
+
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane" id="dashboard-widget-tab" role="tabpanel">
+                            <div class="settings-card">
+                                <div class="widget-line">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-6 col-9">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/lead.svg' %}" alt="">
+                                                <div class="widgets">
+                                                    <h4>Total Leads</h4>
+                                                    <p>Toggle the switch to view more </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-3 d-flex justify-content-end">
+                                            <div class="checkbox-apple">
+                                                <input class="yep" id="check-apple" type="checkbox">
+                                                <label for="check-apple"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-line">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-6 col-9">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/customer.svg' %}" alt="">
+                                                <div class="widgets">
+                                                    <h4>Total Customer</h4>
+                                                    <p>Toggle the switch to view more </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-3 d-flex justify-content-end">
+                                            <div class="checkbox-apple">
+                                                <input class="yep" id="check-apple1" type="checkbox">
+                                                <label for="check-apple1"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-line">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-6 col-9">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/roles.svg' %}" alt="">
+                                                <div class="widgets">
+                                                    <h4>Total Roles</h4>
+                                                    <p>Toggle the switch to view more </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-3 d-flex justify-content-end">
+                                            <div class="checkbox-apple">
+                                                <input class="yep" id="check-apple2" type="checkbox">
+                                                <label for="check-apple2"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-line">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-6 col-9">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/total-user.svg' %}" alt="">
+                                                <div class="widgets">
+                                                    <h4>Total User</h4>
+                                                    <p>Toggle the switch to view more </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-3 d-flex justify-content-end">
+                                            <div class="checkbox-apple">
+                                                <input class="yep" id="check-apple3" type="checkbox">
+                                                <label for="check-apple3"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="widget-line border-0">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-6 col-9">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{% static 'images/opportunities.svg' %}" alt="">
+                                                <div class="widgets">
+                                                    <h4>Total Opportunities</h4>
+                                                    <p>Toggle the switch to view more </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-3 d-flex justify-content-end">
+                                            <div class="checkbox-apple">
+                                                <input class="yep" id="check-apple4" type="checkbox">
+                                                <label for="check-apple4"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        
+
+                        
+
+                        <div class="tab-pane active show" id="users-tab" role="tabpanel">
+                            
+                        
+                            <div class="tab-pane" id="users-tab" role="tabpanel">
+
+                                <div class="settings-card">
+                                    <div class="top-header-div">
+                                        <h3>Users</h3>
+                                        <div class="top-header-rightbtns">
+                                            
+                                            <button type="button" class="btn btn-primary waves-effect waves-light me-0"
+                                                data-bs-toggle="modal" data-bs-target="#add-user">
+                                                <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> New
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="opportunity-table table-view">
+                                        <div class="table-responsive">
+                                            <table id="user-table" class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sl No</th>
+                                                        <th>Full Name</th>
+                                                        <th>User Name</th>
+                                                        <th>Branch</th>
+                                                        <th>Role</th>
+                                                        <th class="text-right">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for i in user_data %}
+                                                    <tr>
+    
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{i.first_name.title}} {{i.last_name.title}}</td>
+                                                        <td>{{i.user_name}}</td>
+                                                        <td>{{i.primary_branch}}</td>
+                                                        <td>{{i.user_role}}</td>
+                                                        <td class="text-right">
+                                                            <div class="dropdown">
+                                                                <a href="#" class="dropdown-toggle card-drop"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                                    <!-- <li data-bs-toggle="modal"
+                                                                        data-bs-target="#add-opportunity"><a href="#"
+                                                                            class="dropdown-item d-flex align-items-center"><i
+                                                                                class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                                    </li> -->
+                                                                    <li onclick="confirmDelete('{{i.id}}','user')"><a
+                                                                            href="#"
+                                                                            class="dropdown-item d-flex align-items-center"><i
+                                                                                class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                           
+
+                            <!-- <div class="bottom-pagination-div">
+                                <ul class="pagination pagination-rounded pb-1">
+                                    <li class="page-item disabled">
+                                        <a href="javascript: void(0);" class="page-link"><i
+                                                class="mdi mdi-chevron-left"></i></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">1</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a href="javascript: void(0);" class="page-link">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">3</a>
+                                    </li>
+
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link"><i
+                                                class="mdi mdi-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div> -->
+                        </div>
+
+                            
+
+                        
+
+                        <div class="tab-pane" id="Desk-tab" role="tabpanel">
+
+                            <div class="settings-card">
+                                <div class="top-header-div">
+                                    <h3>Desk</h3>
+                                    <div class="top-header-rightbtns">
+                                        <!-- <form class="app-search d-none d-lg-block">
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" placeholder="Search...">
+                                                <span class="bx bx-search-alt"></span>
+                                            </div>
+                                        </form> -->
+                                        <button type="button" class="btn btn-primary waves-effect waves-light me-0"
+                                            data-bs-toggle="modal" data-bs-target="#add-desk">
+                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> New
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="opportunity-table table-view">
+                                    <div class="table-responsive">
+                                        <table id="desk-table"  class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl No</th>
+                                                    <th>Desk Name</th>
+                                                    <th>Branch Name</th>
+                                                    <th class="text-right">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in desk_data %}
+                                                <tr class="delete_modal{{i.id}}">
+
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{i.desk_name}}</td>
+                                                    <td>{{i.select_branch}}</td>
+                                                    <td class="text-right">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle card-drop"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <!-- <li data-bs-toggle="modal"
+                                                                    data-bs-target="#add-desk"><a href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                                </li> -->
+                                                                <li onclick="confirmDelete('{{i.id}}','desk')"><a
+                                                                        href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane" id="opportunity-stages-tab" role="tabpanel">
+
+                            <div class="settings-card">
+                                <div class="top-header-div">
+                                    <h3>Branches</h3>
+                                    <div class="top-header-rightbtns">
+                                        <!-- <form class="app-search d-none d-lg-block">
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" placeholder="Search...">
+                                                <span class="bx bx-search-alt"></span>
+                                            </div>
+                                        </form> -->
+                                        <button type="button" class="btn btn-primary waves-effect waves-light me-0"
+                                            data-bs-toggle="modal" data-bs-target="#add-opportunity">
+                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> New
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="opportunity-table table-view">
+                                    <div class="table-responsive">
+                                        <table id="branch-table" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sl No</th>
+                                                    <th>Branch Code</th>
+                                                    <th>Branch Name</th>
+                                                    <th class="text-right">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in data %}
+                                                <tr class="delete_modal{{i.id}}">
+
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{i.branch_code}}</td>
+                                                    <td>{{i.name}}</td>
+                                                    <td class="text-right">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle card-drop"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                            </a>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <!-- <li data-bs-toggle="modal"
+                                                                    data-bs-target="#add-opportunity"><a href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                                </li> -->
+                                                                <li onclick="confirmDelete('{{i.id}}','branch')"><a
+                                                                        href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="modal fade" id="add-department" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>Add Department</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="selct-box-head">Department</h6>
+                    <div class="form-grp inputGroup">
+                        <div class="select-inp">
+                            <select class="form-control">
+                                <option value="AK">UIUX</option>
+                                <option value="HI">DJANGO</option>
+                                <option value="CA">ODOO</option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                    <textarea id="formmessage" class="form-control" rows="3" placeholder="Description"></textarea>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary text-uppercase br-50 btn-md">Save</button>
+                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <form method="post" class="settings_form form_same_user_info" id="user-form" action="{% url 'user-info' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>Add User</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="inputGroup form-control">
+
+                            <input type="text"  name="first_name" id="first_name" autocomplete="off">
+                            <label class="search-icon" for="name">First Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text"  name="last_name" id="last_name" autocomplete="off">
+                            <label class="search-icon" for="name">Last Name</label>
+                            <div class="error"></div>
+                        </div>
+
+
+                        <div class="inputGroup form-control">
+                            <input type="email"  name="user_email" id="user_email" autocomplete="off">
+                            <label class="search-icon" for="email">Email</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="number"  name="user_phone" id="user_phone" autocomplete="off">
+                            <label class="search-icon" for="number">Phone</label>
+                            <div class="error"></div>
+                        </div>
+
+
+
+                        <div class="inputGroup form-control">
+                            <input type="text" name="user_name" id="user_name" autocomplete="off">
+                            <label class="search-icon" for="name">User Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <!-- <div class="inputGroup form-control">
+                            <input type="password" name="user_password" id="user_password" autocomplete="off">
+                            <label class="search-icon" for="name">User Password</label>
+                        </div> -->
+
+                        <div class="row my-3">
+                            <div class="col-lg-6">
+                                <h6 class="selct-box-head">Role</h6>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="Manager" type="radio" name="user_role">
+                                        <label class="form-check-label" for="formRadios2">
+                                            Manager
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" value="Staff" type="radio" name="user_role"
+                                            checked="">
+                                        <label class="form-check-label" for="formRadios1">
+                                            Staff
+                                        </label>
+                                    </div>
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" value="Host" type="radio" name="user_role"
+                                            checked="">
+                                        <label class="form-check-label" for="formRadios1">
+                                            Host
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-grp inputGroup">
+                            <h6 class="selct-box-head">Primary Branch</h6>
+
+                            <div class="select-inp">
+                                <select class="form-control" name="branch_id" id="branch_id_usr" required>
+                                    <option selected disabled>--select branch--</option>
+                                    {% for i in data %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                                <div class="error"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary text-uppercase br-50 btn-md" id="user-btn" onclick="createUser(event)">Save and New</button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>    
+            
+                
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="modal fade " id="add-opportunity" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+           
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>Branch</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                        <div class="modal-body">
+                            <form method="post" class="settings_form form_same_branch update_table" id="branch-form" action="{% url 'create-branch' %}">
+                                {% csrf_token %}
+                                <div class="inputGroup form-control">
+
+                                    <input type="text" name="name" id="name" autocomplete="off">
+                                    <label class="search-icon" for="name">Name</label>
+                                    <div  class="error"></div>
+                                </div>
+
+                                <div class="inputGroup form-control">
+                                    <input type="text"  name="branch_code" id="branch_code" autocomplete="off" maxlength="4"
+                                        oninput="this.value = this.value.toUpperCase()">
+                                    <label class="search-icon" for="text">Branch Code</label>
+                                    <div  class="error"></div>
+                                </div>
+
+                                <div class="inputGroup form-control">
+                                    <input type="number" name="country_code" id="country_code" autocomplete="off">
+                                    <label class="search-icon" for="number">Country Code</label>
+                                    <div  class="error"></div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="timezoneSelect">Select Timezone:</label>
+                                    <select class="form-control" id="timezoneSelect" name="timezone">
+                                        <option value="UTC">UTC</option>
+                                        <option value="America/New_York">America/New_York</option>
+                                        <option value="America/Los_Angeles">America/Los_Angeles</option>
+                                        <option value="Asia/Kolkata">Asia/Kolkata</option>
+                                        <option value="Asia/Tokyo">Asia/Tokyo</option>
+                                        <option value="Asia/Shanghai">Asia/Shanghai</option>
+                                        <option value="Asia/Singapore">Asia/Singapore</option>
+                                        <option value="Asia/Dubai">Asia/Dubai</option>
+                                        <option value="Asia/Hong_Kong">Asia/Hong_Kong</option>
+                                        <option value="Europe/London">Europe/London</option>
+                                        <option value="Europe/Paris">Europe/Paris</option>
+                                        <!-- Add more timezone options as needed -->
+                                    </select>
+                                </div>
+
+                                
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary text-uppercase br-50 btn-md" id="branch-btn" onclick="createBranch(event)">Save and new</button>
+                                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                                        data-bs-dismiss="modal" onclick="clearForm()">Close</button>
+                                </div>
+                            </form>
+                        </div>        
+                </div>
+            
+        </div>
+    </div>
+
+
+    <div class="modal fade " id="add-desk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+           
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>Desk</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" class="settings_form form_same_add_desk" id="desk_form" action="{% url 'add_desk' %}">
+                        <!-- {% csrf_token %} -->
+                        <div class="modal-body">
+                            <div class="inputGroup form-control">
+
+                                <input type="text" name="desk_name" id="desk_name" autocomplete="off">
+                                <label class="search-icon" for="">Name</label>
+                                <div class="error"></div>
+                            </div>
+                            
+                            <div class="form-grp inputGroup">
+                                <h6 class="selct-box-head">Branch</h6>
+                                    <div class="select-inp">
+                                        <select class="form-control" name="branch_id" id="desk_branch_id">
+                                            <option selected disabled>--select branch--</option>
+                                            {% for i in data %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <i class="fas fa-chevron-down"></i>
+                                        <div class="error"></div>
+                                    </div>
+                            </div>
+
+                            
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary text-uppercase br-50 btn-md"  onclick="createDesk(event)">Save and new</button>
+                            <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>    
+                </div>
+            
+        </div>
+    </div>
+
+    <div class="modal fade" id="log-call" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>Log a Call</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="inputGroup form-control">
+                        <input type="text" required="" autocomplete="off">
+                        <label for="">Subject</label>
+                        <i class="bx bx-search search-icn"></i>
+                    </div>
+
+                    <div class="form-grp">
+                        <textarea id="formmessage" class="form-control" rows="3" placeholder="Comments"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary text-uppercase br-50 btn-md">Save</button>
+                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="new-task" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>New Task</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="inputGroup form-control">
+                        <input type="text" required="" autocomplete="off">
+                        <label for="">Subject</label>
+                        <i class="bx bx-search search-icn"></i>
+                    </div>
+
+                    <div class="inputGroup form-control">
+                        <input type="date" required="" autocomplete="off" value="">
+                        <label for="">Due Date</label>
+                    </div>
+
+                    <h6 class="selct-box-head">Assign to</h6>
+                    <div class="form-grp inputGroup">
+                        <div class="select-inp">
+                            <select class="form-control">
+                                <option value="AK">None</option>
+                                <option value="HI">Qualificatio</option>
+                                <option value="CA">Need Analysis</option>
+                                <option value="NV">Proposal</option>
+                                <option value="CA">Negotiation </option>
+                                <option value="NV">Closed won</option>
+                                <option value="NV">Closed Lost </option>
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary text-uppercase br-50 btn-md">Save</button>
+                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="new-event" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>New Event</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="inputGroup form-control">
+                        <input type="text" required="" autocomplete="off">
+                        <label for="">Subject</label>
+                        <i class="bx bx-search search-icn"></i>
+                    </div>
+
+                    <div class="form-grp">
+                        <textarea id="formmessage" class="form-control" rows="3" placeholder="Comments"></textarea>
+                    </div>
+                    <div class="row">
+                        <h6 class="selct-box-head">Start</h6>
+                        <div class="col-lg-6">
+
+                            <div class="inputGroup form-control">
+                                <input type="date" required="" autocomplete="off" value="">
+                                <label for="">Date</label>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="inputGroup form-control">
+                                <input type="time" required="" autocomplete="off" value="">
+                                <label for="">Time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <h6 class="selct-box-head">End</h6>
+                        <div class="col-lg-6">
+
+                            <div class="inputGroup form-control">
+                                <input type="date" required="" autocomplete="off" value="">
+                                <label for="">Date</label>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="inputGroup form-control">
+                                <input type="time" required="" autocomplete="off" value="">
+                                <label>Time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inputGroup form-control">
+                        <input type="text" required="" autocomplete="off">
+                        <label>Location</label>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary text-uppercase br-50 btn-md">Save</button>
+                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="modal fade" id="deleteConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+               <form method="post" action="{% url 'delete' %}">
+                    {% csrf_token %}
+                        <div class="modal-header">
+                            
+                            <input type="text" value="" id="delete_id" name="delete_id">
+                            <input type="text" value="" id="delete_type" name="delete_type">
+                            <h5 class="modal-title" id="staticBackdropLabel"><span>Delete Opportunity</span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4 class="delete-hint">Are you sure you want to delete ?</h4>
+
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">Delete</button>
+                            <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- JAVASCRIPT -->
+    <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script>
+        // change profile pic
+
+        $(document).ready(function () {
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('.profile-pic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+            $(".upload-button").on('click', function () {
+                $(".file-upload").click();
+            });
+        });
+    </script>
+    <!-- <script>
+        // upload image
+        const uploadArea = document.querySelector('#uploadArea')
+
+
+        const dropZoon = document.querySelector('#dropZoon');
+        const loadingText = document.querySelector('#loadingText');
+        const fileInput = document.querySelector('#fileInput');
+        const previewImage = document.querySelector('#previewImage');
+        const fileDetails = document.querySelector('#fileDetails');
+        const uploadedFile = document.querySelector('#uploadedFile');
+        const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
+        const uploadedFileName = document.querySelector('.uploaded-file__name');
+        const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
+        const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
+        const imagesTypes = [
+            "jpeg",
+            "png",
+            "svg",
+            "gif"
+        ];
+
+        dropZoon.addEventListener('dragover', function (event) {
+            event.preventDefault();
+            dropZoon.classList.add('drop-zoon--over');
+        });
+
+        dropZoon.addEventListener('dragleave', function (event) {
+            dropZoon.classList.remove('drop-zoon--over');
+        });
+
+        dropZoon.addEventListener('drop', function (event) {
+            event.preventDefault();
+            dropZoon.classList.remove('drop-zoon--over');
+            const file = event.dataTransfer.files[0];
+            uploadFile(file);
+        });
+
+        dropZoon.addEventListener('click', function (event) {
+            fileInput.click();
+        });
+
+
+        fileInput.addEventListener('change', function (event) {
+
+            const file = event.target.files[0];
+            uploadFile(file);
+        });
+
+        function uploadFile(file) {
+            const fileReader = new FileReader();
+            const fileType = file.type;
+            const fileSize = file.size;
+
+            if (fileValidate(fileType, fileSize)) {
+                dropZoon.classList.add('drop-zoon--Uploaded');
+                loadingText.style.display = "block";
+                previewImage.style.display = 'none';
+                uploadedFile.classList.remove('uploaded-file--open');
+                uploadedFileInfo.classList.remove('uploaded-file__info--active');
+
+                fileReader.addEventListener('load', function () {
+                    setTimeout(function () {
+                        uploadArea.classList.add('upload-area--open');
+                        loadingText.style.display = "none";
+                        previewImage.style.display = 'block';
+                        fileDetails.classList.add('file-details--open');
+                        uploadedFile.classList.add('uploaded-file--open');
+                        uploadedFileInfo.classList.add('uploaded-file__info--active');
+                    }, 500);
+
+                    previewImage.setAttribute('src', fileReader.result);
+                    uploadedFileName.innerHTML = file.name;
+
+                    progressMove();
+                });
+
+                fileReader.readAsDataURL(file);
+            } else {
+
+                this;
+
+            };
+        };
+
+
+        function progressMove() {
+            let counter = 0;
+            setTimeout(() => {
+                let counterIncrease = setInterval(() => {
+                    if (counter === 100) {
+                        clearInterval(counterIncrease);
+                    } else {
+                        counter = counter + 10;
+                        uploadedFileCounter.innerHTML = `${counter}%`
+                    }
+                }, 100);
+            }, 600);
+        };
+
+        function fileValidate(fileType, fileSize) {
+            let isImage = imagesTypes.filter((type) => fileType.indexOf(`image/${type}`) !== -1);
+            if (isImage[0] === 'jpeg') {
+                uploadedFileIconText.innerHTML = 'jpg';
+            } else {
+                uploadedFileIconText.innerHTML = isImage[0];
+            };
+
+            if (isImage.length !== 0) {
+                if (fileSize <= 2000000) {z
+                    return true;
+                } else {
+                    return alert('Please Your File Should be 2 Megabytes or Less');
+                };
+            } else {
+                return alert('Please make sure to upload An Image File Type');
+            };
+        };
+    </script> -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".appnd_user_btn").click(function () {
+
+                $(".apenduser").append("<tr>\n" +
+                    "                                    <td class=\"th_btnpand\">\n" +
+                    "                                        <div style=\"cursor: pointer;\" class=\"appnd_user_minus_btn appnd_minus_btn\">-</div>\n" +
+                    "                                    </td>\n" +
+                    "                                    <td class=\"th_user_role\">\n" +
+                    "                                        <select name=\"role_id[]\" class=\"form-control\">\n" +
+                    "                                            {% for role in  role_data %}\n" +
+                    "                                           <option value=\"{{role.id}}\">{{role.role_name}}</option>\n" +
+                    "                                           {% endfor %}\n" +
+                    "                                        </select>\n" +
+                    "                                    </td>\n" +
+                    "                                    <td class=\"th_user_decrptn\">\n" +
+                    "                                        <input name=\"role_description[]\" class=\"form-control\">\n" +
+                    "                                    </td>\n" +
+                    "                                 <td class=\"th_user_strtdate\">\n" +
+                    "                                        <div class=\"input-group date\">\n" +
+                    "                                            <input name=\"role_start_dt[]\"  min=\"{{today_date}}\" value=\"{{today_date|safe}}\" type=\"date\" class=\"input form-control\" id=\"datetimepicker\"> \n" +
+                    "                                        </div>\n" +
+                    "                                    </td>\n" +
+                    "                                    <td class=\"th_user_enddate\">\n" +
+                    "                                        <div class=\"input-group date\">\n" +
+                    "                                            <input name=\"role_end_dt[]\" type=\"date\"  min=\"{{today_date}}\"  class=\"input form-control\" id=\"datetimepicker\"> \n" +
+                    "                                        </div>\n" +
+                    "                                    </td>\n" +
+
+                    "                                </tr>");
+                $(".appnd_user_minus_btn").click(function () {
+                    $(this).parent().parent().remove();
+                });
+            });
+        });
+        $(".appnd_user_minus_btn").click(function () {
+            $(this).parent().parent().remove();
+        });
+    </script>
+    <script>
+        function confirmDelete(id, type) {
+            $('#delete_id').val(id);
+            $('#delete_type').val(type);
+            Swal.fire({
+                title: 'Delete Confirmation',
+                text: 'Are you sure you want to delete ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel',
+                focusConfirm: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#deleteConfirmationModal form').submit();
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("#deleteConfirmationModal form").submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            icon: 'success',
+                        });
+                        $(".delete_modal" + response["id"]).hide()
+
+                        $('#deleteConfirmationModal').modal('hide'); // Close the modal
+
+                        // You can perform additional actions if needed
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'An error occurred while deleting.',
+                            icon: 'error',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    // function showToast(message, icon) {
+    //     var toastMixin = Swal.mixin({
+    //         toast: true,
+    //         icon: icon,
+    //         title: 'General Title',
+    //         animation: false,
+    //         position: 'top-right',
+    //         width: '450px',
+    //         showConfirmButton: false,
+    //         timer: 2000,
+    //         timerProgressBar: true,
+    //         didOpen: (toast) => {
+    //             toast.addEventListener('mouseenter', Swal.stopTimer)
+    //             toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //         }
+    //     });
+    //     toastMixin.fire({
+    //         animation: true,
+    //         title: message
+    //     });
+    // }
+
+    // $(document).ready(function () {
+    //     $(".settings_form").submit(function (e) {
+    //         e.preventDefault(); // Prevent the default form submission
+    //         var formData = $(this).serialize();
+           
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: $(this).attr('action'),
+    //             data: formData,
+    //             success: function (response) {
+    //                 if (response['icon'] == "error"){
+    //                     showToast(response['message'], 'error');
+    //                 }
+    //                 else if (response['icon'] == "success"){
+    //                     showToast(response['message'], 'success');
+    //                     f_name = response['form_name']
+    //                     $(".form_same_"+f_name)[0].reset();
+                        
+    //                 }else {
+    //                     console.error(res.error);
+    //                 }
+    //             },
+    //             error: function (xhr, textStatus, errorThrown) {
+                    
+    //             }
+    //         });
+    //     });
+    // });
+    </script>
+    <script>
+        // function addUser() {
+        //     const form = new FormData(document.getElementById('#user-form'));
+
+        //     $.ajax({
+        //         url: $(this).attr('action'),
+        //         method: 'POST',
+        //         headers: {
+        //             "XCSRFToken": "{{ csrf_token }}"
+        //         },
+        //         data: form,
+        //         processData: false,
+        //         contentType: false,
+        //         success: function (res) {
+        //             alert(res.status)
+        //             if (res.status == 200) {
+        //                 const tableBody = $('#append_user');
+        //                 const newRow =  `
+        //                     <tr>
+        
+        //                         <td>${res.user.id}</td>
+        //                         <td>${res.user.first_name.title} ${res.user.last_name.title}</td>
+        //                         <td>${res.user.user_name}</td>
+        //                         <td>${res.user.primary_branch}</td>
+        //                         <td>${res.user.user_role}</td>
+        //                         <td class="text-right">
+        //                             <div class="dropdown">
+        //                                 <a href="#" class="dropdown-toggle card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+        //                                     <i class="mdi mdi-dots-vertical font-size-18"></i>
+        //                                 </a>
+        //                                 <ul class="dropdown-menu dropdown-menu-end">
+        //                                     <li data-bs-toggle="modal" data-bs-target="#add-opportunity">
+        //                                         <a href="#" class="dropdown-item d-flex align-items-center">
+        //                                             <i class="bx bx-edit font-size-16 me-1"></i>Edit
+        //                                         </a>
+        //                                     </li>
+        //                                     <li onclick="confirmDelete('${res.user.id}','user')">
+        //                                         <a href="#" class="dropdown-item d-flex align-items-center">
+        //                                             <i class="bx bx-trash font-size-16 me-1"></i>Delete
+        //                                         </a>
+        //                                     </li>
+        //                                 </ul>
+        //                             </div>
+        //                         </td>
+        //                     </tr>
+
+        //                 `;
+        //                 tableBody.append(newRow);
+        //                 $('#user-form')[0].reset();
+        //                 $('#add-user').modal('hide');
+
+                        
+        //             }else {
+        //                 console.error(res.error);
+        //             }
+        //         },
+        //         error: function(err) {
+        //             console.error(err);
+        //         }
+        //     });
+        // }
+    </script>
+    <script>
+        function clearForm() {
+            // Reset the form elements
+            document.getElementById('branch-form').reset();
+
+            // Clear success/error classes and messages
+            $(".error").text("");
+            $(".input-control").removeClass("error success");
+        }
+
+    </script>
+
+    <script>
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+
+        const createBranch=(e)=>{
+            e.preventDefault(); //e = event object as an argument, here doesn't not using the event object
+             //assign new formdata using the id on 1st position.
+            //the FormData object is the built in js object for gathering form data
+
+            // const form = document.getElementsByClassName('.visitors-form');
+            const name = document.getElementById('name');
+            const branchCode = document.getElementById('branch_code');
+            const countryCode = document.getElementById('country_code');
+
+            function setError(element, message) {
+               
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+            }
+
+            const setSuccess = element => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = '';
+                inputControl.classList.add('success');
+                inputControl.classList.remove('error');
+            };
+
+
+            const validateInputs = () => {
+                const nameValue = name.value.trim();
+                const branchCodevalue = branchCode.value.trim();
+                const countryCodeValue = countryCode.value.trim();
+                let isValid = true;
+
+                if (nameValue === '') {
+                    setError(name, 'Enter Branch name');
+                    isValid = false;
+                } else {
+                    setSuccess(name);
+                }
+
+                if (branchCodevalue === '') {
+                    setError(branchCode, 'Enter Branch code');
+                    isValid = false;
+                } else {
+                    setSuccess(branchCode);
+                }
+
+
+                if (countryCodeValue === '') {
+                    setError(countryCode, 'Enter country code');
+                    isValid = false;
+                } else {
+                    setSuccess(countryCode);
+                }
+
+                return isValid;
+            };
+
+            function resetForm() {
+                // Reset the form here
+                $("#branch-form")[0].reset();
+                // Optionally, you can clear success/error classes and messages if any
+                $(".error").text("");
+                $(".input-control").removeClass("error success");
+            }
+
+           
+
+            if (validateInputs()) { // for validating the fields
+                const form = new FormData($("#branch-form")[0]);
+
+                    $.ajax({
+                        url: "/create-branch/",
+                        method:"POST", //http method for the request.
+                        headers: { // addtional http header for the request
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        data: form,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: (res) => {  //http response
+                            if (res.status === 400) {   
+                                if (res.type === "branch_code") {
+                                    setError(branch_code, res.error);
+                                }
+                                
+                            }
+                            if (res.status === 200) {
+                                showToast(res.message, "success")
+                                resetForm();
+                                const branch = res.created_branch_data;
+                                $('#branch-table').append(`
+                                
+                                <tr class="delete_modal${branch.id}">
+
+                                    <td>${res.branch_data_count}</td>            
+                                    <td>${branch.branch_code}</td>
+                                    <td>${branch.name}</td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle card-drop"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                // <li data-bs-toggle="modal"
+                                                //     data-bs-target="#add-opportunity"><a href="#"
+                                                //         class="dropdown-item d-flex align-items-center"><i
+                                                //             class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                // </li>
+                                                <li onclick="confirmDelete('${branch.id}', 'branch')"><a
+                                                    href="#"
+                                                    class="dropdown-item d-flex align-items-center"><i
+                                                        class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                    
+                                `);
+                                
+                                
+                            }
+
+                        },    
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle any AJAX errors
+                        }
+                    });
+                
+            }
+        };
+
+        $(document).ready(function () {
+            $(".branch-form").submit(createBranch);
+        });
+    </script>
+    <script>
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+
+        const createDesk = (e) => {
+            e.preventDefault();
+             //e = event object as an argument, here doesn't not using the event object
+             //assign new formdata using the id on 1st position.
+            //the FormData object is the built in js object for gathering form data
+
+            // const form = document.getElementsByClassName('.visitors-form');
+            const deskName = document.getElementById('desk_name');
+            const deskBranchId = document.getElementById('desk_branch_id');
+
+            function setError(element, message) {
+               
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+            }
+
+            const setSuccess = element => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = '';
+                inputControl.classList.add('success');
+                inputControl.classList.remove('error');
+            };
+
+
+            const validateInputs = () => {
+                const deskNameValue = deskName.value.trim();
+                const deskBranchIdvalue = deskBranchId.value.trim();
+                let isValid = true;
+
+                if (deskNameValue === '') {
+                    setError(deskName, 'Enter Desk name');
+                    isValid = false;
+                } else {
+                    setSuccess(deskName);
+                }
+
+                if (deskBranchIdvalue === '--select branch--' || deskBranchIdvalue === '') {
+                    setError(deskBranchId, 'Please choose a branch');
+                    isValid = false;
+                } else {
+                    setSuccess(deskBranchId);
+                }
+
+                return isValid;
+            };
+
+            function resetForm() {
+                // Reset the form here
+                $("#desk_form")[0].reset();
+                // Optionally, you can clear success/error classes and messages if any
+                $(".error").text("");
+                $(".input-control").removeClass("error success");
+            };
+
+
+            if (validateInputs()) { // for validating the fields
+                const form = new FormData($("#desk_form")[0]);
+
+                    $.ajax({
+                        url: "/add_desk/",
+                        method:"POST", //http method for the request.
+                        headers: { // addtional http header for the request
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        data: form,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: (res) => {  //http response
+
+                            if (res.status === 200) {
+                                showToast(res.message, "success")
+                                resetForm();
+                                const desk = res.created_desk_data;
+                                $('#desk-table').append(`
+                                
+                                <tr class="delete_modal${desk.id}">
+
+                                    <td>${res.desk_data_count}</td>
+                                    <td>${desk.desk_name}</td>
+                                    <td>${desk.select_branch}</td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle card-drop"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                // <li data-bs-toggle="modal"
+                                                //     data-bs-target="#add-desk"><a href="#"
+                                                //         class="dropdown-item d-flex align-items-center"><i
+                                                //             class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                // </li>
+                                                <li onclick="confirmDelete('${desk.id}','desk')"><a
+                                                        href="#"
+                                                        class="dropdown-item d-flex align-items-center"><i
+                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                    
+                                `);
+                                
+                                
+                            }
+
+                        },    
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle any AJAX errors
+                        }
+                    });
+                
+            }
+        };
+
+        $(document).ready(function () {
+            $("#desk_form").submit(createDesk);
+        });
+    </script>
+    <script>
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+
+        const createUser=(e)=> {
+            e.preventDefault();
+             //e = event object as an argument, here doesn't not using the event object
+             //assign new formdata using the id on 1st position.
+            //the FormData object is the built in js object for gathering form data
+
+            // const form = document.getElementsByClassName('.visitors-form');
+            const firstName = document.getElementById('first_name');
+            const lastName = document.getElementById('last_name');
+            const userEmail = document.getElementById('user_email');
+            const userPhone = document.getElementById('user_phone');
+            const userName = document.getElementById('user_name');
+            const branchIdUser = document.getElementById('branch_id_usr');
+
+            function setError(element, message) {
+               
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+            }
+
+            const setSuccess = element => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = '';
+                inputControl.classList.add('success');
+                inputControl.classList.remove('error');
+            };
+
+            const isValidEmail = visitorEmail => {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(visitorEmail).toLowerCase());
+            }
+
+
+            const validateInputs = () => {
+                const firstNamevalue = firstName.value.trim();
+                const lastNamevalue = lastName.value.trim();
+                const userEmailValue = userEmail.value.trim();
+                const userPhoneValue = userPhone.value.trim();
+                const userNameValue = userName.value.trim();
+                const branchIdUserValue = branchIdUser.value.trim();
+                let isValid = true;
+
+                if (firstNamevalue === '') {
+                    setError(firstName, 'First name is required');
+                    isValid = false;
+                } else {
+                    setSuccess(firstName);
+                }
+
+                if (lastNamevalue === '') {
+                    setError(lastName, 'Last name is required');
+                    isValid = false;
+                } else {
+                    setSuccess(lastName);
+                }
+
+                if (userEmailValue === '') {
+                    setError(userEmail, 'Email is required');
+                    isValid = false;
+                } else if (!isValidEmail(userEmailValue)) {
+                    setError(userEmail, 'Provide a valid email address');
+                    isValid = false;
+                } else {
+                    setSuccess(userEmail);
+                }
+                
+                if (userPhoneValue === '') {
+                    setError(userPhone, 'Phone number is required');
+                    isValid = false;
+                }else if (userPhoneValue.length < 8 || userPhoneValue.length > 12) {
+                    setError(userPhone, 'Phone number should be minimum 8 or maximum 12');
+                    isValid = false;
+                } else {
+                    setSuccess(userPhone);
+                }
+                
+                if (userNameValue === '') {
+                    setError(userName, 'Username is required');
+                    isValid = false;
+                } else {
+                    setSuccess(userName);
+                }
+                if (branchIdUserValue === '--select branch--' || branchIdUserValue === '') {
+                    setError(branchIdUser, 'Choose a branch');
+                    isValid = false;
+                } else {
+                    setSuccess(branchIdUser);
+                }
+                
+                return isValid;
+            };
+
+            function resetForm() {
+                // Reset the form here
+                $("#user-form")[0].reset();
+                // Optionally, you can clear success/error classes and messages if any
+                $(".error").text("");
+                $(".input-control").removeClass("error success");
+            }
+
+
+            if (validateInputs()) { // for validating the fields
+                const form = new FormData($("#user-form")[0]);
+
+                    $.ajax({
+                        url: "/user-info/",
+                        method:"POST", //http method for the request.
+                        headers: { // addtional http header for the request
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        data: form,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: (res) => {
+                            if(res.status === 400){
+                                if (res.value) {
+                                let errors = res.value;
+
+                                errors.forEach(error => {
+                                    if (error.type === "useremail") {
+                                        setError(userEmail, error.error);
+                                    }
+
+                                    if (error.type === "username") {
+                                        setError(userName, error.error);
+                                    }
+                                });
+                            }else{
+                                    if (res.type === "useremail") {
+                                        setError(userEmail, res.error);
+                                    }
+                                    if (res.type === "username") {
+                                        setError(userName, res.error);
+                                    }
+                            }}
+                            if (res.status === 200) {
+                                showToast(res.message, "success")
+                                resetForm();
+                                const user = res.created_data
+                                $('#user-table').append(`
+                                <tr>
+                                    <td>${res.user_data_count}</td>
+                                    <td>${user.first_name} ${user.last_name}</td>
+                                    <td>${user.user_name}</td>
+                                    <td>${user.primary_branch}</td>
+                                    <td>${user.user_role}</td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle card-drop"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                // <li data-bs-toggle="modal"
+                                                //     data-bs-target="#add-opportunity"><a href="#"
+                                                //         class="dropdown-item d-flex align-items-center"><i
+                                                //             class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                // </li>
+                                                <li onclick="confirmDelete('${user.id}','user')"><a
+                                                        href="#"
+                                                        class="dropdown-item d-flex align-items-center"><i
+                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                                `);
+                                
+                                
+                            }
+
+                        },    
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle any AJAX errors
+                        }
+                    });
+                
+            }
+        };
+
+        $(document).ready(function () {
+            $("#user-form").submit(createDesk);
+        });
+    </script>
+
+</body>
+
+</html>

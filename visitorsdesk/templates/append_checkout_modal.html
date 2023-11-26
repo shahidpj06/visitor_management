@@ -1,0 +1,113 @@
+{% load static %}
+
+    <div class="modal fade " id="add-checkout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form method="post" id="checkout_form" action="{% url 'exit_visitor' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>Exit Visitor</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="selct-box-head">Exit Desk</h6>
+                        <div class="form-grp inputGroup">
+                            <div class="select-inp">
+                                <select class="form-control" name="exit_desk" id="exit_desk" required>
+                                    <option selected disabled>--select desk--</option>
+                                
+                                    <option value="{{data.select_desk.id}}">{{data.select_desk}}</option>
+                                
+
+                                </select>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    
+                        <label for="startDateTime"><h6>Exit Time</h6></label>
+                        <input type="datetime-local" class="form-control" id="startDateTime" name="exit_time" required>
+
+                        <input type="text" name="visitor_id" value="{{vid}}">
+
+                    
+
+                    <h6>Visitor Remarks</h6>
+                        <label for="number"></label>
+                        <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">CHECKOUT</button>
+                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                        data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <script>
+        function showToast(message, icon) {
+            var toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+            
+            }
+
+        $(document).ready(function () {
+            $("#checkout_form").submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function (response) {
+                        var messages = response.messages;
+                        for (var i = 0; i < messages.length; i++) {
+                            showToast(messages[i].message, messages[i].icon);
+                        }
+
+                        if (response.success) {
+                        // Reset the form
+                        resetForm();
+
+                        }
+
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                    // Handle any AJAX errors
+                    }
+                });
+            });
+        });
+            
+    </script>
+    <script>
+        function resetForm() {
+            // Replace 'visitors_form' with the ID of your form
+            const form = document.getElementById('checkout_form');
+            form.reset();
+        }
+    </script>
+
+    
+     
+
