@@ -63,16 +63,16 @@
         </div>
     </div>
     <div class="login-page">
-        <div class="container">
+        <div class="container rounded-end">
             <div class="row">
                 <div class="col-md-6 order-md-1 order-1">
-                    <div class="login-left-div" style="background-image: url(C:1323882.png);
+                    <div class="login-left-div rounded-start" style="background-image: url(C:1323882.png);
                     background-color: #006400d6;">
                         <div class="glass-sq">
                             <h4>
                                 Visitors Management System
                                 <span>
-                                    Today
+                                    
                                 </span>
                             </h4>
                             <p>
@@ -255,40 +255,6 @@
             return isValid;
         };
     </script>
-
-
-    <!-- for printing error message in login page -->
-    <!-- {% if messages %}
-    {% for message in messages %}
-    <script>
-        
-        var toastMixin = Swal.mixin({
-            toast: true,
-            icon: '{{message.tags}}',
-            title: 'General Title',
-            animation: false,
-            position: 'top-right',
-            width: '450px',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        toastMixin.fire({
-            animation: true,
-            title: '{{message}}'
-        });
-        
-    </script>
-    {% endfor %}
-    {% endif %} -->
-    <!-- for printing error message in login page -->
-
-
-
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 
 
 :root {
-    --bs-blue: #556ee6;
+    --bs-blue: #328a32;
     --bs-indigo: #564ab1;
     --bs-purple: #6f42c1;
     --bs-pink: #e83e8c;
@@ -67,8 +67,8 @@
     --bs-border-radius-xl: 1rem;
     --bs-border-radius-2xl: 2rem;
     --bs-border-radius-pill: 50rem;
-    --bs-link-color: #556ee6;
-    --bs-link-hover-color: #4458b8;
+    --bs-link-color: #328a32;
+    --bs-link-hover-color: #1d4f1d;
     --bs-code-color: #e83e8c;
     --bs-highlight-bg: #fcf8e3
 }

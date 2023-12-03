@@ -16,6 +16,16 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 </head>
+<style>
+    .hidden {
+        display: none;
+    }
+    #noDataImage {
+        display:flex !important;
+        align-items: center;
+        justify-content:center;
+    }
+</style>
 
 <body>
 
@@ -75,151 +85,20 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle arrow-none" href="{% url 'settings' %}"
                                             id="topnav-pages" role="button">
-                                            <span>Settings</span>
-                                            
-                                        </a>
-                                        
+                                            <span>Settings</span>                                            
+                                        </a>                                        
                                     </li>
-                                    
-                                    
-
                                 </ul>
                             </div>
                         </nav>
                     </div>
-
                 </div>
-
                 <div class="d-flex align-items-center header-rightside-btns">
-                   
-                    
-                    <div>
-                        
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications"> Chats </h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="#!" key="t-view-all"> View All</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="p-2 border-top d-grid">
-                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
-                                        More..</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                     <a href="{% url 'checkin_visitor' %}">
                         <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECKIN
                         </button>
                     </a>
-                    <div class="dropdown d-inline-block user-dropdown">
-                        <!-- <button type="button" class="btn header-item btn-danger waves-effect waves-light"
-                            id="page-header-notifications-dropdown">CHECKOUT</button> -->
-                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center noti-heading">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications">GLOBAL ACTIONS</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <div class="global-action-btns">
-                                   <a href="#" data-bs-toggle="modal" data-bs-target="#log-call"><button type="button" class="btn btn-orange waves-effect waves-light me-2"><i class="bx bx-phone-call"></i></button>Log a Call</a>
-                                   <a href="#" data-bs-toggle="modal" data-bs-target="#new-task"><button type="button" class="btn btn-info waves-effect waves-light me-2"><i class="bx bxs-edit"></i></button>New task</a> 
-                                   <a href="#" data-bs-toggle="modal" data-bs-target="#new-event"><button type="button" class="btn btn-success waves-effect waves-light me-2"><i class="bx bx-calendar-plus"></i></button>New Event</a> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
     
-                    <div class="dropdown d-inline-block user-dropdown">
-                        <!-- <button type="button" class="btn header-item btn-success waves-effect waves-light"
-                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="bx bx-bell"></i>
-
-                        </button> -->
-                        <!-- <span class="badge bg-warning">30</span> -->
-                        
-                    </div>
-
                     <div class="dropdown d-inline-block user-dropdown ms-2">
                         <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -265,15 +144,15 @@
             </div>
             <div class="container-fluid px-0">
              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 gx-3">
-                <a href="{% url 'visitors' %}">
                     <div class="col">
-                        <div class="main-data-box ">
-                            <i class="bx bx-up-arrow-alt leads-count"></i>
-                            <h2 class="leads-count">{{visitor_data.count}}</h2>
-                            <h4>Today's Check-ins</h4>
-                        </div>
+                        <a href="{% url 'visitors' %}#department-tab" id="todays-checkins-link">
+                            <div class="main-data-box ">
+                                <i class="bx bx-up-arrow-alt leads-count"></i>
+                                <h2 class="leads-count">{{visitor_data.count}}</h2>
+                                <h4>Today's Check-ins</h4>
+                            </div>
+                        </a>
                     </div>
-                </a>
                 <div class="col">
                     <a href="{% url 'visitors' %}">
                         <div class="main-data-box">
@@ -317,7 +196,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
-                                <thead class="b-none">
+                                <thead class="b-none" {% if not visitor_data %} style="visibility: hidden;" {% endif %}>
                                     <tr>
                                         <th>Name</th>
                                         <th>Phone</th>
@@ -326,7 +205,7 @@
                                         <!-- <th class="text-right">Action</th> -->
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody>                                    
                                     {% for i in visitor_data %}
                                     <tr>
                                         <td>{{i.full_name.title}}</td>
@@ -334,9 +213,16 @@
                                         <td>{{i.email}}</td>
                                         <td>{{i.purpose}}</td>
                                     </tr>
-                                    {% endfor %}
-                                </tbody>
+                                    {% endfor %}                                                                        
+                                </tbody>                                
                             </table>
+                            {% if visitor_data|length == 0 %}
+                            <div id="noDataImage">
+                                <!-- Your image tag or image source goes here -->
+                                <img height="200px" style="width: auto" src="{% static 'images/ndf.jpg' %}" alt="No Data Image">
+                            </div>
+                            <h5 id="noDataImage">No Data Found!</h5>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -352,7 +238,7 @@
                         </div>
                         <div class="table-responsive">
                             <table class="table table-striped">
-                                <thead class="b-none">
+                                <thead class="b-none" {% if not expected_visitor %} style="visibility: hidden;" {% endif %}>
                                     <tr>
                                         <th>Name</th>
                                         <th>Phone</th>
@@ -373,19 +259,19 @@
                                     </tr>
                                     {% endfor %}
                                 </tbody>
+                            </table>    
+                            {% if expected_visitor|length == 0 %}
+                                <div id="noDataImage">
+                                    <!-- Your image tag or image source goes here -->
+                                    <img height="200px" style="width: auto" src="{% static 'images/nodatafound.jpg' %}" alt="No Data Image">
+                                </div>
+                                <h5 id="noDataImage">No Data Found!</h5>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
              </div>
-
-            </div>
-         
-
         </div>
-
-
-
-
     </div>
 
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -399,191 +285,8 @@
                     Are you sure you want to logout?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-danger" onclick="performLogout()">Logout</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-    <div class="modal fade" id="add-lead" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel"><span>Add Lead</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div id="uploadArea" class="upload-area">
-                                <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
-                                    <span class="drop-zoon__icon">
-                                        <i class='bx bxs-file-image'></i>
-                                    </span>
-                                    <p class="drop-zoon__paragraph">Drop your file here or Click to browse</p>
-                                    <span id="loadingText" class="drop-zoon__loading-text">Please Wait</span>
-                                    <img src="" alt="Preview Image" id="previewImage" class="drop-zoon__preview-image"
-                                        draggable="false">
-                                    <input type="file" id="fileInput" class="drop-zoon__file-input" accept="image/*">
-                                </div>
-
-                                <div id="fileDetails" class="upload-area__file-details file-details">
-                                    <h3 class="file-details__title">Uploaded File</h3>
-
-                                    <div id="uploadedFile" class="uploaded-file">
-                                        <div class="uploaded-file__icon-container">
-                                            <i class='bx bxs-file-blank uploaded-file__icon'></i>
-                                            <span class="uploaded-file__icon-text"></span>
-                                        </div>
-
-                                        <div id="uploadedFileInfo" class="uploaded-file__info">
-                                            <span class="uploaded-file__name">Proejct 1</span>
-                                            <span class="uploaded-file__counter">0%</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <h6 class="selct-box-head">Lead Status</h6>
-                            <div class="form-grp inputGroup">
-                                <div class="select-inp">
-                                    <select class="form-control">
-                                        <option value="AK">None</option>
-                                        <option value="HI">Unqualified</option>
-                                        <option value="CA">New</option>
-                                        <option value="NV">Working</option>
-                                        <option value="CA">Nurturing </option>
-                                        <option value="NV">Qualified</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                            </div>
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Name</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Title</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Email</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Phone</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Mobile</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Website</label>
-                            </div>
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Company</label>
-                            </div>
-                            <h6 class="selct-box-head">Rating</h6>
-                            <div class="form-grp inputGroup">
-                                <div class="select-inp">
-                                    <select class="form-control">
-                                        <option value="AK">None</option>
-                                        <option value="HI">Hot</option>
-                                        <option value="CA">Warm</option>
-                                        <option value="CA">Cold</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <div class="form-grp">
-                                <h6 class="d-flex align-items-center"><span class="lead-owner">Lead Owner : </span>
-                                    <div><img src="static/images/users/avatar-1.jpg" alt=""
-                                            class="avatar-xs rounded-circle mx-2"><span>Nabeel</span></div>
-                                </h6>
-                            </div>
-
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">No. of Employees</label>
-                            </div>
-
-                            <h6 class="selct-box-head">Industry</h6>
-                            <div class="form-grp inputGroup">
-                                <div class="select-inp">
-                                    <select class="form-control">
-                                        <option value="AK">None</option>
-                                        <option value="HI">Agriculture</option>
-                                        <option value="CA">Apparel</option>
-                                        <option value="HI">Banking</option>
-                                        <option value="CA">Chemicals</option>
-                                        <option value="HI">Communications</option>
-                                        <option value="CA">Constructions</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                            </div>
-
-                            <h6 class="selct-box-head">Lead Source</h6>
-                            <div class="form-grp inputGroup">
-                                <div class="select-inp">
-                                    <select class="form-control">
-                                        <option value="AK">None</option>
-                                        <option value="HI">Advertisement</option>
-                                        <option value="CA">Customer</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down"></i>
-                                </div>
-                            </div>
-
-
-                            <h5 class="addrss-info mt-3">Address Information</h5>
-                            <div class="form-grp">
-                                <textarea id="formmessage" class="form-control" rows="3"
-                                    placeholder="Street"></textarea>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">No. of Employees</label>
-                            </div>
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Zip/Postel Code</label>
-                            </div>
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">State/Province</label>
-                            </div>
-
-                            <div class="inputGroup form-control">
-                                <input type="text" required="" autocomplete="off">
-                                <label for="name">Country</label>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-success text-uppercase br-50 btn-md">Save</button>
-                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn" style="background-color: red; color: white;" onclick="performLogout()">Logout</button>
                 </div>
             </div>
         </div>
@@ -598,173 +301,6 @@
     <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
 
     <script src="{% static 'js/app.js' %}"></script>
-
-    <script>
-        $(function () {
-            $(".ddl-select").each(function () {
-
-
-                $(this).hide();
-                var $select = $(this);
-                var _id = $(this).attr("id");
-                var wrapper = document.createElement("div");
-                wrapper.setAttribute("class", "ddl ddl_" + _id);
-
-                var input = document.createElement("h6");
-
-                input.setAttribute("class", "ddl-input");
-                input.setAttribute("id", "ddl_" + _id);
-                input.innerHTML = $(this)[0].options[$(this)[0].selectedIndex].innerText
-
-                $(this).before(wrapper);
-                var $ddl = $(".ddl_" + _id);
-                $ddl.append(input);
-                $ddl.append("<div class='ddl-options ddl-options-" + _id + "'></div>");
-                var $ddl_input = $("#ddl_" + _id);
-                var $ops_list = $(".ddl-options-" + _id);
-                var $ops = $(this)[0].options;
-                for (var i = 0; i < $ops.length; i++) {
-                    $ops_list.append(
-                        "<div data-value='" +
-                        $ops[i].value +
-                        "'>" +
-                        $ops[i].innerText +
-                        "</div>"
-                    );
-                }
-
-                $ddl_input.click(function () {
-                    $ddl.toggleClass("active");
-                });
-                $ddl_input.blur(function () {
-                    $ddl.removeClass("active");
-                });
-                $ops_list.find("div").click(function () {
-                    document.getElementsByClassName("ddl-input")[0].innerHTML = $(this).text();
-                    $ddl.removeClass("active");
-                });
-            });
-        });
-    </script>
-    <script>
-        // upload image
-        const uploadArea = document.querySelector('#uploadArea')
-
-
-        const dropZoon = document.querySelector('#dropZoon');
-        const loadingText = document.querySelector('#loadingText');
-        const fileInput = document.querySelector('#fileInput');
-        const previewImage = document.querySelector('#previewImage');
-        const fileDetails = document.querySelector('#fileDetails');
-        const uploadedFile = document.querySelector('#uploadedFile');
-        const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
-        const uploadedFileName = document.querySelector('.uploaded-file__name');
-        const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
-        const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
-        const imagesTypes = [
-            "jpeg",
-            "png",
-            "svg",
-            "gif"
-        ];
-
-        dropZoon.addEventListener('dragover', function (event) {
-            event.preventDefault();
-            dropZoon.classList.add('drop-zoon--over');
-        });
-
-        dropZoon.addEventListener('dragleave', function (event) {
-            dropZoon.classList.remove('drop-zoon--over');
-        });
-
-        dropZoon.addEventListener('drop', function (event) {
-            event.preventDefault();
-            dropZoon.classList.remove('drop-zoon--over');
-            const file = event.dataTransfer.files[0];
-            uploadFile(file);
-        });
-
-        dropZoon.addEventListener('click', function (event) {
-            fileInput.click();
-        });
-
-
-        fileInput.addEventListener('change', function (event) {
-
-            const file = event.target.files[0];
-            uploadFile(file);
-        });
-
-        function uploadFile(file) {
-            const fileReader = new FileReader();
-            const fileType = file.type;
-            const fileSize = file.size;
-
-            if (fileValidate(fileType, fileSize)) {
-                dropZoon.classList.add('drop-zoon--Uploaded');
-                loadingText.style.display = "block";
-                previewImage.style.display = 'none';
-                uploadedFile.classList.remove('uploaded-file--open');
-                uploadedFileInfo.classList.remove('uploaded-file__info--active');
-
-                fileReader.addEventListener('load', function () {
-                    setTimeout(function () {
-                        uploadArea.classList.add('upload-area--open');
-                        loadingText.style.display = "none";
-                        previewImage.style.display = 'block';
-                        fileDetails.classList.add('file-details--open');
-                        uploadedFile.classList.add('uploaded-file--open');
-                        uploadedFileInfo.classList.add('uploaded-file__info--active');
-                    }, 500);
-
-                    previewImage.setAttribute('src', fileReader.result);
-                    uploadedFileName.innerHTML = file.name;
-
-                    progressMove();
-                });
-
-                fileReader.readAsDataURL(file);
-            } else {
-
-                this;
-
-            };
-        };
-
-
-        function progressMove() {
-            let counter = 0;
-            setTimeout(() => {
-                let counterIncrease = setInterval(() => {
-                    if (counter === 100) {
-                        clearInterval(counterIncrease);
-                    } else {
-                        counter = counter + 10;
-                        uploadedFileCounter.innerHTML = `${counter}%`
-                    }
-                }, 100);
-            }, 600);
-        };
-
-        function fileValidate(fileType, fileSize) {
-            let isImage = imagesTypes.filter((type) => fileType.indexOf(`image/${type}`) !== -1);
-            if (isImage[0] === 'jpeg') {
-                uploadedFileIconText.innerHTML = 'jpg';
-            } else {
-                uploadedFileIconText.innerHTML = isImage[0];
-            };
-
-            if (isImage.length !== 0) {
-                if (fileSize <= 2000000) {
-                    return true;
-                } else {
-                    return alert('Please Your File Should be 2 Megabytes or Less');
-                };
-            } else {
-                return alert('Please make sure to upload An Image File Type');
-            };
-        };
-    </script>
     <script>
         function confirmLogout() {
             Swal.fire({
@@ -801,8 +337,53 @@
             });
         }
     </script>
-
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const noDataImage = document.getElementById('noDataImage');
+            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
+            
+            if (noDataImage && visitorDataCount === 0) {
+                noDataImage.classList.remove('d-none');
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var todaysCheckinsLink = document.getElementById('todays-checkins-link');
+            var departmentTabLink = document.getElementById('department-tab');
+    
+            if (todaysCheckinsLink && departmentTabLink) {
+                todaysCheckinsLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Activate the "Department" tab
+                    var tab = new bootstrap.Tab(departmentTabLink);
+                    tab.show();
+                    // Hide the "Users" tab
+                    var usersTab = document.getElementById('users-tab');
+                    usersTab.classList.remove('active');
+                    var usersTabLink = document.getElementById('users-tab-link');
+                    usersTabLink.classList.remove('active');
+                    // Show the "Department" tab content
+                    var departmentTab = document.getElementById('department-tab');
+                    departmentTab.classList.add('active');
+                });
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+        // Check if there's a fragment identifier in the URL
+        var fragment = window.location.hash;
+        
+        // Activate the corresponding tab based on the fragment identifier
+        if (fragment) {
+            $('.nav-link[href="' + fragment + '"]').tab('show');
+    }
+});
+    </script>
+    
+    
+        
 </body>
-
 </html>

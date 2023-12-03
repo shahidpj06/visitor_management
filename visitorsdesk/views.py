@@ -1,42 +1,88 @@
-from datetime import timezone
-from datetime import datetime
-from django.utils import timezone
+import re
 import qrcode
 from . models import *
 from io import BytesIO
+from . serializer import *
+from datetime import datetime
 from celery import shared_task
 from django.conf import settings
 from django.contrib import messages
+from datetime import date, timezone
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
-from . serializer import *
+
+
+def is_strong_password(password):
+    if len(password) < 8:
+        return False
+
+    if not re.search('[a-zA-Z]', password):
+        return False
+
+    if not re.search('[0-9]', password):
+        return False
+
+    if not re.search('[!@#$%^&*()-_+={}[]|\:;",<.>/?]', password):
+        return False
+
+    return True
 
 
 def register_page(request):
-    if request.method == 'POST':
-        username = request.POST.get('username').strip() 
-        useremail = request.POST.get('useremail').strip()
+    if request.method == 'POST': # if method is Create
+        username = request.POST.get('username').strip().lower()
+        useremail = request.POST.get('useremail').strip().lower()
         userpassword = request.POST.get('userpassword').strip()
         # creating user details by POST(create) method. strip() is used for preventing from the whitespace.
+
+        existing_username = User.objects.filter(username=username).exists()
+        existing_email = User.objects.filter(email=useremail).exists()
+        weak_password = userpassword != '' and not is_strong_password(userpassword)
          
-        if User.objects.filter(username=username).exists() and User.objects.filter(email=useremail).exists(): # checking username and password was exist in the database by filtering() and using exist() keyword.
-            return JsonResponse({"status": 400, "value": [{"status": 400, "type": 'username', "error": "Username already exists. Please use a different one."},
-                                 {"status": 400, "type": "email", "error": "Email address already exists. Please choose a different email."}]})
-        elif User.objects.filter(username=username).exists():
-            return JsonResponse({"status":400, "type":"username","error": "Username already exists. Please use a different one."})
-        elif User.objects.filter(email=useremail).exists():
+        if existing_username and existing_email and userpassword and weak_password: # checking username and password was exist in the database.
+            return JsonResponse({"status": 400, "value": [
+                {"status": 400, "type": 'username', "error": "Username already exists. Please use a different one."},
+                {"status": 400, "type": "email", "error": "Email address already exists. Please choose a different email."}, 
+                {'status': 400, "type": "password", "error": "Weak password: Mix case, symbols, numbers & min 8 characters."}
+                ]})
+        
+        if existing_email and weak_password: # checking email and password was exist in the database.
+            return JsonResponse({"status": 400, "value": [
+                {"status": 400, "type": "email", "error": "Email address already exists. Please choose a different email."}, 
+                {'status': 400, "type": "password", "error": "Weak password: Mix case, symbols, numbers & min 8 characters."}
+                ]})
+        
+        if existing_username and weak_password: # checking username and password was exist in the database.
+            return JsonResponse({"status": 400, "value": [
+                {"status": 400, "type": 'username', "error": "Username already exists. Please use a different one."}, 
+                {'status': 400, "type": "password", "error": "Weak password: Mix case, symbols, numbers & min 8 characters."}
+                ]})
+        
+        if existing_username and existing_email: # checking username and email.
+            return JsonResponse({"status": 400, "value": [
+                {"status": 400, "type": 'username', "error": "Username already exists. Please use a different one."},
+                {"status": 400, "type": "email", "error": "Email address already exists. Please choose a different email."}
+                ]})
+        
+        elif existing_username:
+            return JsonResponse({"status": 400, "type": "username", "error": "Username already exists. Please use a different one."})
+        
+        elif existing_email:
             return JsonResponse({"status": 400, "type": "email", "error": "Email address already exists. Please choose a different email."})
         
+        if weak_password:
+            return JsonResponse({'status': 400, "type": "password", "error": "Weak password: Mix case, symbols, numbers & min 8 characters."})
+      
         # if all the above conditions are not true, it creates the user details to the db using create() method.
         my_user = User.objects.create(username=username, email=useremail)
-        my_user.set_password(userpassword)
+        my_user.set_password(userpassword) # predefined django function for creating password
         my_user.save()
         login(request, my_user)
         return JsonResponse({"status":200, "message": "User registered successfully"})
@@ -46,7 +92,7 @@ def register_page(request):
 @csrf_exempt
 def login_page(request):
     if request.method == 'POST':
-        username = request.POST.get('username')
+        username = request.POST.get('username').strip().lower()
         userpassword = request.POST.get('userpassword')
 
         if not username or not userpassword:
@@ -71,6 +117,7 @@ def login_page(request):
 @login_required(login_url='login')
 def dashboard(request):
     visitor_data = NewVisitor.objects.filter(auth_user=request.user).order_by("id")
+    current_date = date.today()
     checkout_count = ExitVisitor.objects.filter(auth_user=request.user).count()
     expected_visitor = InviteVisitor.objects.filter(auth_user=request.user).order_by("id")
     context = {
@@ -115,6 +162,7 @@ def visitors_page(request):
     return render(request, 'visitors.html', context)
 
 
+@login_required(login_url='login')
 def create_branch(request):
     if request.method == 'POST':
         name = request.POST.get("name").strip()
@@ -135,6 +183,18 @@ def create_branch(request):
                             'created_branch_data': created_branch_data, 'branch_data_count': branch_data_count})
     
 
+def get_branches(request):
+    branches = Branches.objects.filter(auth_user=request.user)
+    serializer = BranchSerializer(branches, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+def get_branches_user(request):
+    branches = Branches.objects.filter(auth_user=request.user)
+    serializer = BranchSerializer(branches, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+@login_required(login_url='login')
 def delete(request):
     if request.method == 'POST':
         delete_id = request.POST.get("delete_id")
@@ -301,6 +361,7 @@ def invite_visitor(request):
         
         invite_visitor = InviteVisitor.objects.create(purpose=purpose, auth_user=request.user, full_name=full_name, visitor_email=visitor_email,
             from_date=from_date, to_date=to_date, visitor_phone=visitor_phone, select_branch=branch, user_host=main_user, visitor_id=visitor_id)
+        
         created_visitor_data = InviteVisitorSerializer(invite_visitor).data
         invite_visitor_data = InviteVisitor.objects.filter(auth_user=request.user)
         invite_visitor_data_count = invite_visitor_data.count()
@@ -323,6 +384,7 @@ def add_desk(request):
             return JsonResponse({"status": 400, "type": "desk_branchid", 'message': "Select Branch", 'icon': 'error'})
         branch = Branches.objects.filter(pk=branch_id).first()
         main_desk = Desk.objects.create(auth_user=request.user, desk_name=desk_name, select_branch=branch)
+        
         created_desk_data = DeskSerializer(main_desk).data
         desk_data = Desk.objects.filter(auth_user=request.user)
         desk_data_count = desk_data.count()
@@ -335,13 +397,11 @@ def checkin_visitor(request):
     visitor_data = NewVisitor.objects.filter(auth_user=request.user)
     desk_data = Desk.objects.filter(auth_user=request.user)
     host_data = MainUser.objects.filter(auth_user=request.user)
-    invited_visitor = InvitedVisitorCheck.objects.filter(auth_user=request.user)
     context = {
         'visitor_data': visitor_data,
         'branch_data': branch_data,
         'desk_data': desk_data,
         'host_data': host_data,
-        'invited_visitor': invited_visitor,
     }
     return render(request, 'checkin.html', context)
 
@@ -354,33 +414,27 @@ def new_visitor(request):
         phone = request.POST.get('phone').strip()
         purpose = request.POST.get('purpose').strip()
         branch_id = request.POST.get('branch_id')
+        checkin_time = datetime.now()
 
-        errors = []
         if not branch_id:
-            errors.append({'message': 'Select a branch', 'icon': 'error'})
+            return JsonResponse({'status': 200, 'type': 'branchId', 'error': 'Select a branch'})
         branch = Branches.objects.filter(pk=branch_id).first()
         desk_id = request.POST.get('desk_id')
 
         if not desk_id:
-            errors.append({'message': 'Choose the desk', 'icon': 'error'})            
+            return JsonResponse({'status': 200, 'type': 'deskId', 'error': 'Choose the desk'})            
         desk = Desk.objects.filter(pk=desk_id).first()
         host_id = request.POST.get('host_id')
         
         if not host_id:
-            errors.append({'message': 'Choose a host', 'icon': 'error'})
-        host = MainUser.objects.filter(pk=host_id).first()
-
-        if errors:
-            return JsonResponse({'messages': errors, 'success': False})
-        
+            return JsonResponse({'status': 200, 'type': 'hostId', 'error': 'Choose a host'})
+        host = MainUser.objects.filter(pk=host_id).first() 
         visitor_id = generate_visitor_id(branch.name, branch.counter)
-        
-        
 
         NewVisitor.objects.create(auth_user=request.user, full_name=full_name, email=email, phone=phone,
                                   purpose=purpose, select_branch=branch, user_host=host,
                                   select_desk=desk, visitor_id=visitor_id)
-        return JsonResponse({'messages': [{'message': 'Added Successfully', 'icon': 'success'}], 'success': True})
+        return JsonResponse({"status": 200, 'message': 'Added Successfully', 'icon': 'success', 'checkin_time': checkin_time})
     
 
     
@@ -389,32 +443,32 @@ def exit_visitor(request):
     if request.method == 'POST':
         exit_desk = request.POST.get('exit_desk')
 
-        errors = []
         if not exit_desk:
-            errors.append({'message': 'Desk is required', 'icon': 'error'})
+            return JsonResponse({'status': 400, 'message': 'Desk is required', 'icon': 'error'})
         visitor_id = request.POST.get('visitor_id')
         try:
             visitor = NewVisitor.objects.get(visitor_id=visitor_id)
         except NewVisitor.DoesNotExist:
-            errors.append({'message': 'Visitor not found', 'icon': 'error'})
+            return JsonResponse({'status': 400, 'type': 'notexist', 'error': 'Visitor not found'})
         
         if visitor.checkout_time is not None:
-            errors.append({'message': 'Visitor has already checked out', 'icon': 'error'})
-
-        if errors:
-            return JsonResponse({'messages': errors, 'success': False})
+            return JsonResponse({'status': 400, 'type': 'checkouttime', 'error': 'Visitor has already checked out'})
         
-        exit_time = timezone.now()
+        exit_time = request.POST.get('exit_time')
         visitor_remarks = request.POST.get('visitor_remarks')
+
+        current_date = datetime.now().isoformat()
         
         visitor.checkout_time = exit_time  # Set the checkout time
         visitor.save()
 
         ExitVisitor.objects.create(auth_user=request.user, exit_desk_id=exit_desk,
-                                   exit_time=exit_time, visitor_remarks=visitor_remarks)
+                                   exit_time=exit_time,
+                                     visitor_remarks=visitor_remarks)
         
-        return JsonResponse({'messages': [{'message': 'Visitor checked out successfully', 'icon': 'success'}],
-                             'checkout_time': exit_time.strftime('%Y-%m-%d %H:%M:%S'), 'success': True})
+        return JsonResponse({ "status": 200, 'message': 'Visitor Checked out successfully', 'icon': 'success', 'current_date': current_date})
+                            #  'checkout_time': exit_time.strftime('%Y-%m-%d %H:%M:%S'),
+                               
 
 
 @login_required(login_url='login')
@@ -426,20 +480,41 @@ def append_checkout_modal(request):
 
 
 
-@login_required(login_url='login')
-def invited_visitor_check(request):
+# @login_required(login_url='login')
+# def check_visitor(request):
+#     if request.method == "POST":
+#         full_name = request.POST.get('full_name')
+#         email = request.POST.get('email')
+#         phone = request.POST.get('phone')
+#         purpose = request.POST.get('purpose')
+#         user_host = request.POST.get('user_host')
+#         select_branch = request.POST.get('select_branch')
+#         select_desk = request.POST.get('select_desk')
+#         visitor_id = request.POST.get('visitor_id')
+#         try:
+#             visitor = NewVisitor.objects.get(visitor_id=visitor_id)
+#         except NewVisitor.DoesNotExist:
+#             return JsonResponse({'message': 'Visitor not found', 'icon': 'error'})
+
+#         CheckExistVisitor.objects.create(auth_user=request.user, full_name=full_name, email=email, phone=phone, purpose=purpose,
+#                                          user_host=user_host, select_branch=select_branch, select_desk=select_desk)
+
+def get_visitor_details(request):
     if request.method == 'POST':
-        visitor_id = request.POST.get('visitor_id')
-        branch_id = request.POST.get('branch_id')
-        
+        invite_id = request.POST.get('invite_id').strip()
+
         try:
-            branch = get_object_or_404(Branches, id=branch_id)
-            visitor = get_object_or_404(InviteVisitor, visitor_id=visitor_id, select_branch=branch)
-            invited_visitor_check, created = InvitedVisitorCheck.objects.get_or_create(
-                visitor=visitor, invite_id=visitor_id, invited_visitor_branch=branch, auth_user=request.user
-            )
-            return JsonResponse({'message': 'Visitor details found', 'icon': 'success'})
-        except:
-            return JsonResponse({'message': 'Visitor not found', 'icon': 'error'})
-    
-    return render(request, 'checkin_visitor.html')
+            visitor = InviteVisitor.objects.get(visitor_id=invite_id)
+            visitor_details = {
+                'full_name': visitor.full_name,
+                'email': visitor.visitor_email,
+                'phone': visitor.visitor_phone,
+                'purpose': visitor.purpose,
+                'host_id': visitor.user_host.id if visitor.user_host else None,
+                'branch_id': visitor.select_branch.id if visitor.select_branch else None,
+
+            }
+
+            return JsonResponse({'status': 200, 'visitorDetails': visitor_details})
+        except InviteVisitor.DoesNotExist:
+            return JsonResponse({'status': 400, 'message': 'Visitor not found'})

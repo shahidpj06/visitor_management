@@ -18,5 +18,8 @@ urlpatterns = [
     path('get_dependent/', views.get_dependent, name='get_dependent'),
     path('exit_visitor/', views.exit_visitor, name='exit_visitor'),
     path('append_checkout_modal/',views.append_checkout_modal,name='append_checkout_modal'),
-    path('invited_visitor_check/', views.invited_visitor_check, name='invited_visitor_check'),
-]
+    path('get-branches/', views.get_branches, name='get_branches'),
+    path('get-branches-user/', views.get_branches_user, name='get_branches-user'),
+    path('get-visitor-details/', views.get_visitor_details, name='get_visitor_details'),
+    
+    ]

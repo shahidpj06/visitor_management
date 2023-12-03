@@ -50,9 +50,7 @@ class InviteVisitorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InviteVisitor
-        fields = ['id', 'full_name', 'visitor_email', 'visitor_phone', 
-                  'purpose', 'visitor_id', 'auth_user', 'user_host',
-                  'select_branch']
+        fields = '__all__'
         
     def get_auth_user(self, obj):
         return obj.auth_user.username
@@ -61,4 +59,4 @@ class InviteVisitorSerializer(serializers.ModelSerializer):
         return obj.select_branch.name
 
     def get_user_host(self, obj):
-        return obj.user_host.first_name
+        return f"{obj.user_host.first_name} {obj.user_host.last_name}"

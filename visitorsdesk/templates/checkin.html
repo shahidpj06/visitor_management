@@ -10,11 +10,29 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
-    <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
 
 </head>
+<style>
+    .error {
+        color: #ff3860;
+        border-color: #ff3860;
+        font-size: 10px;
+    }
+
+    .form-control .error input {
+        border-color: #ff3860;
+        font-size: 10px;
+    }
+
+    .form-control .success input {
+        border-color: #09c372;
+        font-size: 10px;
+    }
+</style>
 
 <body>
 
@@ -82,230 +100,12 @@
                             </div>
                         </nav>
                     </div>
-
                 </div>
-
                 <div class="d-flex align-items-center header-rightside-btns">
-
-                    <div>
-                        
-                        <a href="{% url 'checkin_visitor' %}">
-                            <button type="button" class="btn header-item btn-success waves-effect waves-light" >CHECKIN
-                            </button>
-                        </a>
-                        
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications"> Chats </h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="#!" key="t-view-all"> View All</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="p-2 border-top d-grid">
-                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
-                                        More..</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dropdown d-inline-block user-dropdown">
-                        
-                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center noti-heading">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications">GLOBAL ACTIONS</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <div class="global-action-btns">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#log-call"><button type="button"
-                                            class="btn btn-orange waves-effect waves-light me-2"><i
-                                                class="bx bx-phone-call"></i></button>Log a Call</a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-task"><button type="button"
-                                            class="btn btn-info waves-effect waves-light me-2"><i
-                                                class="bx bxs-edit"></i></button>New task</a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-event"><button type="button"
-                                            class="btn btn-success waves-effect waves-light me-2"><i
-                                                class="bx bx-calendar-plus"></i></button>New Event</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="settings.html"><button type="button" class="btn btn-success waves-effect waves-light"><i
-                                class="bx bx-cog"></i></button></a>
-                    <div class="dropdown d-inline-block user-dropdown">
-                        <button type="button" class="btn header-item btn-success waves-effect waves-light"
-                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="bx bx-bell"></i>
-
+                    <a href="{% url 'checkin_visitor' %}">
+                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECKIN
                         </button>
-                        <span class="badge bg-warning">30</span>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center noti-heading">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications"> Notifications </h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="#!" key="t-view-all"> View All</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="p-2 border-top d-grid">
-                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
-                                        More..</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
+                    </a>
                     <div class="dropdown d-inline-block user-dropdown ms-2">
                         <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
@@ -321,15 +121,34 @@
                                     class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
                                     key="t-settings">Settings</span></a>
                             <div class="dropdown-divider"></div> -->
-                            <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i
-                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                    key="t-logout">Logout</span></a>
+                            <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                                class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                key="t-logout">Logout</span>
+                            </a>
                         </div>
                     </div>
 
                 </div>
             </div>
         </header>
+
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Logout Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to logout?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger" onclick="performLogout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
@@ -379,7 +198,7 @@
                                 <div class="department-table table-view">
                                     <div class="table-responsive">
                                         
-                                        <form method="post" id="visitors_form" action="{% url 'new_visitor' %}">
+                                        <form method="post" id="checkin_form" action="{% url 'new_visitor' %}">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
                                             <h4>New Visitor</h4><br>
@@ -387,7 +206,7 @@
                                                 <h6 class="selct-box-head">Branch</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
-                                                        <select class="form-control" name="branch_id" id="branch_id" required>
+                                                        <select class="form-control" name="branch_id" id="branch_id">
                                                             <option selected disabled>--select branch--</option>
                                                             {% for i in branch_data %}
                                                             
@@ -395,6 +214,7 @@
                                                             {% endfor %}
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
+                                                        <div class="error"></div>
                                                     </div>
                                                 </div>
 
@@ -402,50 +222,57 @@
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp append_data">
                                                         <select class="form-control" name="desk_id" id="desk_id">
-                                                            <option>--select desk--</option>
+                                                            <!-- <option selected disabled>--select desk--</option> -->
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
+                                                        <div class="error"></div>
                                                     </div>
                                                 </div>
                         
                                                 <div class="inputGroup form-control">
                         
-                                                    <input type="text" required="" name="full_name" autocomplete="off">
+                                                    <input style="font-size: 13px" type="text" required="" name="full_name" id="full_name" autocomplete="off">
                                                     <label class="search-icon" for="name">Full Name</label>
+                                                    <div class="error"></div>
                                                 </div>
                         
                         
                                                 <div class="inputGroup form-control">
-                                                    <input type="email" required="" name="email" autocomplete="off">
+                                                    <input style="font-size: 13px" type="email" required="" name="email" id="email" autocomplete="off">
                                                     <label class="search-icon" for="email">Email</label>
+                                                    <div class="error"></div>
                                                 </div>
                         
                         
                                                 <div class="inputGroup form-control">
-                                                    <input type="number" required="" name="phone" autocomplete="off">
+                                                    <input style="font-size: 13px" type="number" required="" name="phone" id="phone" autocomplete="off">
                                                     <label class="search-icon" for="number">Phone</label>
+                                                    <div class="error"></div>
                                                 </div>
                         
                                                 <h6 class="selct-box-head">Host</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
                                                         <select class="form-control" name="host_id" id="host_id" required>
-                                                            <option>--select host--</option>
+                                                            
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
+                                                        <div class="error"></div>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" id="visitorId" name="visitor_id">
 
                                                 <div class="inputGroup form-control">
                         
-                                                    <input type="text" required="" name="purpose" autocomplete="off">
+                                                    <input style="font-size: 13px" type="text" required="" name="purpose" id="purpose" autocomplete="off">
                                                     <label class="search-icon" for="name">Purpose</label>
+                                                    <div class="error"></div>
                                                 </div>
 
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">Create</button>
-                                                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" style="background-color: green; color: white;" 
+                                                    class="btn text-uppercase br-50 btn-md" onclick="checkinVisitor(event)">Create</button>
+                                                    
                                                 </div>
                         
                                             </div>
@@ -509,11 +336,11 @@
 
                                 <div class="opportunity-stages-tab table-view">
                                     <div class="table-responsive">
-                                        <form method="post" id="visitor_checkin" action="{% url 'invited_visitor_check' %}">
+                                        <form method="post" id="visitor_checkin" action="#">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
                                                 <h4>Invited Visitor Check</h4><br>
-                                                <h6 class="selct-box-head">Branch</h6>
+                                                <!-- <h6 class="selct-box-head">Branch</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
                                                         <select class="form-control" name="branch_id" id="branch_id" required>
@@ -525,17 +352,16 @@
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
                                                     </div>
-                                                </div>
-
+                                                </div> -->
                                                 <div class="inputGroup form-control">
                                                     <input type="text" required="" name="invite_id" id="invite_id"> 
                                                     <label class="search-icon" for="invite_id">Invite ID</label>
                                                 </div>
 
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">Get Details</button>
-                                                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                                        data-bs-dismiss="modal">Close</button>
+                                                    <button type="button" style="background-color: green; color: white;"
+                                                     class="btn text-uppercase br-50 btn-md" onclick="getVisitorDetails()">Get Details
+                                                    </button>
                                                 </div>
                         
                                             </div>
@@ -543,19 +369,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-
-                        
-                            
-                            
-                        
-
-                        
-
-                        
-
-                        
+                        </div>                        
 
                     </div>
                 </div>
@@ -605,125 +419,6 @@
             });
         });
     </script>
-    <script>
-        // upload image
-        const uploadArea = document.querySelector('#uploadArea')
-
-
-        const dropZoon = document.querySelector('#dropZoon');
-        const loadingText = document.querySelector('#loadingText');
-        const fileInput = document.querySelector('#fileInput');
-        const previewImage = document.querySelector('#previewImage');
-        const fileDetails = document.querySelector('#fileDetails');
-        const uploadedFile = document.querySelector('#uploadedFile');
-        const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
-        const uploadedFileName = document.querySelector('.uploaded-file__name');
-        const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
-        const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
-        const imagesTypes = [
-            "jpeg",
-            "png",
-            "svg",
-            "gif"
-        ];
-
-        dropZoon.addEventListener('dragover', function (event) {
-            event.preventDefault();
-            dropZoon.classList.add('drop-zoon--over');
-        });
-
-        dropZoon.addEventListener('dragleave', function (event) {
-            dropZoon.classList.remove('drop-zoon--over');
-        });
-
-        dropZoon.addEventListener('drop', function (event) {
-            event.preventDefault();
-            dropZoon.classList.remove('drop-zoon--over');
-            const file = event.dataTransfer.files[0];
-            uploadFile(file);
-        });
-
-        dropZoon.addEventListener('click', function (event) {
-            fileInput.click();
-        });
-
-
-        fileInput.addEventListener('change', function (event) {
-
-            const file = event.target.files[0];
-            uploadFile(file);
-        });
-
-        function uploadFile(file) {
-            const fileReader = new FileReader();
-            const fileType = file.type;
-            const fileSize = file.size;
-
-            if (fileValidate(fileType, fileSize)) {
-                dropZoon.classList.add('drop-zoon--Uploaded');
-                loadingText.style.display = "block";
-                previewImage.style.display = 'none';
-                uploadedFile.classList.remove('uploaded-file--open');
-                uploadedFileInfo.classList.remove('uploaded-file__info--active');
-
-                fileReader.addEventListener('load', function () {
-                    setTimeout(function () {
-                        uploadArea.classList.add('upload-area--open');
-                        loadingText.style.display = "none";
-                        previewImage.style.display = 'block';
-                        fileDetails.classList.add('file-details--open');
-                        uploadedFile.classList.add('uploaded-file--open');
-                        uploadedFileInfo.classList.add('uploaded-file__info--active');
-                    }, 500);
-
-                    previewImage.setAttribute('src', fileReader.result);
-                    uploadedFileName.innerHTML = file.name;
-
-                    progressMove();
-                });
-
-                fileReader.readAsDataURL(file);
-            } else {
-
-                this;
-
-            };
-        };
-
-
-        function progressMove() {
-            let counter = 0;
-            setTimeout(() => {
-                let counterIncrease = setInterval(() => {
-                    if (counter === 100) {
-                        clearInterval(counterIncrease);
-                    } else {
-                        counter = counter + 10;
-                        uploadedFileCounter.innerHTML = `${counter}%`
-                    }
-                }, 100);
-            }, 600);
-        };
-
-        function fileValidate(fileType, fileSize) {
-            let isImage = imagesTypes.filter((type) => fileType.indexOf(`image/${type}`) !== -1);
-            if (isImage[0] === 'jpeg') {
-                uploadedFileIconText.innerHTML = 'jpg';
-            } else {
-                uploadedFileIconText.innerHTML = isImage[0];
-            };
-
-            if (isImage.length !== 0) {
-                if (fileSize <= 2000000) {
-                    return true;
-                } else {
-                    return alert('Please Your File Should be 2 Megabytes or Less');
-                };
-            } else {
-                return alert('Please make sure to upload An Image File Type');
-            };
-        };
-    </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".appnd_user_btn").click(function () {
@@ -765,68 +460,16 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
     <!-- for printing error message in login page -->
     
     <script>
-    function showToast(message, icon) {
-        var toastMixin = Swal.mixin({
-            toast: true,
-            icon: icon,
-            title: 'General Title',
-            animation: false,
-            position: 'top-right',
-            width: '450px',
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-        toastMixin.fire({
-            animation: true,
-            title: message
-        });
+
         
-    }
-
-    $(document).ready(function () {
-        $("#visitors_form").submit(function (e) {
-            e.preventDefault(); // Prevent the default form submission
-            var formData = $(this).serialize();
-
-            $.ajax({
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                success: function (response) {
-                    var messages = response.messages;
-                    for (var i = 0; i < messages.length; i++) {
-                        showToast(messages[i].message, messages[i].icon);
-                    }
-
-                    if (response.success) {
-                    // Reset the form
-                    resetForm();
-
-                    }
-
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                // Handle any AJAX errors
-                }
-            });
-        });
-    });
-        
-    </script>
-    <script>
-        function resetForm() {
-            // Replace 'visitors_form' with the ID of your form
-            const form = document.getElementById('visitors_form');
-            form.reset();
-        }
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -853,40 +496,302 @@
                 });
             } else {
               // Reset the host dropdown if no branch is selected
-              hostDropdown.innerHTML = '<option value="" selected disabled>-- select host --</option>';
-              deskDropdown.innerHTML = '<option value="" selected disabled>-- select desk --</option>';
+              hostDropdown.innerHTML = '<option value="" selected disabled>--select host--</option>';
+              deskDropdown.innerHTML = '<option value="" selected disabled>--select desk--</option>';
             }
           });
         });
     </script>
     <script>
-        $(document).ready(function () {
-            $("#visitor_checkin").submit(function (e) {
-                e.preventDefault(); // Prevent the default form submission
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "invited_visitor_check" %}',
-                    data: formData,
-                    success: function (response) {
-                        if (response.icon === "error") {
-                            // Handle error case
-                            alert(response.message);
-                        } else {
-                            // Handle success case
-                            alert(response.message);
-                            // Redirect to the invite visitor form with filled data
-                            // Use JavaScript to navigate to the form or reload the page as needed
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        // Handle any AJAX errors
-                    }
-                });
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
             });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+        
+        // function showLoader() {
+        //     $("#loader-overlay").show();
+        // }
+
+        // function hideLoader() {
+        //     $("#loader-overlay").hide();
+        // }
+
+        //function declaration
+        const checkinVisitor = (e) => { 
+            e.preventDefault();//e = event object as an argument, here doesn't not using the event object
+             //assign new formdata using the id on 1st position.
+            //the FormData object is the built in js object for gathering form data
+
+            // const form = document.getElementsByClassName('.visitors-form');
+            const branchId = document.getElementById('branch_id');
+            const deskId = document.getElementById('desk_id')
+            const fullName = document.getElementById('full_name');
+            const email = document.getElementById('email');
+            const phone = document.getElementById('phone');
+            const hostId = document.getElementById('host_id');
+            const purpose = document.getElementById('purpose');
+
+            function setError(element, message) {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
+            }
+
+            const setSuccess = element => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = '';
+                inputControl.classList.add('success');
+                inputControl.classList.remove('error');
+            };
+
+            const isValidEmail = email => {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            };
+
+            const validateInputs = () => {
+                const branchIdValue = branchId.value.trim();
+                const deskIdValue = deskId.value.trim();
+                const fullNameValue = fullName.value.trim();
+                const emailValue = email.value.trim();
+                const phoneValue = phone.value.trim();
+                const hostIdValue = hostId.value.trim();
+                const purposeValue = purpose.value.trim();
+                let isValid = true;
+
+                if (branchIdValue === '--select branch--') {
+                    setError(branchId, 'Choose a branch');
+                    isValid = false;
+                } else {
+                    setSuccess(branchId);
+                }
+                if (deskIdValue === '') {
+                    setError(deskId, 'Choose a Desk');
+                    isValid = false;
+                } else {
+                    setSuccess(deskId);
+                }
+
+                if (fullNameValue === '') {
+                    setError(fullName, 'Full name is required');
+                    isValid = false;
+                } else {
+                    setSuccess(fullName);
+                }
+
+                if (emailValue === '') {
+                    setError(email, 'Email is required');
+                    isValid = false;
+                } else if (!isValidEmail(emailValue)) {
+                    setError(email, 'Provide a valid email address');
+                    isValid = false;
+                } else {
+                    setSuccess(email);
+                }
+
+                if (phoneValue === '') {
+                    setError(phone, 'Contact number is required');
+                    isValid = false;
+                }else if (phoneValue.length < 8 || phoneValue.length > 12) {
+                    setError(phone, 'Phone number should be minimum 8 or maximum 12');
+                    isValid = false;
+                } else {
+                    setSuccess(phone);
+                }
+
+                if (hostIdValue === '') {
+                    setError(hostId, 'Choose a host');
+                    isValid = false;
+                } else {
+                    setSuccess(hostId);
+                }
+
+                if (purposeValue === '') {
+                    setError(purpose, 'Purpose is required');
+                    isValid = false;
+                }
+                 else {
+                    setSuccess(purpose);
+                }
+
+
+                return isValid;
+            };
+
+            function resetForm() {
+                // Reset the form here
+                $("#checkin_form")[0].reset();
+                // Optionally, you can clear success/error classes and messages if any
+                $(".error").text("");
+                $(".input-control").removeClass("error success");
+            };
+
+            
+
+
+            if (validateInputs()) { // for validating the fields
+                const form = new FormData($("#checkin_form")[0])
+
+
+                    $.ajax({
+                        url: "/new_visitor/",
+                        method: "POST", //http method for the request.
+                        headers: { // addtional http header for the request
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        data: form,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: (res) => {  //http response
+                            if (res.status === 400) {
+                                if (res.type === "branchId") {
+                                    setError(branch_id, res.error);
+                                }
+                                if (res.type === "deskId") {
+                                    setError(desk_id, res.error);
+                                }
+                                if (res.type === "hostId") {
+                                    setError(host_id, res.error);
+                                }
+
+                            }
+                            if (res.status === 200); {
+                                showToast(res.message, "success")
+                                resetForm();
+                            }
+
+                        },    
+
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle any AJAX errors
+                            hideLoader();
+                        }
+                    });
+                
+            }
+        }
+
+        $(document).ready(function () {
+            $("#checkin_form").submit(checkinVisitor);
         });
     </script>
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    performLogout(); // Call the logout function if confirmed
+                }
+            });
+        }
+
+        // Function to perform logout
+        function performLogout() {
+            $.ajax({
+                url: "/logout/",  // Update with your actual logout endpoint
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    // Redirect to login or handle success as needed
+                    window.location.href = "/";
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle error
+                    console.error("Logout failed:", errorThrown);
+                }
+            });
+        }
+    </script>
+    <script>
+        // Add this JavaScript code in your script section or in a separate script file
+
+        function getVisitorDetails() {
+            const inviteId = $('#invite_id').val();
+
+            // Make an AJAX request to get visitor details
+            $.ajax({
+                type: 'POST',
+                url: '/get-visitor-details/', 
+                headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                        }, 
+                data: {
+                    'invite_id': inviteId
+                },
+                success: function (response) {
+                    if (response.status === 200) {
+                        updateCheckinForm(response.visitorDetails);
+                        // Assuming 'department-tab' is the ID of the department tab
+                        $('#department-tab').addClass('show active');
+                    } else {
+                        console.error('Error getting visitor details:', response.message);
+                    }
+                },
+                error: function (error) {
+                    console.error('AJAX error:', error);
+                }
+            });
+        }
+
+        function updateCheckinForm(visitorDetails) {
+            // Update the check-in form with the received details
+            $('#full_name').val(visitorDetails.full_name);
+            $('#email').val(visitorDetails.email);
+            $('#phone').val(visitorDetails.phone);
+            $('#purpose').val(visitorDetails.purpose);
+            // $('#host_id').val(visitorDetails.user_host);
+
+            const branchId = visitorDetails.branch_id;
+            if (branchId) {
+                $('#branch_id').val(branchId);
+                $('#branch_id').trigger('change');
+            } 
+
+            const hostId = visitorDetails.host_id;
+            if (hostId) {
+                $('#host_id').val(hostId);
+                $('#host_id').trigger('change');
+            }
+            else {
+                console.error('Visitor details not found')
+            }
+            // Update other form fields similarly
+        }
+
+    </script>
+
     
     
 

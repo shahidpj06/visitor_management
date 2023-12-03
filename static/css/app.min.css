@@ -13,7 +13,7 @@
     --font-family: 'Poppins', sans-serif;
     --clr-light: rgb(245, 248, 255);
     --clr-light-gray: rgb(196, 195, 196);
-    --clr-blue: rgb(63, 134, 255);
+    --clr-blue: rgb(63, 255, 79);
     --clr-light-blue: rgb(171, 202, 255);
 }
 
@@ -166,17 +166,17 @@ body {
 }
 
 .form-check-primary .form-check-input:checked {
-    background-color: #556ee6;
-    border-color: #556ee6
+    background-color: #328a32;
+    border-color: #1d501d
 }
 
 .form-radio-primary .form-check-input:checked {
-    border-color: #556ee6;
-    background-color: #556ee6
+    border-color: #1d501d;
+    background-color: #328a32
 }
 
 .form-radio-primary .form-check-input:checked:after {
-    background-color: #556ee6
+    background-color: #328a32
 }
 
 .form-check-secondary .form-check-input:checked {
@@ -194,31 +194,31 @@ body {
 }
 
 .form-check-success .form-check-input:checked {
+    background-color: #328a32;
+    border-color: #1c4e1c
+}
+
+.form-radio-success .form-check-input:checked {
+    border-color: #328a32;
+    background-color: #328a32;
+}
+
+.form-radio-success .form-check-input:checked:after {
+    background-color: #328a32
+}
+
+.form-check-info .form-check-input:checked {
     background-color: #34c38f;
     border-color: #34c38f
 }
 
-.form-radio-success .form-check-input:checked {
-    border-color: #34c38f;
-    background-color: #34c38f
-}
-
-.form-radio-success .form-check-input:checked:after {
-    background-color: #34c38f
-}
-
-.form-check-info .form-check-input:checked {
-    background-color: #50a5f1;
-    border-color: #50a5f1
-}
-
 .form-radio-info .form-check-input:checked {
-    border-color: #50a5f1;
-    background-color: #50a5f1
+    border-color: #328a32;
+    background-color: #328a32
 }
 
 .form-radio-info .form-check-input:checked:after {
-    background-color: #50a5f1
+    background-color: #328a32
 }
 
 .form-check-warning .form-check-input:checked {

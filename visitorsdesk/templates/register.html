@@ -1,7 +1,6 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8" />
@@ -46,21 +45,21 @@
         </div>
     </div>
     <div class="login-page">
-        <div class="container px-0">
+        <div class="container rounded-end px-0">
             <div class="row">
                 <div class="col-md-6 order-md-1 order-1">
 
-                    <div class="login-left-div" style="background-image: url(C:1323882.png);
+                    <div class="login-left-div rounded-start" style="background-image: url(C:1323882.png);
                     background-color: #006400d6;">
                         <div class="glass-sq">
                             <h4>
                                 Visitors Management System
                                 <span>
-                                    Today
+                                    
                                 </span>
                             </h4>
                             <p>
-                                You will never know everything But you will know more
+                                Step into a world of seamless visits! Register now for streamlined access.
                             </p>
                         </div>
                     </div>
@@ -76,38 +75,40 @@
                                 
                                 <div class="mb-3">
                                     <input type="text" class="form-control" id="username" name="username"
-                                        placeholder="Enter username">
-                                        <div  class="error"></div>
+                                        placeholder="Username">
+                                        <div class="error"></div>
                                 </div>
 
                                 <div class="mb-3">
                                     <input type="email" class="form-control" name="useremail" id="useremail"
-                                        placeholder="Enter email">
+                                        placeholder="Email">
                                         <div class="error"></div>
                                 </div>
 
                                 <div class="mb-3">
                                     <input type="password" class="form-control" name="userpassword" id="userpassword"
-                                        placeholder="Enter password">
+                                        placeholder="Password (8+ characters)">
                                         <div class="error"></div>
                                 </div>
-                                <div class="mt-3 d-grid">
-                                    <button style="    background-color: #328a32;
-                                    color: white;" class="btn btn-primar waves-effect waves-light"
-                                        type="button" onclick="register(event)">Register</button>
+                                <div class="form-check" style="size: 10px;">
+                                    <input class="form-check-input" type="checkbox" id="remember-check" name="remember-check">
+                                    <label class="form-check-label" for="remember-check" style="color: black;">
+                                        I agree to the <a href="#" style="color: #634e1c;">Terms of service</a> and <a href="#"
+                                        style="color: #634e1c;">Privacy
+                                            policies</a> of Veuz concepts
+                                    </label>
+                                    <div class="error"></div>
                                 </div>
-
-
+                                <div class="mt-3 d-grid">
+                                    <button style="background-color: #328a32;
+                                    color: white;" class="btn btn-primar waves-effect waves-light"
+                                        type="button" onclick="register(event)">Agree & Join</button>
+                                </div>
                             </form>
-
                         </div>
-
                     </div>
                 </div>
-
             </div>
-
-
         </div>
         <div class="mt-4 text-center login-bottom">
 
@@ -129,7 +130,6 @@
     <!-- validation init -->
     <script src="{% static 'js/pages/validation.init.js' %}"></script>
     <script>
-        //function declaration
         const register=(e)=>{ //e = event object as an argument, here doesn't not using the event object
             const form = new FormData($("#register-form")[0]) //assign new formdata using the id on 1st position.
             //the FormData object is the built in js object for gathering form data
@@ -160,6 +160,10 @@
                                 if (error.type === "username") {
                                     setError(username, error.error);
                                 }
+
+                                if (error.type === "password") {
+                                    setError(userpassword, error.error);
+                                }
                             });
                         }else{
                                 if (res.type === "email") {
@@ -167,6 +171,9 @@
                                 }
                                 if (res.type === "username") {
                                     setError(username, res.error);
+                                }
+                                if (res.type === 'password') {
+                                    setError(userpassword, res.error);
                                 }
                         }}
                         if (res.status === 200) {
@@ -192,10 +199,12 @@
     </script>
 
     <script>
-        const form = document.getElementById('register-form');
+        // const form = document.getElementById('register-form');
         const username = document.getElementById('username');
         const email = document.getElementById('useremail');
         const password = document.getElementById('userpassword');
+        const terms = document.getElementById('remember-check');
+
 
     
         function setError (element, message){
@@ -225,31 +234,38 @@
             const usernameValue = username.value.trim();
             const emailValue = email.value.trim();
             const passwordValue = password.value.trim();
+            const termsValue = terms.checked;
             let isValid = true;
     
             if (usernameValue === '') {
-                setError(username, 'Username is required');
+                setError(username, 'Please enter your username.');
                 isValid = false;
             } else {
                 setSuccess(username);
             }
     
             if (emailValue === '') {
-                setError(email, 'Email is required');
+                setError(email, 'Please enter your email address.');
                 isValid = false;
             } else if (!isValidEmail(emailValue)) {
-                setError(email, 'Provide a valid email address');
+                setError(email, 'PLease provide a valid email address.');
                 isValid = false;
             } else {
                 setSuccess(email);
             }
     
             if (passwordValue === '') {
-                setError(password, 'Password is required');
+                setError(password, 'Please enter your password.');
                 isValid = false;
             } else {
                 setSuccess(password);
-            }
+            } 
+            if (termsValue === false) {
+                setError(terms, 'Please accept terms and condition.');
+                isValid = false;
+            } else {
+                setSuccess(terms);
+            } 
     
             return isValid;
         };

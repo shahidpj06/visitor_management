@@ -70,7 +70,7 @@ class Desk(models.Model):
 
 class NewVisitor(models.Model):
     full_name = models.CharField(max_length=25)
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     phone = models.CharField(max_length=25)
     purpose = models.CharField(max_length=25)
     visitor_id = models.CharField(max_length=6,null=True,blank=True)
@@ -80,23 +80,33 @@ class NewVisitor(models.Model):
     select_desk = models.ForeignKey(Desk, on_delete=models.CASCADE, related_name='desk_new_visitor')
     checkout_time = models.DateTimeField(null=True, blank=True)
     checkin_time = models.DateTimeField(auto_now_add=True)
-    
 
     def __str__(self):
         return self.full_name
     
+    
 class ExitVisitor(models.Model):
     exit_time = models.DateTimeField()
     visitor_remarks = models.TextField()
+    visitor_id = models.CharField(max_length=25, null=True, blank=True)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     exit_desk = models.ForeignKey(Desk, on_delete=models.CASCADE, related_name='exit_desk')
 
     def __str__(self):
         return self.auth_user.username
-    
 
-class InvitedVisitorCheck(models.Model):
-    invite_id = models.CharField(max_length=25)
+    
+class CheckExistVisitor(models.Model):
+    full_name = models.CharField(max_length=25)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=25)
+    purpose = models.CharField(max_length=25)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    invited_visitor_branch = models.ForeignKey(Branches, on_delete=models.CASCADE, related_name='invited_visitor_branch')
-    visitor = models.ForeignKey(InviteVisitor, on_delete=models.CASCADE, related_name='invited_visitor_checks')
+    user_host = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='host_exist_visitor')
+    select_branch = models.ForeignKey(Branches, on_delete=models.CASCADE, related_name='branch_exist_visitor')
+    select_desk = models.ForeignKey(Desk, on_delete=models.CASCADE, related_name='desk_exist_visitor')
+    checkout_time = models.DateTimeField(null=True, blank=True)
+    checkin_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.full_name

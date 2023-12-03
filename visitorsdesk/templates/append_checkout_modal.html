@@ -1,13 +1,31 @@
 {% load static %}
 
-    <div class="modal fade " id="add-checkout" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<style>
+    .error {
+        color: #ff3860;
+        border-color: #ff3860;
+        font-size: 10px;
+    }
+
+    .form-control .error input {
+        border-color: #ff3860;
+        font-size: 10px;
+    }
+
+    .form-control .success input {
+        border-color: #09c372;
+        font-size: 10px;
+    }
+</style>
+
+    <div class="modal fade " id="add-checkout" data-bs-keyboard="false" tabindex="-1"
     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <form method="post" id="checkout_form" action="{% url 'exit_visitor' %}">
                 {% csrf_token %}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel"><span>Exit Visitor</span></h5>
+                    <h5 class="modal-title"><span>Exit Visitor</span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -22,23 +40,26 @@
 
                                 </select>
                                 <i class="fas fa-chevron-down"></i>
+                                <div class="error"></div>
                             </div>
                         </div>
+                        <div class="form-control inputGroup">
+                            <label for="exit_time"><h6>Exit Time</h6></label><br>
+                            <input type="datetime-local" class="form-control" id="exit_time" name="exit_time" required>
+                            <div class="error"></div>
+                        </div>
+                        <input type="text" name="visitor_id" id="visitor_id" value="{{vid}}">
+
                     
-                        <label for="startDateTime"><h6>Exit Time</h6></label>
-                        <input type="datetime-local" class="form-control" id="startDateTime" name="exit_time" required>
 
-                        <input type="text" name="visitor_id" value="{{vid}}">
-
-                    
-
-                    <h6>Visitor Remarks</h6>
-                        <label for="number"></label>
-                        <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <h6>Visitor Remarks</h6>
+                            <label for="number"></label>
+                            <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
                     
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">CHECKOUT</button>
+                    <button type="button" class="btn text-uppercase br-50 btn-md"
+                    style="background-color: green; color: white;" onclick="checkoutModal(event)">CHECKOUT</button>
                     <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
                         data-bs-dismiss="modal">Close</button>
                 </div>
@@ -47,8 +68,25 @@
     </div>
     </div>
     <script>
+        // Get the current date and time in the format expected by datetime-local input
+        function getCurrentDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');                    
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+    
+        // Set the min attribute of the datetime-local input to the current date and time
+        $(document).ready(function () {
+            $('#exit_time').attr('min', getCurrentDateTime());
+        });
+    </script>
+    <script>
         function showToast(message, icon) {
-            var toastMixin = Swal.mixin({
+            const toastMixin = Swal.mixin({
                 toast: true,
                 icon: icon,
                 title: 'General Title',
@@ -67,46 +105,129 @@
                 animation: true,
                 title: message
             });
-            
+        }
+
+
+        const checkoutModal=(e)=>{
+            // e.preventDefault(); //e = event object as an argument, here doesn't not using the event object
+             //assign new formdata using the id on 1st position.
+            //the FormData object is the built in js object for gathering form data
+
+            // const form = document.getElementsByClassName('.visitors-form');
+            const exitDesk = document.getElementById('exit_desk');
+            const exitTime = document.getElementById('exit_time');
+
+            function setError(element, message) {
+               
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = message;
+                inputControl.classList.add('error');
+                inputControl.classList.remove('success');
             }
 
+            const setSuccess = element => {
+                const inputControl = element.parentElement;
+                const errorDisplay = inputControl.querySelector('.error');
+
+                errorDisplay.innerText = '';
+                inputControl.classList.add('success');
+                inputControl.classList.remove('error');
+            };
+
+
+            const validateInputs = () => {
+                const exitDeskValue = exitDesk.value.trim();
+                const exitTimeValue = exitTime.value.trim();
+                let isValid = true;
+
+                if (exitDeskValue === '--select desk--') {
+                    setError(exitDesk, 'Choose an exit desk');
+                    isValid = false;
+                } else {
+                    setSuccess(exitDesk);
+                }
+
+                if (exitTimeValue === '') {
+                    setError(exitTime, 'Choose the exit time');
+                    isValid = false;
+                } else {
+                    setSuccess(exitTime);
+                }
+
+                return isValid;
+            };
+
+            function resetForm() {
+                // Reset the form here
+                $("#checkout_form")[0].reset();
+                // Optionally, you can clear success/error classes and messages if any
+                $(".error").text("");
+                $(".input-control").removeClass("error success");
+            }
+
+           
+
+            if (validateInputs()) { // for validating the fields
+                const form = new FormData($("#checkout_form")[0]);
+
+                    $.ajax({
+                        url: "/exit_visitor/",
+                        method:"POST", //http method for the request.
+                        headers: { // addtional http header for the request
+                            "X-CSRFToken": "{{ csrf_token }}"
+                        },
+                        data: form,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        success: (res) => {  //http response
+                            if (res.status === 400) {   
+                                if (res.type === "checkouttime") {
+                                    setError(exit_time, res.error);
+                                }
+                                if (res.type === "notexist") {
+                                    setError(visitor_id, res.error);
+                                }
+                            }
+                            if (res.status === 200) {
+                                showToast(res.message, "success")
+                                resetForm();
+                                
+                                $(".checkoutLink").css("display", "none");
+                                $(".checkedout").css("display", "inline");
+
+                            }
+
+                        },    
+
+                        error: function (xhr, textStatus, errorThrown) {
+                        // Handle any AJAX errors
+                        }
+                    });
+
+            }
+        };
+
         $(document).ready(function () {
-            $("#checkout_form").submit(function (e) {
-                e.preventDefault(); // Prevent the default form submission
-                var formData = $(this).serialize();
-
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function (response) {
-                        var messages = response.messages;
-                        for (var i = 0; i < messages.length; i++) {
-                            showToast(messages[i].message, messages[i].icon);
-                        }
-
-                        if (response.success) {
-                        // Reset the form
-                        resetForm();
-
-                        }
-
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                    // Handle any AJAX errors
-                    }
-                });
-            });
+            $("#checkout_form").submit(checkoutModal);
         });
-            
     </script>
     <script>
-        function resetForm() {
-            // Replace 'visitors_form' with the ID of your form
-            const form = document.getElementById('checkout_form');
-            form.reset();
-        }
-    </script>
+    //     window.onload = function() {
+    //     // Get the current date and time in the format required by datetime-local input
+    //     const now = new Date();
+    //     const formattedNow = now.toISOString().slice(0, 16);
+
+    //     // Set the default value and min attribute to the current date and time
+    //     document.getElementById('exit_time').value = formattedNow;
+        
+    //     // Set the min attribute to restrict past dates and times
+    //     document.getElementById('exit_time').min = formattedNow;
+    // }
+      </script>
+      
 
     
      

@@ -34,6 +34,38 @@
         border-color: #09c372;
         font-size: 10px;
     }
+    .loader {
+        display: flex;
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid green; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    #loader-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: 9999;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .noDataImage {
+        display:flex !important;
+        align-items: center;
+        justify-content:center;
+    }
 </style>
 
 <body>
@@ -106,230 +138,16 @@
                 </div>
 
                 <div class="d-flex align-items-center header-rightside-btns">
-
-
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                        aria-labelledby="page-header-notifications-dropdown">
-                        <div class="p-3">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <h5 class="m-0" key="t-notifications"> Chats </h5>
-                                </div>
-                                <div class="col-auto">
-                                    <a href="#!" key="t-view-all"> View All</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-simplebar style="max-height: 230px;">
-
-                            <a href="javascript: void(0);" class="text-reset notification-item">
-                                <div class="d-flex">
-                                    <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                        class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">James Lemire</h5>
-                                        <div class="font-size-12 text-muted">
-                                            <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                English.</p>
-                                            <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                    key="t-hours-ago">1 hours ago</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-
-
-                            <a href="javascript: void(0);" class="text-reset notification-item">
-                                <div class="d-flex">
-                                    <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                        class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">Salena Layfield</h5>
-                                        <div class="font-size-12 text-muted">
-                                            <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                of mine occidental.</p>
-                                            <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                    key="t-hours-ago">1 hours ago</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="javascript: void(0);" class="text-reset notification-item">
-                                <div class="d-flex">
-                                    <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                        class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">James Lemire</h5>
-                                        <div class="font-size-12 text-muted">
-                                            <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                English.</p>
-                                            <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                    key="t-hours-ago">1 hours ago</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-
-
-                            <a href="javascript: void(0);" class="text-reset notification-item">
-                                <div class="d-flex">
-                                    <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                        class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                    <div class="flex-grow-1">
-                                        <h5 class="mb-1">Salena Layfield</h5>
-                                        <div class="font-size-12 text-muted">
-                                            <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                of mine occidental.</p>
-                                            <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                    key="t-hours-ago">1 hours ago</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="p-2 border-top d-grid">
-                            <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
-                                    More..</span>
-                            </a>
-                        </div>
-                    </div>
                     <a href="{% url 'checkin_visitor' %}">
-                        <button type="button" class="btn btn-success waves-effect waves-light">CHECKIN</button>
+                        <button type="button"  style="background-color: green;
+                        color: white;" class="btn waves-effect waves-light">CHECKIN</button>
                     </a>
-
-                    <div class="dropdown d-inline-block user-dropdown">
-                        
-                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center noti-heading">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications">GLOBAL ACTIONS</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <div class="global-action-btns">
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#log-call"><button type="button"
-                                            class="btn btn-orange waves-effect waves-light me-2"><i
-                                                class="bx bx-phone-call"></i></button>Log a Call</a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-task"><button type="button"
-                                            class="btn btn-info waves-effect waves-light me-2"><i
-                                                class="bx bxs-edit"></i></button>New task</a>
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-event"><button type="button"
-                                            class="btn btn-success waves-effect waves-light me-2"><i
-                                                class="bx bx-calendar-plus"></i></button>New Event</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="dropdown d-inline-block user-dropdown">
-                        <button type="button" class="btn header-item btn-success waves-effect waves-light"
-                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">
-                            <i class="bx bx-bell"></i>
-
-                        </button>
-                        <span class="badge bg-warning">30</span>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
-                            aria-labelledby="page-header-notifications-dropdown">
-                            <div class="p-3">
-                                <div class="row align-items-center noti-heading">
-                                    <div class="col">
-                                        <h5 class="m-0" key="t-notifications"> Notifications </h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a href="#!" key="t-view-all"> View All</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div data-simplebar style="max-height: 230px;">
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-3.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">James Lemire</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-simplified">It will seem like simplified
-                                                    English.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-
-
-                                <a href="javascript: void(0);" class="text-reset notification-item">
-                                    <div class="d-flex">
-                                        <img src="{% static 'images/users/avatar-4.jpg' %}"
-                                            class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <h5 class="mb-1">Salena Layfield</h5>
-                                            <div class="font-size-12 text-muted">
-                                                <p class="mb-1" key="t-occidental">As a skeptical Cambridge friend
-                                                    of mine occidental.</p>
-                                                <p class="mb-0 small"><i class="mdi mdi-clock-outline"></i> <span
-                                                        key="t-hours-ago">1 hours ago</span></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="p-2 border-top d-grid">
-                                <a class="btn btn-sm btn-link font-size-14 text-center" href="javascript:void(0)">
-                                    <i class="mdi mdi-arrow-right-circle me-1"></i> <span key="t-view-more">View
-                                        More..</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="dropdown d-inline-block user-dropdown ms-2">
                         <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            <img class="rounded-circle header-profile-user" src="{% static 'images/dummy.png' %}"
-                                alt="Header Avatar">
-
+                            <img class="rounded-circle header-profile-user"
+                                src="{% static 'images/dummy.png' %}" alt="Header Avatar">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- <a class="dropdown-item" href="profile.html"><i
@@ -339,18 +157,15 @@
                                     class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
                                     key="t-settings">Settings</span></a>
                             <div class="dropdown-divider"></div> -->
-                            <a class="dropdown-item text-danger" href="{% url 'logout' %}"><i
-                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                    key="t-logout">Logout</span></a>
+                            <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                                class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                key="t-logout">Logout</span>
+                            </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </header>
-
-
-
 
         <div class="page-content">
             <div class="container-fluid px-0">
@@ -358,7 +173,7 @@
                     <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link" data-bs-toggle="tab" href="#department-tab" role="tab">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#department-tab" role="tab">
                                 <div>
                                     <i class='bx bxs-group stns-tab-icon-2'></i>
                                     <h4 class="stngs-tab-head">Visitors</h4>
@@ -367,7 +182,7 @@
                         </li>
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#users-tab" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="#users-tab" role="tab">
                                 <div>
                                     <i class='bx bxs-user stns-tab-icon-3'></i>
                                     <h4 class="stngs-tab-head">Invite Visitors</h4>
@@ -389,7 +204,7 @@
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane active" id="users-tab" role="tabpanel">
+                        <div class="tab-pane" id="users-tab" role="tabpanel">
                             <div class="settings-card" style="padding: 45px;">
                                 <h3>Invite Visitor</h3>
                                 <form method="post" class="visitors-form form_same_invite_visitor" id="visitor-form"
@@ -417,7 +232,7 @@
 
                                         <div class="inputGroup form-control" >
                                             <input style="font-size: 13px" type="text" name="full_name" id="full_name" />
-                                            <label class="search-icon">Full Name</label>
+                                            <label style="color: black;" class="search-icon">Full Name</label>
                                             <div style="position: absolute; top: 39px;" class="error"></div>
                                         </div>
 
@@ -426,7 +241,7 @@
                                         <div class="inputGroup form-control">
                                             <input style="font-size: 13px" type="email" name="visitor_email" id="visitor_email"
                                                 autocomplete="off">
-                                            <label class="search-icon" for="email">Email</label>
+                                            <label style="color: black;" class="search-icon" for="email">Email</label>
                                             <div style="position: absolute ;top: 39px;" class="error"></div>
                                         </div>
                                         <div class="inputGroup form-control">
@@ -446,12 +261,12 @@
                                             <input style="font-size: 13px" type="number" name="visitor_phone" id="visitor_phone"
                                                 autocomplete="off">
                                             <input type="hidden" name="country_code" id="country_code" value="">
-                                            <label class="search-icon" for="number">Phone</label>
+                                            <label style="color: black;" class="search-icon" for="number">Phone</label>
                                             <div style="position: absolute ;top: 39px;" class="error"></div>
                                         </div>
                                         <div class="inputGroup form-control">
                                             <input style="font-size: 13px" type="text" name="purpose" id="purpose" autocomplete="off">
-                                            <label class="search-icon" for="text">Purpose</label>
+                                            <label style="color: black;" class="search-icon" for="text">Purpose</label>
                                             <div style="position: absolute ;top: 39px;" class="error"></div>
                                         </div>
                                         <div>
@@ -470,8 +285,12 @@
                                         </div>
 
                                         <div class="modal-footer d-flex justify-content-center">
-                                            <button type="button" class="btn btn-primary text-uppercase br-50 btn-md"
+                                            <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
                                                 onclick="inviteVisitor(event)">Invite Visitor</button>
+                                        </div>
+                                        <div id="loader-overlay" style="display: none;">
+                                            <!-- Add your loader animation or image here -->
+                                            <div class="loader"></div>
                                         </div>
 
 
@@ -487,86 +306,106 @@
 
 
 
-                        <div class="tab-pane" id="department-tab" role="tabpanel">
+                        <div class="tab-pane active" id="department-tab" role="tabpanel">
+                                <div class="settings-card" id="checkin_data" {% if not checkin_visitor_data %} style="visibility: hidden;" {% endif %}>
+                                    <div class="top-header-div">
+                                        <h3>Visitors</h3>
+                                        <div class="top-header-rightbtns">
+                                            <form class="app-search d-none d-lg-block">
+                                                <!-- <div class="position-relative">
+                                                    <input type="text" class="form-control" placeholder="Search...">
+                                                    <span class="bx bx-search-alt"></span>
+                                                </div> -->
+                                            </form>
 
-                            <div class="settings-card">
-                                <div class="top-header-div">
-                                    <h3>Visitors</h3>
-                                    <div class="top-header-rightbtns">
-                                        <form class="app-search d-none d-lg-block">
-                                            <!-- <div class="position-relative">
-                                                <input type="text" class="form-control" placeholder="Search...">
-                                                <span class="bx bx-search-alt"></span>
-                                            </div> -->
-                                        </form>
-
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="department-table table-view">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th width="70px">S No</th>
-                                                    <th>Id</th>
-                                                    <th>Visitor</th>
-                                                    <th>Host</th>
-                                                    <th>Purpose</th>
-                                                    <th>Checkin Time</th>
-                                                    <th>Checkout Time</th>
-                                                    <th>Duration</th>
-                                                    <th class="text-right">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for i in checkin_visitor_data %}
-                                                <tr>
-                                                    <td>{{forloop.counter}}</td>
-                                                    <td>{{i.visitor_id}}</td>
-                                                    <td>{{i.full_name.title}}</td>
-                                                    <td>{{i.user_host}}</td>
-                                                    <td>{{i.purpose}}</td>
-                                                    <td>{{i.checkin_time}}</td>
-                                                    <td>{{i.checkout_time}}</td>
-                                                    <td>
+                                    <div class="department-table table-view">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" >
+                                                <thead>
+                                                    <tr>
+                                                        <th width="70px">S No</th>
+                                                        <th>Id</th>
+                                                        <th>Visitor</th>
+                                                        <th>Host</th>
+                                                        <th>Purpose</th>
+                                                        <th>Checkin Time</th>
+                                                        <th>Checkout Time</th>
+                                                        <th>Status</th>
+                                                        <!-- <th class="text-right">Action</th> -->
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for i in checkin_visitor_data %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{i.visitor_id}}</td>
+                                                        <td>{{i.full_name.title}}</td>
+                                                        <td>{{i.user_host}}</td>
+                                                        <td>{{i.purpose}}</td>
+                                                        <td>{{i.checkin_time}}</td>
+                                                        <td>{{i.checkout_time| default:'Not Checkedout'}}</td>
+                                                        <td>
 
-                                                        <div class="label label-success ng-hide checkout_out"></div>
-                                                        <a data-bs-toggle="modal"
-                                                            onclick="checkout_modal(`{{i.id}}`,`{{i.visitor_id}}`)"
-                                                            class="checkout-link" href=""
-                                                            style="font-size: 13px; color: red;">
-                                                            <span>CHECKOUT</span>
-                                                        </a>
-                                                    </td>
-                                                    <td class="text-right">
-                                                        <div class="dropdown">
-                                                            <a href="#" class="dropdown-toggle card-drop"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                            <div class="label label-success ng-hide">
+                                                            <a class="checkoutLink" data-bs-toggle="modal"
+                                                                onclick="checkout_modal(`{{i.id}}`,`{{i.visitor_id}}`)" href=""
+                                                                style="font-size: 13px; color: red;">
+                                                                <span>CHECKOUT</span>
                                                             </a>
-                                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li data-bs-toggle="modal"
-                                                                    data-bs-target="#add-opportunity"><a href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
-                                                                </li>
-                                                                <li data-bs-toggle="modal" data-bs-target="#delete"><a
-                                                                        href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                                            <span class="checkedout" style="font-size: 13px; color: green; display: none;">
+                                                                CHECKED OUT
+                                                            </span>
+                                                            </div>
+                                                        </td>
+                                                        <!-- <td class="text-right">
+                                                            <div class="dropdown">
+                                                                <a href="#" class="dropdown-toggle card-drop"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                                </a> -->
+                                                                <!-- <ul class="dropdown-menu dropdown-menu-end">
+                                                                    <li data-bs-toggle="modal"
+                                                                        data-bs-target="#add-opportunity"><a href="#"
+                                                                            class="dropdown-item d-flex align-items-center"><i
+                                                                                class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                                    </li>
+                                                                    <li data-bs-toggle="modal" data-bs-target="#delete"><a
+                                                                            href="#"
+                                                                            class="dropdown-item d-flex align-items-center"><i
+                                                                                class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                                    </li> -->
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
                                     </div>
+                                    
                                 </div>
-                            </div>
+                                {% if checkin_visitor_data|length == 0 %}
+                                <div class="noDataImage">
+                                    <!-- Your image tag or image source goes here -->
+                                    <img height="250px" style="width: auto; margin-top: -31px;" src="{% static 'images/nodatafound.png' %}" alt="No Data Image">
+                                </div>
+                                <h5 class="noDataImage">No Data Found!</h5>
+                                
+                                {% endif %}
+                                <!-- <div class="checkin-card" style="background-color: green; height: 10px; width: 10px;
+                                padding: 20px 0px;
+                                border-radius: 10px;
+                                display: flex;
+                                margin-top: -245px;">
+                                </div> -->
 
                         </div>
+                        
+                        
 
 
 
@@ -577,12 +416,12 @@
                                 <div class="top-header-div">
                                     <h3>Invited Visitors</h3>
                                     <div class="top-header-rightbtns">
-                                        <form class="app-search d-none d-lg-block">
+                                        <!-- <form class="app-search d-none d-lg-block">
                                             <div class="position-relative">
                                                 <input type="text" class="form-control" placeholder="Search...">
                                                 <span class="bx bx-search-alt"></span>
                                             </div>
-                                        </form>
+                                        </form> -->
 
                                     </div>
                                 </div>
@@ -591,7 +430,7 @@
                                         <table id="invited-visitor-table" class="table table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th width="70px">Sl No</th>
+                                                    <th width="70px">S No</th>
 
                                                     <th>Name</th>
                                                     <th>Invite Date</th>
@@ -599,7 +438,8 @@
                                                     <th>Expiry</th>
                                                     <th>Purpose</th>
                                                     <th>Hosted By</th>
-                                                    <th class="text-right">Action</th>
+                                                    <!-- <th>Status</th> -->
+                                                    <!-- <th class="text-right">Action</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -612,11 +452,20 @@
                                                     <td>{{i.to_date}}</td>
                                                     <td>{{i.purpose}}</td>
                                                     <td>{{i.user_host}}</td>
+                                                    <!-- <td>
+                                                        <div class="label label-success ng-hide checkin"></div>
+                                                        <a data-bs-toggle="modal"
+                                                            onclick="checkin_modal(`{{i.id}}`,`{{i.visitor_id}}`)"
+                                                            class="checkout-link" href=""
+                                                            style="font-size: 13px; color: rgb(14, 199, 48);">
+                                                            <span>CHECKIN</span>
+                                                        </a>
+                                                    </td> -->
                                                     <td class="text-right">
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle card-drop"
                                                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                                <!-- <i class="mdi mdi-dots-vertical font-size-18"></i> -->
                                                             </a>
                                                             <ul class="dropdown-menu dropdown-menu-end">
                                                                 <li data-bs-toggle="modal" data-bs-target=""><a href="#"
@@ -635,6 +484,12 @@
                                                 {% endfor %}
                                             </tbody>
                                         </table>
+                                        {% if visitor_data|length == 0 %}
+                                        <div id="noDataImage">
+                                            <!-- Your image tag or image source goes here -->
+                                            <img height="300px" width="300px" style="width: auto" src="{% static 'images/ndf-removebg.png' %}" alt="No Data Image">
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -651,7 +506,23 @@
 
     </div>
 
-
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Logout Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger" onclick="performLogout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <div class="modal fade" id="add-department" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1337,26 +1208,24 @@
     </script>
     <script>
         const from_date = document.getElementById('from_date');
-    const to_date = document.getElementById('to_date');
+        const to_date = document.getElementById('to_date');
 
-    // Get current date and time in YYYY-MM-DDTHH:mm format
-    const currentDate = new Date().toISOString().slice(0, 16);
+        // Get current date and time in YYYY-MM-DDTHH:mm format
+        const currentDate = new Date().toISOString().slice(0, 16);
 
-    // Set min attribute for date inputs
-    from_date.min = currentDate;
-    to_date.min = currentDate;
+        // Set min attribute for date inputs
+        from_date.min = currentDate;
+        to_date.min = currentDate;
 
-    // Add event listener to from_date to dynamically adjust to_date min attribute
-    from_date.addEventListener('input', function () {
-        const selectedDate = new Date(this.value);
-        // Set the min attribute for to_date to 4 hours later than the selected date
-        const minDate = new Date(selectedDate.getTime() + 4 * 60 * 60 * 1000).toISOString().slice(0, 16);
-        to_date.min = minDate;
-    });
+        // Add event listener to from_date to dynamically adjust to_date min attribute
+        from_date.addEventListener('input', function () {
+            const selectedDate = new Date(this.value);
+            // Set the min attribute for to_date to 4 hours later than the selected date
+            const minDate = new Date(selectedDate.getTime() + 4 * 60 * 60 * 1000).toISOString().slice(0, 16);
+            to_date.min = minDate;
+        });
     </script>
     <!-- Add these lines to include the intl-tel-input CSS and JS files -->
-    <link rel="stylesheet" href="path/to/intl-tel-input/css/intlTelInput.css">
-    <script src="path/to/intl-tel-input/js/intlTelInput.js"></script>
     <!-- <script>
         // Function to initialize intlTelInput
         function initIntlTelInput() {
@@ -1407,6 +1276,13 @@
             });
         }
         
+        function showLoader() {
+            $("#loader-overlay").show();
+        }
+
+        function hideLoader() {
+            $("#loader-overlay").hide();
+        }
 
         //function declaration
         const inviteVisitor = (e) => { 
@@ -1550,7 +1426,12 @@
                         cache: false,
                         processData: false,
                         contentType: false,
+                        beforeSend: function () {
+                            showLoader();
+                        },
                         success: (res) => {  //http response
+                            hideLoader();
+                            alert("sdcsdc")
                             if (res.status === 400) {
                                 if (res.type === "branch_id") {
                                     setError(branchid, res.error);
@@ -1604,6 +1485,7 @@
 
                         error: function (xhr, textStatus, errorThrown) {
                             // Handle any AJAX errors
+                            hideLoader();
                         }
                     });
                 
@@ -1614,170 +1496,78 @@
             $("#visitor-form").submit(inviteVisitor);
         });
     </script>
-    <!-- <script>
-        const form = document.getElementsByClassName('.visitors-form');
-        const branchId = document.getElementById('branch_id');
-        const fullName = document.getElementById('full_name');
-        const visitorEmail = document.getElementById('visitor_email');
-        const fromDate = document.getElementById('from_date');
-        const toDate = document.getElementById('to_date');
-        const visitorPhone = document.getElementById('visitor_phone');
-        const purpose = document.getElementById('purpose');
-        const userId = document.getElementById('user_id');
-
-
-    
-        function setError (element, message){
-            const inputControl = element.parentElement;
-            const errorDisplay = inputControl.querySelector('.error');
-    
-            errorDisplay.innerText = message;
-            inputControl.classList.add('error');
-            inputControl.classList.remove('success');
-        }
-    
-        const setSuccess = element => {
-            const inputControl = element.parentElement;
-            const errorDisplay = inputControl.querySelector('.error');
-    
-            errorDisplay.innerText = '';
-            inputControl.classList.add('success');
-            inputControl.classList.remove('error');
-        };
-    
-        const isValidEmail = visitorEmail => {
-            const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(String(visitorEmail).toLowerCase());
-        }
-    
-        const validateInputs = () => {
-            const branchIdValue = branchId.value.trim();
-            const fullNameValue = fullName.value.trim();
-            const visitorEmailValue = visitorEmail.value.trim();
-            const fromDateValue = fromDate.value.trim();
-            const toDateValue = toDate.value.trim();
-            const visitorPhoneValue = visitorPhone.value.trim();
-            const purposeValue = purpose.value.trim();
-            const userIdValue = userId.value.trim();
-            let isValid = true;
-    
-            if (branchIdValue === '--select branch--') {
-                setError(branchId, 'Select a branch');
-                isValid = false;
-            } else {
-                setSuccess(branchId);
-            }
-            
-            if (fullNameValue === '') {
-                setError(fullName, 'Full name is required');
-                isValid = false;
-            } else {
-                setSuccess(fullName);
-            }
-    
-            if (visitorEmailValue === '') {
-                setError(visitorEmail, 'Email is required');
-                isValid = false;
-            } else if (!isValidEmail(visitorEmailValue)) {
-                setError(visitorEmail, 'Provide a valid email address');
-                isValid = false;
-            } else {
-                setSuccess(visitorEmail);
-            }
-
-            if (fromDateValue === '') {
-                setError(fromDate, 'From Date is required');
-                isValid = false;
-            } else {
-                setSuccess(fromDate);
-            }
-
-            if (toDateValue === '') {
-                setError(toDate, 'To Date is required');
-                isValid = false;
-            } else {
-                setSuccess(toDate);
-            }
-
-            if (visitorPhoneValue === '') {
-                setError(visitorPhone, 'Phone number is required');
-                isValid = false;
-            } else {
-                setSuccess(visitorPhone);
-            }
-
-            if (purposeValue === '') {
-                setError(purpose, 'Purpose is required');
-                isValid = false;
-            } else {
-                setSuccess(purpose);
-            }
-
-            if (userIdValue === '') {
-                setError(userId, 'Select a host');
-                isValid = false;
-            } else {
-                setSuccess(userId);
-            }
-    
-    
-            return isValid;
-        };
-    </script> -->
-    <!-- <script>
-        function showToast(message, icon) {
-            const toastMixin = Swal.mixin({
-                toast: true,
-                icon: icon,
-                title: 'General Title',
-                animation: false,
-                position: 'top-right',
-                width: '450px',
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.addEventListener('mouseenter', Swal.stopTimer)
-                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Logout Confirmation',
+                text: 'Are you sure you want to logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    performLogout(); // Call the logout function if confirmed
                 }
             });
-            toastMixin.fire({
-                animation: true,
-                title: message
-            });
-
         }
 
-        $(document).ready(function () {
-            $(".visitors-form").submit(function (e) {
-                e.preventDefault(); // Prevent the default form submission
-                const formData = $(this).serialize();
-                
-                $.ajax({
-                    type: 'POST',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function (response) {
-                        alert(response)
-                        if (response['status'] == 200) {
-                            showToast(response['message'], 200);
-                            // const f_name = response['form_name']
-                            // $(".form_same_"+f_name)[0].reset();
-                        }
-                        // var messages = response.messages;
-                        // for (var i = 0; i < messages.length; i++) {
-                        //     showToast(messages[i].message, messages[i].icon);
-                        // }
-
-
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        // Handle any AJAX errors
-                    }
-                });
+        // Function to perform logout
+        function performLogout() {
+            $.ajax({
+                url: "/logout/",  // Update with your actual logout endpoint
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    // Redirect to login or handle success as needed
+                    window.location.href = "/";
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle error
+                    console.error("Logout failed:", errorThrown);
+                }
             });
+        }
+    </script>
+    <script>
+        function resetFormFields() {
+            $('#visitor-form')[0].reset();
+        }
+            $('.nav-tabs a').on('shown.bs.tab', function (e) {
+            var targetTab = $(e.target).attr("href");
+            if (targetTab === '#users-tab') {
+                resetFormFields();
+            }
         });
-    </script> -->
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const noDataImage = document.getElementsByClassName('noDataImage');
+            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
+            
+            if (noDataImage && visitorDataCount === 0) {
+                noDataImage.classList.remove('d-none');
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            // Check if there's a fragment identifier in the URL
+            var fragment = window.location.hash;
+            
+            // Activate the corresponding tab based on the fragment identifier
+            if (fragment) {
+                $('.nav-tabs a[href="' + fragment + '"]').tab('show');
+            }
+        });
+    </script>
+    
 
 </body>
 
