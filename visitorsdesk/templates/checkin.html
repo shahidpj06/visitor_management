@@ -12,8 +12,8 @@
     <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
     <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 <style>
@@ -102,8 +102,12 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center header-rightside-btns">
+                    <a href="{% url 'calendar' %}">
+                        <button type="button" style="background-color: green; color: rgb(255, 255, 255);" class="btn header-item waves-effect waves-light" >CALENDAR
+                        </button>
+                    </a>
                     <a href="{% url 'checkin_visitor' %}">
-                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECKIN
+                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECK IN
                         </button>
                     </a>
                     <div class="dropdown d-inline-block user-dropdown ms-2">
@@ -111,21 +115,19 @@
                             aria-expanded="false">
                             <img class="rounded-circle header-profile-user"
                                 src="{% static 'images/dummy.png' %}" alt="Header Avatar">
-
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <!-- <a class="dropdown-item" href="profile.html"><i
-                                    class="bx bx-user font-size-16 align-middle me-1"></i>
-                                <span key="t-profile">Profile</span></a>
-                            <a class="dropdown-item d-block" href="settings.html"><i
-                                    class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                                    key="t-settings">Settings</span></a>
-                            <div class="dropdown-divider"></div> -->
-                            <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
-                                class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span>
-                            </a>
-                        </div>
+                            <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                               <span key="t-profile">Profile</span></a>
+                           <!-- <a class="dropdown-item d-block" href="#"><i
+                                   class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                                   key="t-settings">Settings</span></a> -->
+                           <div class="dropdown-divider"></div>
+                           <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                                   class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                   key="t-logout">Logout</span>
+                           </a>
+                       </div>
                     </div>
 
                 </div>
@@ -201,7 +203,7 @@
                                         <form method="post" id="checkin_form" action="{% url 'new_visitor' %}">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
-                                            <h4>New Visitor</h4><br>
+                                            <h4 style="font-weight: 600;">New Visitor</h4><br>
                                             
                                                 <h6 class="selct-box-head">Branch</h6>
                                                 <div class="form-grp inputGroup">
@@ -281,55 +283,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-                        <!-- <div class="tab-pane" id="users-tab" role="tabpanel">
-                            <div class="settings-card">
-
-                                <div class="users-tab table-view">
-                                    <div class="table-responsive">
-                                        <div class="card-body center-text-align" style="padding: 35px;">
-                                            <h4>Recurring Visitor Check-in</h4><br>
-                                            <h6 class="selct-box-head">Branch</h6>
-                                            <div class="form-grp inputGroup">
-                                                <div class="select-inp">
-                                                    <select class="form-control" name="branch_id" required>
-                                                        <option>--select branch--</option>
-                                                        {% for i in data %}
-                                                        
-                                                        <option value="{{i.id}}">{{i.name}}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                    <i class="fas fa-chevron-down"></i>
-                                                </div>
-                                            </div>
-
-                    
-                    
-                                            <div class="inputGroup form-control">
-                                                <input type="email" required="" name="visitor_email" autocomplete="off">
-                                                <label class="search-icon" for="email">Email</label>
-                                            </div>
-                    
-                    
-                                            <div class="inputGroup form-control">
-                                                <input type="number" required="" name="visitor_phone" autocomplete="off">
-                                                <label class="search-icon" for="number">Phone</label>
-                                            </div>
-
-                                            <div class="modal-footer d-flex justify-content-center">
-                                                <button type="submit" class="btn btn-primary text-uppercase br-50 btn-md">Request OTP</button>
-                                                <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                                    data-bs-dismiss="modal">Close</button>
-                                            </div>
-                    
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-
                         
                         <div class="tab-pane" id="opportunity-stages-tab" role="tabpanel">
                             <div class="settings-card">
@@ -339,33 +292,20 @@
                                         <form method="post" id="visitor_checkin" action="#">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
-                                                <h4>Invited Visitor Check</h4><br>
-                                                <!-- <h6 class="selct-box-head">Branch</h6>
-                                                <div class="form-grp inputGroup">
-                                                    <div class="select-inp">
-                                                        <select class="form-control" name="branch_id" id="branch_id" required>
-                                                            <option>--select branch--</option>
-                                                            {% for i in branch_data %}
-                                                            
-                                                            <option value="{{i.id}}">{{i.name}}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                        <i class="fas fa-chevron-down"></i>
-                                                    </div>
-                                                </div> -->
+                                                <h4 style="font-weight: 600;">Invited Visitor Check</h4><br>
                                                 <div class="inputGroup form-control">
                                                     <input type="text" required="" name="invite_id" id="invite_id"> 
                                                     <label class="search-icon" for="invite_id">Invite ID</label>
                                                 </div>
-
+                                        
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" style="background-color: green; color: white;"
-                                                     class="btn text-uppercase br-50 btn-md" onclick="getVisitorDetails()">Get Details
+                                                    <button type="button" id="get-details-btn" style="background-color: green; color: white;"
+                                                        class="btn text-uppercase br-50 btn-md">
+                                                        Get Details
                                                     </button>
                                                 </div>
-                        
                                             </div>
-                                        </form>
+                                        </form>                                        
                                     </div>
                                 </div>
                             </div>
@@ -375,19 +315,64 @@
                 </div>
 
             </div>
-
+<!--  -->
         </div>
-
+        <div class="modal fade" style="border-radius: 10px;" id="visitor-detail-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+            role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content" style="border-radius: 8px;">
+        
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Visitor Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+        
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Branch</th>
+                                    <th>Purpose</th>
+                                    <th>Hosted By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+        
+                        <div class="form-group">
+                            <label>Desk</label>
+                            <select class="form-control" name="desk_name" id="desk_name">
+                                <option selected>--select desk--</option>
+                                {% for i in desk_data %}
+                                    <option value="{{i.id}}">{{i.desk_name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" id="checkin_modal_btn" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md">
+                            Check in
+                        </button>                       
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-
-
-    
-
-    
-
-    
 
     
     <!-- JAVASCRIPT -->
@@ -399,8 +384,6 @@
     <script src="{% static 'js/app.js' %}"></script>
 
     <script>
-        // change profile pic
-
         $(document).ready(function () {
             var readURL = function (input) {
                 if (input.files && input.files[0]) {
@@ -459,18 +442,7 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
-    <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
-    <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
-    <script src="{% static 'js/app.js' %}"></script>
-    <!-- for printing error message in login page -->
     
-    <script>
-
-        
-    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
           const branchDropdown = document.getElementById('branch_id');
@@ -525,21 +497,10 @@
             });
         }
         
-        // function showLoader() {
-        //     $("#loader-overlay").show();
-        // }
 
-        // function hideLoader() {
-        //     $("#loader-overlay").hide();
-        // }
-
-        //function declaration
         const checkinVisitor = (e) => { 
             e.preventDefault();//e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
 
-            // const form = document.getElementsByClassName('.visitors-form');
             const branchId = document.getElementById('branch_id');
             const deskId = document.getElementById('desk_id')
             const fullName = document.getElementById('full_name');
@@ -614,6 +575,12 @@
                 if (phoneValue === '') {
                     setError(phone, 'Contact number is required');
                     isValid = false;
+                } else if (/^0+$/.test(phoneValue)) {
+                    setError(phone, 'Invalid phone number: Cannot be all zeros');
+                    isValid = false;
+                } else if (/^(\d)\1*$/.test(phoneValue)) {
+                    setError(phone, 'Invalid phone number: Cannot be the same digit repeated');
+                    isValid = false;
                 }else if (phoneValue.length < 8 || phoneValue.length > 12) {
                     setError(phone, 'Phone number should be minimum 8 or maximum 12');
                     isValid = false;
@@ -641,9 +608,7 @@
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#checkin_form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
                 $(".input-control").removeClass("error success");
             };
@@ -651,21 +616,21 @@
             
 
 
-            if (validateInputs()) { // for validating the fields
+            if (validateInputs()) {
                 const form = new FormData($("#checkin_form")[0])
 
 
                     $.ajax({
                         url: "/new_visitor/",
-                        method: "POST", //http method for the request.
-                        headers: { // addtional http header for the request
+                        method: "POST", 
+                        headers: { 
                             "X-CSRFToken": "{{ csrf_token }}"
                         },
                         data: form,
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: (res) => {  //http response
+                        success: (res) => {  
                             if (res.status === 400) {
                                 if (res.type === "branchId") {
                                     setError(branch_id, res.error);
@@ -686,7 +651,6 @@
                         },    
 
                         error: function (xhr, textStatus, errorThrown) {
-                            // Handle any AJAX errors
                             hideLoader();
                         }
                     });
@@ -697,6 +661,8 @@
         $(document).ready(function () {
             $("#checkin_form").submit(checkinVisitor);
         });
+
+        // 
     </script>
     <script>
         function confirmLogout() {
@@ -710,91 +676,166 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    performLogout(); // Call the logout function if confirmed
+                    performLogout(); 
                 }
             });
         }
 
-        // Function to perform logout
         function performLogout() {
             $.ajax({
-                url: "/logout/",  // Update with your actual logout endpoint
+                url: "/logout/", 
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    // Redirect to login or handle success as needed
                     window.location.href = "/";
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    // Handle error
                     console.error("Logout failed:", errorThrown);
                 }
             });
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
     <script>
-        // Add this JavaScript code in your script section or in a separate script file
+        
+        $(document).ready(function() {
+    
+            function showToast(message, icon) {
+                const toastMixin = Swal.mixin({
+                    toast: true,
+                    icon: icon,
+                    title: 'General Title',
+                    animation: false,
+                    position: 'top-right',
+                    width: '450px',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                toastMixin.fire({
+                    animation: true,
+                    title: message
+                });
+            }
 
-        function getVisitorDetails() {
-            const inviteId = $('#invite_id').val();
+            function checkVisitorDetails(visitorId) {
+                $.ajax({
+                    url: `/get-visitor-details/${visitorId}/`,
+                    type: 'GET',
+                    success: function(data) {
 
-            // Make an AJAX request to get visitor details
+                        if (!data.error) {
+                            $('#visitor-detail-modal tbody tr td:nth-child(1)').text(data.visitor_id);
+                            $('#visitor-detail-modal tbody tr td:nth-child(2)').text(data.full_name);
+                            $('#visitor-detail-modal tbody tr td:nth-child(3)').text(data.select_branch);
+                            $('#visitor-detail-modal tbody tr td:nth-child(4)').text(data.purpose);
+                            $('#visitor-detail-modal tbody tr td:nth-child(5)').text(data.user_host);
+                        
+                            $('#visitor-detail-modal').modal('show');
+                        } else {
+                            showToast('Visitor not found!', 'error');
+                            $('#visitor-detail-modal').modal('hide');
+                        }
+                    },
+                    error: function() {
+                        showToast('Visitor not found!', 'error');
+                    }
+                });
+            }
+            
+
+            function getVisitorDetails() {
+                var visitorId = $('#invite_id').val();
+                if (visitorId) {
+                    checkVisitorDetails(visitorId);
+                } else {
+                    showToast('Please enter a valid Visitor ID.', 'warning');
+                    $('#visitor-detail-modal').modal('hide');
+                }
+            }
+
+            $('#get-details-btn').on('click', function(event) {
+                event.preventDefault();
+                getVisitorDetails();
+            });
+
+            $('#checkin_modal_btn').on('click', function() {
+                checkInVisitors();
+            });
+
+        });
+
+    </script> 
+    <script>
+
+
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+        const checkVisitor = (e) => {
+            e.preventDefault();
+
+        }
+
+        function checkInVisitors() {
+            var visitorId = $('#invite_id').val();
+            var deskName = $('#desk_name').val();
+
             $.ajax({
+                url: `/check-in-visitor/${visitorId}/`,
                 type: 'POST',
-                url: '/get-visitor-details/', 
+                data: { desk_name: deskName },
                 headers: {
-                        "X-CSRFToken": "{{ csrf_token }}"
-                        }, 
-                data: {
-                    'invite_id': inviteId
+                    "X-CSRFToken": "{{ csrf_token }}"
                 },
-                success: function (response) {
-                    if (response.status === 200) {
-                        updateCheckinForm(response.visitorDetails);
-                        // Assuming 'department-tab' is the ID of the department tab
-                        $('#department-tab').addClass('show active');
+                success: function(data) {
+                    if (data.error) {
+                        showToast(data.error, 'info');
                     } else {
-                        console.error('Error getting visitor details:', response.message);
+                        showToast('Checked in successfully', 'success');
+                        $('#visitor-detail-modal').modal('hide');
                     }
                 },
-                error: function (error) {
-                    console.error('AJAX error:', error);
+                error: function() {
+                    showToast('Error checking in visitor', 'error');
+                    $('#visitor-detail-modal').modal('hide');
                 }
             });
         }
 
-        function updateCheckinForm(visitorDetails) {
-            // Update the check-in form with the received details
-            $('#full_name').val(visitorDetails.full_name);
-            $('#email').val(visitorDetails.email);
-            $('#phone').val(visitorDetails.phone);
-            $('#purpose').val(visitorDetails.purpose);
-            // $('#host_id').val(visitorDetails.user_host);
-
-            const branchId = visitorDetails.branch_id;
-            if (branchId) {
-                $('#branch_id').val(branchId);
-                $('#branch_id').trigger('change');
-            } 
-
-            const hostId = visitorDetails.host_id;
-            if (hostId) {
-                $('#host_id').val(hostId);
-                $('#host_id').trigger('change');
-            }
-            else {
-                console.error('Visitor details not found')
-            }
-            // Update other form fields similarly
-        }
 
     </script>
-
-    
-    
-
 </body>
 
 </html>

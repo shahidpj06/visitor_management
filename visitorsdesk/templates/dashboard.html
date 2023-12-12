@@ -72,30 +72,32 @@
                                             <span key="t-dashboards">Dashboard</span>
                                         </a>
                                     </li>
-
+                                    
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle arrow-none" href="{% url 'visitors' %}"
-                                            id="topnav-pages" role="button">
-                                            <span>Visitors</span>
-                                            
+                                        id="topnav-pages" role="button">
+                                        <span>Visitors</span>
                                         </a>
-                                        
                                     </li>
-                                    
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle arrow-none" href="{% url 'settings' %}"
                                             id="topnav-pages" role="button">
                                             <span>Settings</span>                                            
                                         </a>                                        
                                     </li>
+                                    
                                 </ul>
                             </div>
                         </nav>
                     </div>
                 </div>
                 <div class="d-flex align-items-center header-rightside-btns">
+                    <a href="{% url 'calendar' %}">
+                        <button type="button" style="background-color: green; color: rgb(255, 255, 255);" class="btn header-item waves-effect waves-light" >CALENDAR
+                        </button>
+                    </a>
                     <a href="{% url 'checkin_visitor' %}">
-                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECKIN
+                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECK IN
                         </button>
                     </a>
     
@@ -106,12 +108,12 @@
                                 alt="Header Avatar">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <!-- <a class="dropdown-item" href="profile.html"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                             <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
                                 <span key="t-profile">Profile</span></a>
-                            <a class="dropdown-item d-block" href="#"><i
+                            <!-- <a class="dropdown-item d-block" href="#"><i
                                     class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                                    key="t-settings">Settings</span></a>
-                            <div class="dropdown-divider"></div> -->
+                                    key="t-settings">Settings</span></a> -->
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
                                     class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
                                     key="t-logout">Logout</span>
@@ -144,15 +146,15 @@
             </div>
             <div class="container-fluid px-0">
              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 gx-3">
-                    <div class="col">
-                        <a href="{% url 'visitors' %}#department-tab" id="todays-checkins-link">
-                            <div class="main-data-box ">
-                                <i class="bx bx-up-arrow-alt leads-count"></i>
-                                <h2 class="leads-count">{{visitor_data.count}}</h2>
-                                <h4>Today's Check-ins</h4>
-                            </div>
-                        </a>
-                    </div>
+                <div class="col">
+                    <a href="{% url 'visitors' %}#department-tab" id="todays-checkins-link">
+                        <div class="main-data-box ">
+                            <i class="bx bx-up-arrow-alt leads-count"></i>
+                            <h2 class="leads-count">{{visitor_data.count}}</h2>
+                            <h4>Today's Check-ins</h4>
+                        </div>
+                    </a>
+                </div>
                 <div class="col">
                     <a href="{% url 'visitors' %}">
                         <div class="main-data-box">

@@ -1,0 +1,335 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+  <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+  <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700&display=swap" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700&display=swap" rel="stylesheet"> 
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://maxcdn.icons8.com/fonts/line-awesome/1.1/css/line-awesome-font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/css/datepicker.css" rel="stylesheet"> 
+  <link href="{% static 'css/calendar.css' %}" rel="stylesheet" type="text/css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/datepicker.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/air-datepicker/2.2.3/js/i18n/datepicker.en.js"></script>
+</head>
+<body>
+<style>
+  .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    background-color: green;
+  }
+  .btn.btn-primary {
+    background-color: rgb(0, 88, 0);
+  }
+  .fc-event:before, .fc-event-dot:before {
+    border-left: 3px solid green;
+    border-bottom: 3px solid green;
+  }
+</style>
+  
+
+<header id="page-topbar">
+  <div class="navbar-header">
+      <div class="d-flex align-items-center">
+          <div class="navbar-brand-box">
+              <a href="{% url 'dashboard' %}" class="logo">
+                  <span class="logo-lg">
+                      <img src="{% static '/images/logo.png' %}" alt="" height="23">
+                  </span>
+              </a>
+          </div>
+          <button type="button" class="btn btn-sm font-size-16 d-lg-none header-item waves-effect waves-light"
+              data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+              <i class="fa fa-fw fa-bars"></i>
+          </button>
+
+          <div class="topnav">
+              <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+                  <div class="collapse navbar-collapse" id="topnav-menu-content">
+                      <ul class="navbar-nav">
+
+                          <li class="nav-item">
+                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;"  href="{% url 'dashboard' %}" 
+                                  id="topnav-dashboard" role="button">
+                                  <span key="t-dashboards">Dashboard</span>
+                              </a>
+                          </li>
+                          
+                          <li class="nav-item">
+                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;" href="{% url 'visitors' %}"
+                              id="topnav-pages" role="button">
+                              <span>Visitors</span>
+                              
+                          </a>
+                          
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;" href="{% url 'settings' %}"
+                                  id="topnav-pages" role="button">
+                                  <span>Settings</span>                                            
+                              </a>                                        
+                          </li>
+                          
+                      </ul>
+                  </div>
+              </nav>
+          </div>
+      </div>
+  
+  </div>
+  
+</header>
+<br>
+<br>
+  <div class="p-5">
+    
+    <h2 class="mb-4" style="color: black;">Full Calendar</h2>
+    <div class="card">
+      <div class="card-body p-0">
+        <div id="calendar"></div>
+        
+      </div>
+    </div>
+  </div>
+  
+  <!-- calendar modal -->
+  <div id="modal-view-event" class="modal modal-top fade calendar-modal">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h4 class="modal-title"><span class="event-icon"></span><span class="event-title"></span></h4>
+            <div class="event-body"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--   
+  <div id="modal-view-event-add" class="modal modal-top fade calendar-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="add-event">
+          <div class="modal-body">
+          <h4>Add Event Detail</h4>        
+            <div class="form-group">
+              <label>Event name</label>
+              <input type="text" class="form-control" name="ename">
+            </div>
+            <div class="form-group">
+              <label>Event Date</label>
+              <input type='text' class="datetimepicker form-control" name="edate">
+            </div>        
+            <div class="form-group">
+              <label>Event Description</label>
+              <textarea class="form-control" name="edesc"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Event Color</label>
+              <select class="form-control" name="ecolor">
+                <option value="fc-bg-default">fc-bg-default</option>
+                <option value="fc-bg-blue">fc-bg-blue</option>
+                <option value="fc-bg-lightgreen">fc-bg-lightgreen</option>
+                <option value="fc-bg-pinkred">fc-bg-pinkred</option>
+                <option value="fc-bg-deepskyblue">fc-bg-deepskyblue</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Event Icon</label>
+              <select class="form-control" name="eicon">
+                <option value="circle">circle</option>
+                <option value="cog">cog</option>
+                <option value="group">group</option>
+                <option value="suitcase">suitcase</option>
+                <option value="calendar">calendar</option>
+              </select>
+            </div>        
+        </div>
+          <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" >Save</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>        
+        </div>
+        </form>
+      </div>
+    </div>
+  </div> -->
+  
+      <script>
+        jQuery(document).ready(function(){
+  jQuery('.datetimepicker').datepicker({
+      timepicker: true,
+      language: 'en',
+      range: true,
+      multipleDates: true,
+		  multipleDatesSeparator: " - "
+    });
+  jQuery("#add-event").submit(function(){
+      alert("Submitted");
+      var values = {};
+      $.each($('#add-event').serializeArray(), function(i, field) {
+          values[field.name] = field.value;
+      });
+      console.log(
+        values
+      );
+  });
+});
+
+(function () {    
+    'use strict';
+    // ------------------------------------------------------- //
+    // Calendar
+    // ------------------------------------------------------ //
+	jQuery(function() {
+		// page is ready
+		jQuery('#calendar').fullCalendar({
+			themeSystem: 'bootstrap4',
+			// emphasizes business hours
+			businessHours: false,
+			defaultView: 'month',
+			// event dragging & resizing
+			editable: true,
+			// header
+			header: {
+				left: 'title',
+				center: 'month,agendaWeek,agendaDay',
+				right: 'today prev,next'
+			},
+			events: [
+				{
+					title: 'Barber',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-05-05',
+					end: '2023-05-05',
+					className: 'fc-bg-default',
+					icon : "circle"
+				},
+				{
+					title: 'Flight Paris',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-08-08T14:00:00',
+					end: '2023-08-08T20:00:00',
+					className: 'fc-bg-deepskyblue',
+					icon : "cog",
+					allDay: false
+				},
+				{
+					title: 'Team Meeting',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-07-10T13:00:00',
+					end: '2023-07-10T16:00:00',
+					className: 'fc-bg-pinkred',
+					icon : "group",
+					allDay: false
+				},
+				{
+					title: 'Meeting',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-08-12',
+					className: 'fc-bg-lightgreen',
+					icon : "suitcase"
+				},
+				{
+					title: 'Conference',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-08-13',
+					end: '2023-08-15',
+					className: 'fc-bg-blue',
+					icon : "calendar"
+				},
+				{
+					title: 'Baby Shower',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-08-13',
+					end: '2023-08-14',
+					className: 'fc-bg-default',
+					icon : "child"
+				},
+				{
+					title: 'Birthday',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-09-13',
+					end: '2023-09-14',
+					className: 'fc-bg-default',
+					icon : "birthday-cake"
+				},
+				{
+					title: 'Restaurant',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-10-15T09:30:00',
+					end: '2023-10-15T11:45:00',
+					className: 'fc-bg-default',
+					icon : "glass",
+					allDay: false
+				},
+				{
+					title: 'Dinner',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-11-15T20:00:00',
+					end: '2023-11-15T22:30:00',
+					className: 'fc-bg-default',
+					icon : "cutlery",
+					allDay: false
+				},
+				{
+					title: 'Shooting',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-08-25',
+					end: '2023-08-25',
+					className: 'fc-bg-blue',
+					icon : "camera"
+				},
+				{
+					title: 'Go Space :)',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-12-27',
+					end: '2023-12-27',
+					className: 'fc-bg-default',
+					icon : "rocket"
+				},
+				{
+					title: 'Dentist',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu pellentesque nibh. In nisl nulla, convallis ac nulla eget, pellentesque pellentesque magna.',
+					start: '2023-12-29T11:30:00',
+					end: '2023-12-29T012:30:00',
+					className: 'fc-bg-blue',
+					icon : "medkit",
+					allDay: false
+				}
+			],
+			eventRender: function(event, element) {
+				if(event.icon){
+					element.find(".fc-title").prepend("<i class='fa fa-"+event.icon+"'></i>");
+				}
+			  },
+			dayClick: function() {
+				jQuery('#modal-view-event-add').modal();
+			},
+			eventClick: function(event, jsEvent, view) {
+			        jQuery('.event-icon').html("<i class='fa fa-"+event.icon+"'></i>");
+					jQuery('.event-title').html(event.title);
+					jQuery('.event-body').html(event.description);
+					jQuery('.eventUrl').attr('href',event.url);
+					jQuery('#modal-view-event').modal();
+			},
+		})
+	});
+  
+})(jQuery);
+  
+      </script>
+</body>
+
+</html>

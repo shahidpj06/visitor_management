@@ -68,7 +68,6 @@
     </div>
     </div>
     <script>
-        // Get the current date and time in the format expected by datetime-local input
         function getCurrentDateTime() {
             const now = new Date();
             const year = now.getFullYear();
@@ -79,7 +78,6 @@
             return `${year}-${month}-${day}T${hours}:${minutes}`;
         }
     
-        // Set the min attribute of the datetime-local input to the current date and time
         $(document).ready(function () {
             $('#exit_time').attr('min', getCurrentDateTime());
         });
@@ -109,11 +107,6 @@
 
 
         const checkoutModal=(e)=>{
-            // e.preventDefault(); //e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
-
-            // const form = document.getElementsByClassName('.visitors-form');
             const exitDesk = document.getElementById('exit_desk');
             const exitTime = document.getElementById('exit_time');
 
@@ -194,7 +187,10 @@
                             if (res.status === 200) {
                                 showToast(res.message, "success")
                                 resetForm();
-                                
+                                const row = $(`tr[data-visitor-id="${res.visitor_id}"]`);
+
+                                const checkoutTimeElement = row.find(".checkout-time"); // Update with the actual class or selector
+                                checkoutTimeElement.text(res.checkout_time);
                                 $(".checkoutLink").css("display", "none");
                                 $(".checkedout").css("display", "inline");
 
@@ -209,6 +205,7 @@
 
             }
         };
+        // 
 
         $(document).ready(function () {
             $("#checkout_form").submit(checkoutModal);

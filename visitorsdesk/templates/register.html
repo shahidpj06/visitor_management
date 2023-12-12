@@ -29,6 +29,33 @@
     .register-form .success input {
         border-color: #09c372;
     }
+    .loader {
+        display: flex;
+        border: 8px solid #f3f3f3; /* Light grey */
+        border-top: 8px solid green; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    #loader-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: 9999;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 
 <body>
@@ -76,7 +103,7 @@
                                 <div class="mb-3">
                                     <input type="text" class="form-control" id="username" name="username"
                                         placeholder="Username">
-                                        <div class="error"></div>
+                                    <div class="error"></div>
                                 </div>
 
                                 <div class="mb-3">
@@ -104,6 +131,9 @@
                                     color: white;" class="btn btn-primar waves-effect waves-light"
                                         type="button" onclick="register(event)">Agree & Join</button>
                                 </div>
+                                <div id="loader-overlay" style="display: none;">
+                                    <div class="loader"></div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -130,24 +160,57 @@
     <!-- validation init -->
     <script src="{% static 'js/pages/validation.init.js' %}"></script>
     <script>
+
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
         const register=(e)=>{ //e = event object as an argument, here doesn't not using the event object
             const form = new FormData($("#register-form")[0]) //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
+
+        function showLoader() {
+            $("#loader-overlay").show();
+        }
+
+        function hideLoader() {
+            $("#loader-overlay").hide();
+        }
             
-        if(validateInputs()){ // for validating the fields
+        if(validateInputs()){
             if(form.get('username') && form.get('useremail')  && form.get('userpassword')){
                   
                 
                 $.ajax({
                     url:"/register/",
-                    method:"POST", //http method for the request.
-                    headers:{ // addtional http header for the request
+                    method:"POST", 
+                    headers:{
                         "X-CSRFToken":"{{ csrf_token }}"
                     },
                     data:form,
                     processData:false,
                     contentType:false,
-                    success:(res)=>{  //http response
+                    beforeSend: function () {
+                        showLoader();
+                    },
+                    success:(res)=>{
+                        hideLoader();
                         if(res.status === 400){
                             if (res.value) {
                             let errors = res.value;
@@ -178,8 +241,15 @@
                         }}
                         if (res.status === 200) {
                             window.location.href = "/dashboard/";
+                            // showToast(res.message, "success")
+                             
                         }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                            // Handle any AJAX errors
+                            hideLoader();
                     }
+                    
                 })
             }
         }
@@ -194,7 +264,6 @@
             setTimeout(function () {
                 $("#loading").hide();
             }, 500)
-
         })
     </script>
 

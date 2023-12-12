@@ -20,6 +20,12 @@ urlpatterns = [
     path('append_checkout_modal/',views.append_checkout_modal,name='append_checkout_modal'),
     path('get-branches/', views.get_branches, name='get_branches'),
     path('get-branches-user/', views.get_branches_user, name='get_branches-user'),
-    path('get-visitor-details/', views.get_visitor_details, name='get_visitor_details'),
-    
+    path('user_profile/', views.user_profile, name='user_profile'),
+    path('get-visitor-details/<str:visitor_id>/', views.get_visitor_details, name='get_visitor_details'),
+    path('get-checkin-data/', views.get_checkin_data, name='get-checkin-data'),
+    path('edit_branch/<int:branch_id>/', views.edit_branch, name='edit_branch'),
+    path('edit_desk/<int:desk_id>/', views.edit_desk, name='edit_desk'),
+    path('check-in-visitor/<str:visitor_id>/', views.check_in_visitor, name='check_in_visitor'),
+    path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('calendar/', views.calendar, name='calendar'),
     ]

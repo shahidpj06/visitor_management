@@ -1,0 +1,78 @@
+{% load static %}
+<header id="page-topbar">
+    <div class="navbar-header">
+        <div class="d-flex align-items-center">
+            <div class="navbar-brand-box">
+                <a href="{% url 'dashboard' %}" class="logo">
+                    <span class="logo-lg">
+                        <img src="{% static '/images/logo.png' %}" alt="" height="23">
+                    </span>
+                </a>
+            </div>
+            <button type="button" class="btn btn-sm font-size-16 d-lg-none header-item waves-effect waves-light"
+                data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+
+            <div class="topnav">
+                <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+                    <div class="collapse navbar-collapse" id="topnav-menu-content">
+                        <ul class="navbar-nav">
+
+                            <li class="nav-item">
+                                <a class="nav-link arrow-none btn " style="background-color: green;" href="{% url 'dashboard' %}" 
+                                    id="topnav-dashboard" role="button">
+                                    <span key="t-dashboards">Dashboard</span>
+                                </a>
+                            </li>
+                            
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="{% url 'visitors' %}"
+                                id="topnav-pages" role="button">
+                                <span>Visitors</span>
+                                
+                            </a>
+                            
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="{% url 'settings' %}"
+                                    id="topnav-pages" role="button">
+                                    <span>Settings</span>                                            
+                                </a>                                        
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="d-flex align-items-center header-rightside-btns">
+            <a href="{% url 'checkin_visitor' %}">
+                <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECK IN
+                </button>
+            </a>
+
+            <div class="dropdown d-inline-block user-dropdown ms-2">
+                <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <img class="rounded-circle header-profile-user" src="{% static 'images/dummy.png' %}"
+                        alt="Header Avatar">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                     <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                        <span key="t-profile">Profile</span></a>
+                    <!-- <a class="dropdown-item d-block" href="#"><i
+                            class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                            key="t-settings">Settings</span></a> -->
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                            class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                            key="t-logout">Logout</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</header>

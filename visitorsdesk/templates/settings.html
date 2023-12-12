@@ -13,6 +13,10 @@
     <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    
+
 
 </head>
 
@@ -30,7 +34,12 @@
     .settings-form .form-control .success input {
         border-color: #09c372;
     }
-    #noDataImage {
+    .noDataImage {
+        display:flex !important;
+        align-items: center;
+        justify-content:center;
+    }
+    .noDataImageUser{
         display:flex !important;
         align-items: center;
         justify-content:center;
@@ -40,6 +49,9 @@
     }
     .modal-header {
         border-radius: 10px;
+    }
+    .d-none {
+        display: none !important;
     }
 </style>
 
@@ -110,8 +122,12 @@
                 </div>
 
                 <div class="d-flex align-items-center header-rightside-btns">
+                    <a href="{% url 'calendar' %}">
+                        <button type="button" style="background-color: green; color: rgb(255, 255, 255);" class="btn header-item waves-effect waves-light" >CALENDAR
+                        </button>
+                    </a>
                     <a href="{% url 'checkin_visitor' %}">
-                        <button type="button" style="background-color: green; color: white;" class="btn waves-effect waves-light">CHECKIN</button>
+                        <button type="button" style="background-color: green; color: white;" class="btn waves-effect waves-light">CHECK IN</button>
                     </a>                     
 
                     <div class="dropdown d-inline-block user-dropdown ms-2">
@@ -121,18 +137,17 @@
                                 src="{% static 'images/dummy.png' %}" alt="Header Avatar">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <!-- <a class="dropdown-item" href="profile.html"><i
-                                    class="bx bx-user font-size-16 align-middle me-1"></i>
-                                <span key="t-profile">Profile</span></a>
-                            <a class="dropdown-item d-block" href="#"><i
-                                    class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                                    key="t-settings">Settings</span></a>
-                            <div class="dropdown-divider"></div> -->
-                            <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
-                                class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                key="t-logout">Logout</span>
-                            </a>
-                        </div>
+                            <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                               <span key="t-profile">Profile</span></a>
+                           <!-- <a class="dropdown-item d-block" href="#"><i
+                                   class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
+                                   key="t-settings">Settings</span></a> -->
+                           <div class="dropdown-divider"></div>
+                           <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                                   class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                   key="t-logout">Logout</span>
+                           </a>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -143,7 +158,7 @@
                 <div class="settings-tabs">
                     <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#users-tab" role="tab">
+                            <a class="nav-link " data-bs-toggle="tab" href="#users-tab" role="tab">
                                 <div>
                                     <i class='bx bxs-user stns-tab-icon-3'></i>
                                     <h4 class="stngs-tab-head">Users</h4>
@@ -151,7 +166,7 @@
                             </a>
                         </li>
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
                                 <div>
                                     <i class="bx bx-stats stns-tab-icon-6"></i>
                                     <h4 class="stngs-tab-head">Branches</h4>
@@ -169,15 +184,15 @@
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane active show" id="users-tab" role="tabpanel">
-                            <div class="tab-pane" id="users-tab" role="tabpanel">
-                                <div class="settings-card">
+                        <div class="tab-pane " id="users-tab" role="tabpanel">
+                            <div class="tab-pane" id="users-tab" role="tabpanel" {% if not user_data %} style="visibility: hidden;" {% endif %}>
+                                <div class="settings-card" id="user-settings-card">
                                     <div class="top-header-div">
                                         <h3>Users</h3>
                                         <div class="top-header-rightbtns">                                            
                                             <button type="button" style="background-color: green; color: white;"
                                              class="btn waves-effect waves-light me-0"
-                                                data-bs-toggle="modal" data-bs-target="#add-user">
+                                                data-bs-toggle="modal" data-bs-target="#add-user" onclick="clearFormUser()">
                                                 <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add User
                                             </button>
                                         </div>
@@ -187,7 +202,7 @@
                                             <table id="user-table" class="table table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th>Sl No</th>
+                                                        <th></th>
                                                         <th>Full Name</th>
                                                         <th>User Name</th>
                                                         <th>Branch</th>
@@ -198,10 +213,9 @@
                                                 <tbody>
                                                     {% for i in user_data %}
                                                     <tr>
-    
-                                                        <td>{{forloop.counter}}</td>
+                                                        <td></td>
                                                         <td>{{i.first_name.title}} {{i.last_name.title}}</td>
-                                                        <td>{{i.user_name}}</td>
+                                                        <td>{{i.username}}</td>
                                                         <td>{{i.primary_branch}}</td>
                                                         <td>{{i.user_role}}</td>
                                                         <td class="text-right">
@@ -211,11 +225,13 @@
                                                                     <i class="mdi mdi-dots-vertical font-size-18"></i>
                                                                 </a>
                                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                                    <!-- <li data-bs-toggle="modal"
-                                                                        data-bs-target="#add-opportunity"><a href="#"
-                                                                            class="dropdown-item d-flex align-items-center"><i
-                                                                                class="bx bx-edit font-size-16 me-1"></i>Edit</a>
-                                                                    </li> -->
+                                                                    <li >
+                                                                        <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal"
+                                                                        onclick="openEditUserModal('{{ i.id }}', '{{ i.first_name }}', '{{ i.last_name }}', '{{ i.useremail }}',
+                                                                                                    '{{ i.user_phone }}', '{{ i.username }}', '{{ i.user_role }}', '{{ i.primary_branch.id }}')" >
+                                                                            <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                                        </a>
+                                                                    </li>
                                                                     <li onclick="confirmDelete('{{i.id}}','user')"><a
                                                                             href="#"
                                                                             class="dropdown-item d-flex align-items-center"><i
@@ -228,22 +244,33 @@
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-                                            {% if user_data|length == 0 %}
-                                            <div id="noDataImage">
-                                                <!-- Your image tag or image source goes here -->
-                                                <img style="width: 40%;" src="{% static 'images/adduser.jpg' %}" alt="No Data Image">
-                                            </div>
-                                            {% endif %}
+                                            
                                         </div>
                                     </div>
                                 </div>
     
                             </div>
+                            {% if user_data|length == 0 %}
+                            <div id="noDataImageUser">
+                                <div class="noDataImage">
+                                <dotlottie-player src="https://lottie.host/0a98ba6b-30c6-4d1e-b897-170959efacb6/kG0ODbiqxV.json"
+                                 background="transparent" speed="1" style="width: 320px; height: 320px; margin-top: -60px;" loop autoplay></dotlottie-player>
+                                </div>
+                                <div class="noDataImage">
+                                <button type="button" style="background-color: green; color: white;"
+                                    class="btn waves-effect waves-light me-0"
+                                    data-bs-toggle="modal" data-bs-target="#add-user" onclick="clearFormUser()">
+                                    <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add User
+                                </button>
+                                </div>
+                                
+                            </div>
+                            {% endif %}
                         </div>
 
                             
-                        <div class="tab-pane" id="Desk-tab" role="tabpanel">
-                            <div class="settings-card">
+                        <div class="tab-pane " id="Desk-tab" role="tabpanel">
+                            <div class="settings-card" id="desk-settings-card" {% if not desk_data %} style="visibility: hidden;" {% endif %}>
                                 <div class="top-header-div">
                                     <h3>Desk</h3>
                                     <div class="top-header-rightbtns">
@@ -255,8 +282,8 @@
                                         </form> -->
                                         <button type="button" style="background-color: green; color: white;"
                                          class="btn waves-effect waves-light me-0"
-                                            data-bs-toggle="modal" data-bs-target="#add-desk">
-                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add Desk
+                                            data-bs-toggle="modal" data-bs-target="#add-desk" onclick="clearForms()">
+                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i>Add Desk
                                         </button>
                                     </div>
                                 </div>
@@ -265,7 +292,7 @@
                                         <table id="desk-table"  class="table table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Sl No</th>
+                                                    <th></th>
                                                     <th>Desk Name</th>
                                                     <th>Branch Name</th>
                                                     <th class="text-right">Action</th>
@@ -275,7 +302,7 @@
                                                 {% for i in desk_data %}
                                                 <tr class="delete_modal{{i.id}}">
 
-                                                    <td>{{forloop.counter}}</td>
+                                                    <td></td>
                                                     <td>{{i.desk_name}}</td>
                                                     <td>{{i.select_branch}}</td>
                                                     <td class="text-right">
@@ -285,11 +312,14 @@
                                                                 <i class="mdi mdi-dots-vertical font-size-18"></i>
                                                             </a>
                                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                                <!-- <li data-bs-toggle="modal"
-                                                                    data-bs-target="#add-desk"><a href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
-                                                                </li> -->
+                                                                <li>
+                                                                    <a href="#" class="dropdown-item d-flex align-items-center" 
+                                                                       onclick="openDeskEditModal('{{ i.id }}', '{{ i.desk_name }}', '{{ i.select_branch.id }}')">
+                                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                                    </a>
+                                                                </li>
+
+                                                                
                                                                 <li onclick="confirmDelete('{{i.id}}','desk')"><a
                                                                         href="#"
                                                                         class="dropdown-item d-flex align-items-center"><i
@@ -302,19 +332,29 @@
                                                 {% endfor %}
                                             </tbody>
                                         </table>
-                                        {% if user_data|length == 0 %}
-                                            <div id="noDataImage">
-                                                <!-- Your image tag or image source goes here -->
-                                                <img height="350px" width="350px" style="width: auto" src="{% static 'images/desk.jpg' %}" alt="No Data Image">
-                                            </div>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
+                            {% if desk_data|length == 0 %}
+                            <div id="noDataImageDesk">
+                                <div class="noDataImage">
+                                <dotlottie-player src="https://lottie.host/d33c94aa-3cb8-40ce-9047-53b4eb81a7e2/bAUC44gPdc.json"
+                                 background="transparent" speed="1"style="width: 320px; height: 320px; margin-top: -60px;" loop autoplay></dotlottie-player>
+                                
+                                </div>
+                                <div class="noDataImage">
+                                <button type="button" style="background-color: green; color: white;"
+                                class="btn waves-effect waves-light me-0"
+                                    data-bs-toggle="modal" data-bs-target="#add-desk" onclick="clearForms()">
+                                    <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add Desk
+                                </button>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
 
-                        <div class="tab-pane" id="opportunity-stages-tab" role="tabpanel">
-                            <div class="settings-card">
+                        <div class="tab-pane active show" id="opportunity-stages-tab" role="tabpanel">
+                            <div class="settings-card" id="branch-settings-card" {% if not data %} style="visibility: hidden;" {% endif %}>
                                 <div class="top-header-div">
                                     <h3>Branches</h3>
                                     <div class="top-header-rightbtns">
@@ -325,7 +365,7 @@
                                             </div>
                                         </form> -->
                                         <button type="button" style="background-color: green; color: white;" class="btn waves-effect waves-light me-0"
-                                            data-bs-toggle="modal" data-bs-target="#add-opportunity">
+                                            data-bs-toggle="modal" data-bs-target="#add-opportunity" onclick="clearFormBranch()">
                                             <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add Branch
                                         </button>
                                     </div>
@@ -335,7 +375,7 @@
                                         <table id="branch-table" class="table table-striped">
                                             <thead>
                                                 <tr>
-                                                    <th>Sl No</th>
+                                                    <th></th>
                                                     <th>Branch Code</th>
                                                     <th>Branch Name</th>
                                                     <th class="text-right">Action</th>
@@ -345,7 +385,7 @@
                                                 {% for i in data %}
                                                 <tr class="delete_modal{{i.id}}">
 
-                                                    <td>{{forloop.counter}}</td>
+                                                    <td></td>
                                                     <td>{{i.branch_code}}</td>
                                                     <td>{{i.name}}</td>
                                                     <td class="text-right">
@@ -355,11 +395,12 @@
                                                                 <i class="mdi mdi-dots-vertical font-size-18"></i>
                                                             </a>
                                                             <ul class="dropdown-menu dropdown-menu-end">
-                                                                <!-- <li data-bs-toggle="modal"
-                                                                    data-bs-target="#add-opportunity"><a href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
-                                                                </li> -->
+                                                                <li data-bs-toggle="modal" data-bs-target="#edit-branch-modal">
+                                                                    <a href="#" class="dropdown-item d-flex align-items-center"
+                                                                       onclick="openEditModal('{{i.id}}', '{{i.name}}', '{{i.branch_code}}', '{{i.country_code}}', '{{i.country_timezone}}')">
+                                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                                    </a>
+                                                                </li>
                                                                 <li onclick="confirmDelete('{{i.id}}','branch')"><a
                                                                         href="#"
                                                                         class="dropdown-item d-flex align-items-center"><i
@@ -372,15 +413,25 @@
                                                 {% endfor %}
                                             </tbody>
                                         </table>
-                                        {% if data|length == 0 %}
-                                            <div id="noDataImage">
-                                                <!-- Your image tag or image source goes here -->
-                                                <img height="350px" width="350px" style="width: auto" src="{% static 'images/branch.jpg' %}" alt="No Data Image">
-                                            </div>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
+                            {% if data|length == 0 %}
+                                
+                            <div id="noDataImage">
+                                <div class="noDataImage"> 
+                                <dotlottie-player src="https://lottie.host/b1792b1f-c157-4528-ba26-c7f445918d08/TpVXWQzF82.lottie"
+                                background="transparent" speed="1" style="width: 320px; height: 320px; margin-top: -60px;" loop autoplay></dotlottie-player>
+                                </div>
+                                <div class="noDataImage">
+                                <button type="button" style="background-color: green; color: white;" class="btn waves-effect waves-light me-0"
+                                                data-bs-toggle="modal" data-bs-target="#add-opportunity" onclick="clearFormBranch()">
+                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add Branch
+                                </button>
+                                </div>
+                            </div>    
+                                
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -395,7 +446,7 @@
                 <form method="post" class="settings_form form_same_user_info" id="user-form" action="{% url 'user-info' %}">
                     {% csrf_token %}
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel"><span>Add User</span></h5>
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>User</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -468,47 +519,140 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-grp inputGroup">
-                            <h6 class="selct-box-head">Primary Branch</h6>
+                        <h6 class="selct-box-head">Primary Branch</h6>
 
-                            <div class="select-inp">
-                                <select class="form-control" name="branch_id" id="branch_id_usr" required>
-                                    <option selected disabled>--select branch--</option>
-                                    {% for i in data %}
-                                    <option value="{{i.id}}">{{i.name}}</option>
-                                    {% endfor %}
-                                </select>
-                                <i class="fas fa-chevron-down"></i>
-                                <div class="error"></div>
-                            </div>
+                        <div class="inputGroup select-inp">
+                            <select class="form-control" name="branch_id" id="branch_id_usr">
+                                <option selected disabled>--select branch--</option>
+                                {% for i in data %}
+                                <option value="{{i.id}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="error"></div>
                         </div>
+                        
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="button" style="background-color: green; color: white;"
                          class="btn text-uppercase br-50 btn-md" id="user-btn" onclick="createUser(event)">Save and New</button>
+                         <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
+                            onclick="saveAndCloseUser()">Save and Close</button>
                         <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                            data-bs-dismiss="modal" onclick="clearForm()">Close</button>
+                            data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>                   
             </div>
         </div>
     </div>
 
-    
+    <div class="modal fade" id="edit-user"  data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+                <form method="post" class="settings_form form_same_user_info" id="edit-user-form">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>Edit User</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="inputGroup form-control">
+                            <input type="text" name="first_name" id="edit_first_name" autocomplete="off" value="{{ user.first_name }}">
+                            <label style="color: black;" class="search-icon" for="name">First Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" name="last_name" id="edit_last_name" autocomplete="off" value="{{ user.last_name }}">
+                            <label style="color: black;" class="search-icon" for="name">Last Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="email" name="user_email" id="edit_user_email" autocomplete="off" value="{{ user.user_email }}">
+                            <label style="color: black;" class="search-icon" for="email">Email</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="number" name="user_phone" id="edit_user_phone" autocomplete="off" value="{{ user.user_phone }}">
+                            <label style="color: black;" class="search-icon" for="number">Phone</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" name="user_name" id="edit_user_name" autocomplete="off" value="{{ user.user_name }}">
+                            <label style="color: black;" class="search-icon" for="name">User Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="row my-3">
+                            <div class="col-lg-6">
+                                <h6 class="selct-box-head">Role</h6>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="Manager" type="radio" name="user_role" {% if user.user_role == 'Manager' %}checked{% endif %}>
+                                        <label class="form-check-label" for="formRadios2">
+                                            Manager
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" value="Staff" type="radio" name="user_role" {% if user.user_role == 'Staff' %}checked{% endif %}>
+                                        <label class="form-check-label" for="formRadios1">
+                                            Staff
+                                        </label>
+                                    </div>
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" value="Host" type="radio" name="user_role" {% if user.user_role == 'Host' %}checked{% endif %}>
+                                        <label class="form-check-label" for="formRadios1">
+                                            Host
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h6 class="selct-box-head">Primary Branch</h6>
+                        <div class="inputGroup select-inp">
+                            <select class="form-control" name="branch_id" id="edit_branch_id_usr">
+                                <option selected disabled>--select branch--</option>
+                                {% for i in data %}
+                                <option value="{{i.id}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="error"></div>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md" onclick="updateUser(event)">Update</button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>                   
+            </div>
+        </div>
+    </div>
+
+
 
     <div class="modal fade" style="border-radius: 10px;" id="add-opportunity" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel"><span>Branch</span></h5>
+                    <h5 class="modal-title" id="staticBackdropLabel"><span id="modal-title">Branch</span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>                    
+                </div>
                 <div class="modal-body">
-                    <form method="post" class="settings_form form_same_branch update_table" id="branch-form" action="{% url 'create-branch' %}">
+                    <form method="post" id="branch-form" action="{% url 'create-branch' %}">
                         {% csrf_token %}
+                        <input type="hidden" name="branch_id" id="branch_id" value="">
+                        
                         <div class="inputGroup form-control">
-
                             <input type="text" name="name" id="name" autocomplete="off">
                             <label style="color: black;" class="search-icon" for="name">Name</label>
                             <div  class="error"></div>
@@ -529,26 +673,904 @@
 
                         <div class="form-group">
                             <label for="timezoneSelect">Select Timezone:</label>
-                            <select class="form-control" id="timezoneSelect" name="timezone">
-                                <option value="UTC">UTC</option>
-                                <option value="America/New_York">America/New_York</option>
-                                <option value="America/Los_Angeles">America/Los_Angeles</option>
-                                <option value="Asia/Kolkata">Asia/Kolkata</option>
-                                <option value="Asia/Tokyo">Asia/Tokyo</option>
-                                <option value="Asia/Shanghai">Asia/Shanghai</option>
-                                <option value="Asia/Singapore">Asia/Singapore</option>
-                                <option value="Asia/Dubai">Asia/Dubai</option>
-                                <option value="Asia/Hong_Kong">Asia/Hong_Kong</option>
-                                <option value="Europe/London">Europe/London</option>
-                                <option value="Europe/Paris">Europe/Paris</option>
-                                <!-- Add more timezone options as needed -->
+                            <select class="form-control" id="timezoneSelect" name="country_timezone">
+                                <option value="Africa/Abidjan" >(GMT) Africa, Abidjan, GMT</option>
+                            <option value="Africa/Accra" >(GMT) Africa, Accra, GMT</option>
+                            <option value="Africa/Addis_Ababa" >(GMT+03:00) Africa, Addis Ababa, EAT</option>
+                            <option value="Africa/Algiers" >(GMT+01:00) Africa, Algiers, CET</option>
+                            <option value="Africa/Asmara" >(GMT+03:00) Africa, Asmara, EAT</option>
+                            <option value="Africa/Bamako" >(GMT) Africa, Bamako, GMT</option>
+                            <option value="Africa/Bangui" >(GMT+01:00) Africa, Bangui, WAT</option>
+                            <option value="Africa/Banjul" >(GMT) Africa, Banjul, GMT</option>
+                            <option value="Africa/Bissau" >(GMT) Africa, Bissau, GMT</option>
+                            <option value="Africa/Blantyre" >(GMT+02:00) Africa, Blantyre, CAT</option>
+                            <option value="Africa/Brazzaville" >(GMT+01:00) Africa, Brazzaville, WAT</option>
+                            <option value="Africa/Bujumbura" >(GMT+02:00) Africa, Bujumbura, CAT</option>
+                            <option value="Africa/Cairo" >(GMT+02:00) Africa, Cairo, EET</option>
+                            <option value="Africa/Casablanca" >(GMT+01:00) Africa, Casablanca, +01</option>
+                            <option value="Africa/Ceuta" >(GMT+01:00) Africa, Ceuta, CET</option>
+                            <option value="Africa/Conakry" >(GMT) Africa, Conakry, GMT</option>
+                            <option value="Africa/Dakar" >(GMT) Africa, Dakar, GMT</option>
+                            <option value="Africa/Dar_es_Salaam" >(GMT+03:00) Africa, Dar es Salaam, EAT</option>
+                            <option value="Africa/Djibouti" >(GMT+03:00) Africa, Djibouti, EAT</option>
+                            <option value="Africa/Douala" >(GMT+01:00) Africa, Douala, WAT</option>
+                            <option value="Africa/El_Aaiun" >(GMT+01:00) Africa, El Aaiun, +01</option>
+                            <option value="Africa/Freetown" >(GMT) Africa, Freetown, GMT</option>
+                            <option value="Africa/Gaborone" >(GMT+02:00) Africa, Gaborone, CAT</option>
+                            <option value="Africa/Harare" >(GMT+02:00) Africa, Harare, CAT</option>
+                            <option value="Africa/Johannesburg" >(GMT+02:00) Africa, Johannesburg, SAST</option>
+                            <option value="Africa/Juba" >(GMT+02:00) Africa, Juba, CAT</option>
+                            <option value="Africa/Kampala" >(GMT+03:00) Africa, Kampala, EAT</option>
+                            <option value="Africa/Khartoum" >(GMT+02:00) Africa, Khartoum, CAT</option>
+                            <option value="Africa/Kigali" >(GMT+02:00) Africa, Kigali, CAT</option>
+                            <option value="Africa/Kinshasa" >(GMT+01:00) Africa, Kinshasa, WAT</option>
+                            <option value="Africa/Lagos" >(GMT+01:00) Africa, Lagos, WAT</option>
+                            <option value="Africa/Libreville" >(GMT+01:00) Africa, Libreville, WAT</option>
+                            <option value="Africa/Lome" >(GMT) Africa, Lome, GMT</option>
+                            <option value="Africa/Luanda" >(GMT+01:00) Africa, Luanda, WAT</option>
+                            <option value="Africa/Lubumbashi" >(GMT+02:00) Africa, Lubumbashi, CAT</option>
+                            <option value="Africa/Lusaka" >(GMT+02:00) Africa, Lusaka, CAT</option>
+                            <option value="Africa/Malabo" >(GMT+01:00) Africa, Malabo, WAT</option>
+                            <option value="Africa/Maputo" >(GMT+02:00) Africa, Maputo, CAT</option>
+                            <option value="Africa/Maseru" >(GMT+02:00) Africa, Maseru, SAST</option>
+                            <option value="Africa/Mbabane" >(GMT+02:00) Africa, Mbabane, SAST</option>
+                            <option value="Africa/Mogadishu" >(GMT+03:00) Africa, Mogadishu, EAT</option>
+                            <option value="Africa/Monrovia" >(GMT) Africa, Monrovia, GMT</option>
+                            <option value="Africa/Nairobi" >(GMT+03:00) Africa, Nairobi, EAT</option>
+                            <option value="Africa/Ndjamena" >(GMT+01:00) Africa, Ndjamena, WAT</option>
+                            <option value="Africa/Niamey" >(GMT+01:00) Africa, Niamey, WAT</option>
+                            <option value="Africa/Nouakchott" >(GMT) Africa, Nouakchott, GMT</option>
+                            <option value="Africa/Ouagadougou" >(GMT) Africa, Ouagadougou, GMT</option>
+                            <option value="Africa/Porto-Novo" >(GMT+01:00) Africa, Porto-Novo, WAT</option>
+                            <option value="Africa/Sao_Tome" >(GMT) Africa, Sao Tome, GMT</option>
+                            <option value="Africa/Tripoli" >(GMT+02:00) Africa, Tripoli, EET</option>
+                            <option value="Africa/Tunis" >(GMT+01:00) Africa, Tunis, CET</option>
+                            <option value="Africa/Windhoek" >(GMT+02:00) Africa, Windhoek, CAT</option>
+                            <option value="America/Adak" >(GMT-10:00) America, Adak, HST</option>
+                            <option value="America/Anchorage" >(GMT-09:00) America, Anchorage, AKST</option>
+                            <option value="America/Anguilla" >(GMT-04:00) America, Anguilla, AST</option>
+                            <option value="America/Antigua" >(GMT-04:00) America, Antigua, AST</option>
+                            <option value="America/Araguaina" >(GMT-03:00) America, Araguaina, -03</option>
+                            <option value="America/Argentina/Buenos_Aires" >(GMT-03:00) America, Argentina, Buenos Aires, -03</option>
+                            <option value="America/Argentina/Catamarca" >(GMT-03:00) America, Argentina, Catamarca, -03</option>
+                            <option value="America/Argentina/Cordoba" >(GMT-03:00) America, Argentina, Cordoba, -03</option>
+                            <option value="America/Argentina/Jujuy" >(GMT-03:00) America, Argentina, Jujuy, -03</option>
+                            <option value="America/Argentina/La_Rioja" >(GMT-03:00) America, Argentina, La Rioja, -03</option>
+                            <option value="America/Argentina/Mendoza" >(GMT-03:00) America, Argentina, Mendoza, -03</option>
+                            <option value="America/Argentina/Rio_Gallegos" >(GMT-03:00) America, Argentina, Rio Gallegos, -03</option>
+                            <option value="America/Argentina/Salta" >(GMT-03:00) America, Argentina, Salta, -03</option>
+                            <option value="America/Argentina/San_Juan" >(GMT-03:00) America, Argentina, San Juan, -03</option>
+                            <option value="America/Argentina/San_Luis" >(GMT-03:00) America, Argentina, San Luis, -03</option>
+                            <option value="America/Argentina/Tucuman" >(GMT-03:00) America, Argentina, Tucuman, -03</option>
+                            <option value="America/Argentina/Ushuaia" >(GMT-03:00) America, Argentina, Ushuaia, -03</option>
+                            <option value="America/Aruba" >(GMT-04:00) America, Aruba, AST</option>
+                            <option value="America/Asuncion" >(GMT-03:00) America, Asuncion, -03</option>
+                            <option value="America/Atikokan" >(GMT-05:00) America, Atikokan, EST</option>
+                            <option value="America/Bahia" >(GMT-03:00) America, Bahia, -03</option>
+                            <option value="America/Bahia_Banderas" >(GMT-06:00) America, Bahia Banderas, CST</option>
+                            <option value="America/Barbados" >(GMT-04:00) America, Barbados, AST</option>
+                            <option value="America/Belem" >(GMT-03:00) America, Belem, -03</option>
+                            <option value="America/Belize" >(GMT-06:00) America, Belize, CST</option>
+                            <option value="America/Blanc-Sablon" >(GMT-04:00) America, Blanc-Sablon, AST</option>
+                            <option value="America/Boa_Vista" >(GMT-04:00) America, Boa Vista, -04</option>
+                            <option value="America/Bogota" >(GMT-05:00) America, Bogota, -05</option>
+                            <option value="America/Boise" >(GMT-07:00) America, Boise, MST</option>
+                            <option value="America/Cambridge_Bay" >(GMT-07:00) America, Cambridge Bay, MST</option>
+                            <option value="America/Campo_Grande" >(GMT-04:00) America, Campo Grande, -04</option>
+                            <option value="America/Cancun" >(GMT-05:00) America, Cancun, EST</option>
+                            <option value="America/Caracas" >(GMT-04:00) America, Caracas, -04</option>
+                            <option value="America/Cayenne" >(GMT-03:00) America, Cayenne, -03</option>
+                            <option value="America/Cayman" >(GMT-05:00) America, Cayman, EST</option>
+                            <option value="America/Chicago" >(GMT-06:00) America, Chicago, CST</option>
+                            <option value="America/Chihuahua" >(GMT-06:00) America, Chihuahua, CST</option>
+                            <option value="America/Ciudad_Juarez" >(GMT-07:00) America, Ciudad Juarez, MST</option>
+                            <option value="America/Costa_Rica" >(GMT-06:00) America, Costa Rica, CST</option>
+                            <option value="America/Creston" >(GMT-07:00) America, Creston, MST</option>
+                            <option value="America/Cuiaba" >(GMT-04:00) America, Cuiaba, -04</option>
+                            <option value="America/Curacao" >(GMT-04:00) America, Curacao, AST</option>
+                            <option value="America/Danmarkshavn" >(GMT) America, Danmarkshavn, GMT</option>
+                            <option value="America/Dawson" >(GMT-07:00) America, Dawson, MST</option>
+                            <option value="America/Dawson_Creek" >(GMT-07:00) America, Dawson Creek, MST</option>
+                            <option value="America/Denver" >(GMT-07:00) America, Denver, MST</option>
+                            <option value="America/Detroit" >(GMT-05:00) America, Detroit, EST</option>
+                            <option value="America/Dominica" >(GMT-04:00) America, Dominica, AST</option>
+                            <option value="America/Edmonton" >(GMT-07:00) America, Edmonton, MST</option>
+                            <option value="America/Eirunepe" >(GMT-05:00) America, Eirunepe, -05</option>
+                            <option value="America/El_Salvador" >(GMT-06:00) America, El Salvador, CST</option>
+                            <option value="America/Fort_Nelson" >(GMT-07:00) America, Fort Nelson, MST</option>
+                            <option value="America/Fortaleza" >(GMT-03:00) America, Fortaleza, -03</option>
+                            <option value="America/Glace_Bay" >(GMT-04:00) America, Glace Bay, AST</option>
+                            <option value="America/Goose_Bay" >(GMT-04:00) America, Goose Bay, AST</option>
+                            <option value="America/Grand_Turk" >(GMT-05:00) America, Grand Turk, EST</option>
+                            <option value="America/Grenada" >(GMT-04:00) America, Grenada, AST</option>
+                            <option value="America/Guadeloupe" >(GMT-04:00) America, Guadeloupe, AST</option>
+                            <option value="America/Guatemala" >(GMT-06:00) America, Guatemala, CST</option>
+                            <option value="America/Guayaquil" >(GMT-05:00) America, Guayaquil, -05</option>
+                            <option value="America/Guyana" >(GMT-04:00) America, Guyana, -04</option>
+                            <option value="America/Halifax" >(GMT-04:00) America, Halifax, AST</option>
+                            <option value="America/Havana" >(GMT-05:00) America, Havana, CST</option>
+                            <option value="America/Hermosillo" >(GMT-07:00) America, Hermosillo, MST</option>
+                            <option value="America/Indiana/Indianapolis" >(GMT-05:00) America, Indiana, Indianapolis, EST</option>
+                            <option value="America/Indiana/Knox" >(GMT-06:00) America, Indiana, Knox, CST</option>
+                            <option value="America/Indiana/Marengo" >(GMT-05:00) America, Indiana, Marengo, EST</option>
+                            <option value="America/Indiana/Petersburg" >(GMT-05:00) America, Indiana, Petersburg, EST</option>
+                            <option value="America/Indiana/Tell_City" >(GMT-06:00) America, Indiana, Tell City, CST</option>
+                            <option value="America/Indiana/Vevay" >(GMT-05:00) America, Indiana, Vevay, EST</option>
+                            <option value="America/Indiana/Vincennes" >(GMT-05:00) America, Indiana, Vincennes, EST</option>
+                            <option value="America/Indiana/Winamac" >(GMT-05:00) America, Indiana, Winamac, EST</option>
+                            <option value="America/Inuvik" >(GMT-07:00) America, Inuvik, MST</option>
+                            <option value="America/Iqaluit" >(GMT-05:00) America, Iqaluit, EST</option>
+                            <option value="America/Jamaica" >(GMT-05:00) America, Jamaica, EST</option>
+                            <option value="America/Juneau" >(GMT-09:00) America, Juneau, AKST</option>
+                            <option value="America/Kentucky/Louisville" >(GMT-05:00) America, Kentucky, Louisville, EST</option>
+                            <option value="America/Kentucky/Monticello" >(GMT-05:00) America, Kentucky, Monticello, EST</option>
+                            <option value="America/Kralendijk" >(GMT-04:00) America, Kralendijk, AST</option>
+                            <option value="America/La_Paz" >(GMT-04:00) America, La Paz, -04</option>
+                            <option value="America/Lima" >(GMT-05:00) America, Lima, -05</option>
+                            <option value="America/Los_Angeles" >(GMT-08:00) America, Los Angeles, PST</option>
+                            <option value="America/Lower_Princes" >(GMT-04:00) America, Lower Princes, AST</option>
+                            <option value="America/Maceio" >(GMT-03:00) America, Maceio, -03</option>
+                            <option value="America/Managua" >(GMT-06:00) America, Managua, CST</option>
+                            <option value="America/Manaus" >(GMT-04:00) America, Manaus, -04</option>
+                            <option value="America/Marigot" >(GMT-04:00) America, Marigot, AST</option>
+                            <option value="America/Martinique" >(GMT-04:00) America, Martinique, AST</option>
+                            <option value="America/Matamoros" >(GMT-06:00) America, Matamoros, CST</option>
+                            <option value="America/Mazatlan" >(GMT-07:00) America, Mazatlan, MST</option>
+                            <option value="America/Menominee" >(GMT-06:00) America, Menominee, CST</option>
+                            <option value="America/Merida" >(GMT-06:00) America, Merida, CST</option>
+                            <option value="America/Metlakatla" >(GMT-09:00) America, Metlakatla, AKST</option>
+                            <option value="America/Mexico_City" >(GMT-06:00) America, Mexico City, CST</option>
+                            <option value="America/Miquelon" >(GMT-03:00) America, Miquelon, -03</option>
+                            <option value="America/Moncton" >(GMT-04:00) America, Moncton, AST</option>
+                            <option value="America/Monterrey" >(GMT-06:00) America, Monterrey, CST</option>
+                            <option value="America/Montevideo" >(GMT-03:00) America, Montevideo, -03</option>
+                            <option value="America/Montserrat" >(GMT-04:00) America, Montserrat, AST</option>
+                            <option value="America/Nassau" >(GMT-05:00) America, Nassau, EST</option>
+                            <option value="America/New_York" >(GMT-05:00) America, New York, EST</option>
+                            <option value="America/Nome" >(GMT-09:00) America, Nome, AKST</option>
+                            <option value="America/Noronha" >(GMT-02:00) America, Noronha, -02</option>
+                            <option value="America/North_Dakota/Beulah" >(GMT-06:00) America, North Dakota, Beulah, CST</option>
+                            <option value="America/North_Dakota/Center" >(GMT-06:00) America, North Dakota, Center, CST</option>
+                            <option value="America/North_Dakota/New_Salem" >(GMT-06:00) America, North Dakota, New Salem, CST</option>
+                            <option value="America/Nuuk" >(GMT-02:00) America, Nuuk, -02</option>
+                            <option value="America/Ojinaga" >(GMT-06:00) America, Ojinaga, CST</option>
+                            <option value="America/Panama" >(GMT-05:00) America, Panama, EST</option>
+                            <option value="America/Paramaribo" >(GMT-03:00) America, Paramaribo, -03</option>
+                            <option value="America/Phoenix" >(GMT-07:00) America, Phoenix, MST</option>
+                            <option value="America/Port-au-Prince" >(GMT-05:00) America, Port-au-Prince, EST</option>
+                            <option value="America/Port_of_Spain" >(GMT-04:00) America, Port of Spain, AST</option>
+                            <option value="America/Porto_Velho" >(GMT-04:00) America, Porto Velho, -04</option>
+                            <option value="America/Puerto_Rico" >(GMT-04:00) America, Puerto Rico, AST</option>
+                            <option value="America/Punta_Arenas" >(GMT-03:00) America, Punta Arenas, -03</option>
+                            <option value="America/Rankin_Inlet" >(GMT-06:00) America, Rankin Inlet, CST</option>
+                            <option value="America/Recife" >(GMT-03:00) America, Recife, -03</option>
+                            <option value="America/Regina" >(GMT-06:00) America, Regina, CST</option>
+                            <option value="America/Resolute" >(GMT-06:00) America, Resolute, CST</option>
+                            <option value="America/Rio_Branco" >(GMT-05:00) America, Rio Branco, -05</option>
+                            <option value="America/Santarem" >(GMT-03:00) America, Santarem, -03</option>
+                            <option value="America/Santiago" >(GMT-03:00) America, Santiago, -03</option>
+                            <option value="America/Santo_Domingo" >(GMT-04:00) America, Santo Domingo, AST</option>
+                            <option value="America/Sao_Paulo" >(GMT-03:00) America, Sao Paulo, -03</option>
+                            <option value="America/Scoresbysund" >(GMT-01:00) America, Scoresbysund, -01</option>
+                            <option value="America/Sitka" >(GMT-09:00) America, Sitka, AKST</option>
+                            <option value="America/St_Barthelemy" >(GMT-04:00) America, St. Barthelemy, AST</option>
+                            <option value="America/St_Johns" >(GMT-03:30) America, St. Johns, NST</option>
+                            <option value="America/St_Kitts" >(GMT-04:00) America, St. Kitts, AST</option>
+                            <option value="America/St_Lucia" >(GMT-04:00) America, St. Lucia, AST</option>
+                            <option value="America/St_Thomas" >(GMT-04:00) America, St. Thomas, AST</option>
+                            <option value="America/St_Vincent" >(GMT-04:00) America, St. Vincent, AST</option>
+                            <option value="America/Swift_Current" >(GMT-06:00) America, Swift Current, CST</option>
+                            <option value="America/Tegucigalpa" >(GMT-06:00) America, Tegucigalpa, CST</option>
+                            <option value="America/Thule" >(GMT-04:00) America, Thule, AST</option>
+                            <option value="America/Tijuana" >(GMT-08:00) America, Tijuana, PST</option>
+                            <option value="America/Toronto" >(GMT-05:00) America, Toronto, EST</option>
+                            <option value="America/Tortola" >(GMT-04:00) America, Tortola, AST</option>
+                            <option value="America/Vancouver" >(GMT-08:00) America, Vancouver, PST</option>
+                            <option value="America/Whitehorse" >(GMT-07:00) America, Whitehorse, MST</option>
+                            <option value="America/Winnipeg" >(GMT-06:00) America, Winnipeg, CST</option>
+                            <option value="America/Yakutat" >(GMT-09:00) America, Yakutat, AKST</option>
+                            <option value="Antarctica/Casey" >(GMT+11:00) Antarctica, Casey, +11</option>
+                            <option value="Antarctica/Davis" >(GMT+07:00) Antarctica, Davis, +07</option>
+                            <option value="Antarctica/DumontDUrville" >(GMT+10:00) Antarctica, DumontDUrville, +10</option>
+                            <option value="Antarctica/Macquarie" >(GMT+11:00) Antarctica, Macquarie, AEDT</option>
+                            <option value="Antarctica/Mawson" >(GMT+05:00) Antarctica, Mawson, +05</option>
+                            <option value="Antarctica/McMurdo" >(GMT+13:00) Antarctica, McMurdo, NZDT</option>
+                            <option value="Antarctica/Palmer" >(GMT-03:00) Antarctica, Palmer, -03</option>
+                            <option value="Antarctica/Rothera" >(GMT-03:00) Antarctica, Rothera, -03</option>
+                            <option value="Antarctica/Syowa" >(GMT+03:00) Antarctica, Syowa, +03</option>
+                            <option value="Antarctica/Troll" >(GMT) Antarctica, Troll, +00</option>
+                            <option value="Antarctica/Vostok" >(GMT+06:00) Antarctica, Vostok, +06</option>
+                            <option value="Arctic/Longyearbyen" >(GMT+01:00) Arctic, Longyearbyen, CET</option>
+                            <option value="Asia/Aden" >(GMT+03:00) Asia, Aden, +03</option>
+                            <option value="Asia/Almaty" >(GMT+06:00) Asia, Almaty, +06</option>
+                            <option value="Asia/Amman" >(GMT+03:00) Asia, Amman, +03</option>
+                            <option value="Asia/Anadyr" >(GMT+12:00) Asia, Anadyr, +12</option>
+                            <option value="Asia/Aqtau" >(GMT+05:00) Asia, Aqtau, +05</option>
+                            <option value="Asia/Aqtobe" >(GMT+05:00) Asia, Aqtobe, +05</option>
+                            <option value="Asia/Ashgabat" >(GMT+05:00) Asia, Ashgabat, +05</option>
+                            <option value="Asia/Atyrau" >(GMT+05:00) Asia, Atyrau, +05</option>
+                            <option value="Asia/Baghdad" >(GMT+03:00) Asia, Baghdad, +03</option>
+                            <option value="Asia/Bahrain" >(GMT+03:00) Asia, Bahrain, +03</option>
+                            <option value="Asia/Baku" >(GMT+04:00) Asia, Baku, +04</option>
+                            <option value="Asia/Bangkok" >(GMT+07:00) Asia, Bangkok, +07</option>
+                            <option value="Asia/Barnaul" >(GMT+07:00) Asia, Barnaul, +07</option>
+                            <option value="Asia/Beirut" >(GMT+02:00) Asia, Beirut, EET</option>
+                            <option value="Asia/Bishkek" >(GMT+06:00) Asia, Bishkek, +06</option>
+                            <option value="Asia/Brunei" >(GMT+08:00) Asia, Brunei, +08</option>
+                            <option value="Asia/Chita" >(GMT+09:00) Asia, Chita, +09</option>
+                            <option value="Asia/Choibalsan" >(GMT+08:00) Asia, Choibalsan, +08</option>
+                            <option value="Asia/Colombo" >(GMT+05:30) Asia, Colombo, +0530</option>
+                            <option value="Asia/Damascus" >(GMT+03:00) Asia, Damascus, +03</option>
+                            <option value="Asia/Dhaka" >(GMT+06:00) Asia, Dhaka, +06</option>
+                            <option value="Asia/Dili" >(GMT+09:00) Asia, Dili, +09</option>
+                            <option value="Asia/Dubai" >(GMT+04:00) Asia, Dubai, +04</option>
+                            <option value="Asia/Dushanbe" >(GMT+05:00) Asia, Dushanbe, +05</option>
+                            <option value="Asia/Famagusta" >(GMT+02:00) Asia, Famagusta, EET</option>
+                            <option value="Asia/Gaza" >(GMT+02:00) Asia, Gaza, EET</option>
+                            <option value="Asia/Hebron" >(GMT+02:00) Asia, Hebron, EET</option>
+                            <option value="Asia/Ho_Chi_Minh" >(GMT+07:00) Asia, Ho Chi Minh, +07</option>
+                            <option value="Asia/Hong_Kong" >(GMT+08:00) Asia, Hong Kong, HKT</option>
+                            <option value="Asia/Hovd" >(GMT+07:00) Asia, Hovd, +07</option>
+                            <option value="Asia/Irkutsk" >(GMT+08:00) Asia, Irkutsk, +08</option>
+                            <option value="Asia/Jakarta" >(GMT+07:00) Asia, Jakarta, WIB</option>
+                            <option value="Asia/Jayapura" >(GMT+09:00) Asia, Jayapura, WIT</option>
+                            <option value="Asia/Jerusalem" >(GMT+02:00) Asia, Jerusalem, IST</option>
+                            <option value="Asia/Kabul" >(GMT+04:30) Asia, Kabul, +0430</option>
+                            <option value="Asia/Kamchatka" >(GMT+12:00) Asia, Kamchatka, +12</option>
+                            <option value="Asia/Karachi" >(GMT+05:00) Asia, Karachi, PKT</option>
+                            <option value="Asia/Kathmandu" >(GMT+05:45) Asia, Kathmandu, +0545</option>
+                            <option value="Asia/Khandyga" >(GMT+09:00) Asia, Khandyga, +09</option>
+                            <option value="Asia/Kolkata"  selected >(GMT+05:30) Asia, Kolkata, IST</option>
+                            <option value="Asia/Krasnoyarsk" >(GMT+07:00) Asia, Krasnoyarsk, +07</option>
+                            <option value="Asia/Kuala_Lumpur" >(GMT+08:00) Asia, Kuala Lumpur, +08</option>
+                            <option value="Asia/Kuching" >(GMT+08:00) Asia, Kuching, +08</option>
+                            <option value="Asia/Kuwait" >(GMT+03:00) Asia, Kuwait, +03</option>
+                            <option value="Asia/Macau" >(GMT+08:00) Asia, Macau, CST</option>
+                            <option value="Asia/Magadan" >(GMT+11:00) Asia, Magadan, +11</option>
+                            <option value="Asia/Makassar" >(GMT+08:00) Asia, Makassar, WITA</option>
+                            <option value="Asia/Manila" >(GMT+08:00) Asia, Manila, PST</option>
+                            <option value="Asia/Muscat" >(GMT+04:00) Asia, Muscat, +04</option>
+                            <option value="Asia/Nicosia" >(GMT+02:00) Asia, Nicosia, EET</option>
+                            <option value="Asia/Novokuznetsk" >(GMT+07:00) Asia, Novokuznetsk, +07</option>
+                            <option value="Asia/Novosibirsk" >(GMT+07:00) Asia, Novosibirsk, +07</option>
+                            <option value="Asia/Omsk" >(GMT+06:00) Asia, Omsk, +06</option>
+                            <option value="Asia/Oral" >(GMT+05:00) Asia, Oral, +05</option>
+                            <option value="Asia/Phnom_Penh" >(GMT+07:00) Asia, Phnom Penh, +07</option>
+                            <option value="Asia/Pontianak" >(GMT+07:00) Asia, Pontianak, WIB</option>
+                            <option value="Asia/Pyongyang" >(GMT+09:00) Asia, Pyongyang, KST</option>
+                            <option value="Asia/Qatar" >(GMT+03:00) Asia, Qatar, +03</option>
+                            <option value="Asia/Qostanay" >(GMT+06:00) Asia, Qostanay, +06</option>
+                            <option value="Asia/Qyzylorda" >(GMT+05:00) Asia, Qyzylorda, +05</option>
+                            <option value="Asia/Riyadh" >(GMT+03:00) Asia, Riyadh, +03</option>
+                            <option value="Asia/Sakhalin" >(GMT+11:00) Asia, Sakhalin, +11</option>
+                            <option value="Asia/Samarkand" >(GMT+05:00) Asia, Samarkand, +05</option>
+                            <option value="Asia/Seoul" >(GMT+09:00) Asia, Seoul, KST</option>
+                            <option value="Asia/Shanghai" >(GMT+08:00) Asia, Shanghai, CST</option>
+                            <option value="Asia/Singapore" >(GMT+08:00) Asia, Singapore, +08</option>
+                            <option value="Asia/Srednekolymsk" >(GMT+11:00) Asia, Srednekolymsk, +11</option>
+                            <option value="Asia/Taipei" >(GMT+08:00) Asia, Taipei, CST</option>
+                            <option value="Asia/Tashkent" >(GMT+05:00) Asia, Tashkent, +05</option>
+                            <option value="Asia/Tbilisi" >(GMT+04:00) Asia, Tbilisi, +04</option>
+                            <option value="Asia/Tehran" >(GMT+03:30) Asia, Tehran, +0330</option>
+                            <option value="Asia/Thimphu" >(GMT+06:00) Asia, Thimphu, +06</option>
+                            <option value="Asia/Tokyo" >(GMT+09:00) Asia, Tokyo, JST</option>
+                            <option value="Asia/Tomsk" >(GMT+07:00) Asia, Tomsk, +07</option>
+                            <option value="Asia/Ulaanbaatar" >(GMT+08:00) Asia, Ulaanbaatar, +08</option>
+                            <option value="Asia/Urumqi" >(GMT+06:00) Asia, Urumqi, +06</option>
+                            <option value="Asia/Ust-Nera" >(GMT+10:00) Asia, Ust-Nera, +10</option>
+                            <option value="Asia/Vientiane" >(GMT+07:00) Asia, Vientiane, +07</option>
+                            <option value="Asia/Vladivostok" >(GMT+10:00) Asia, Vladivostok, +10</option>
+                            <option value="Asia/Yakutsk" >(GMT+09:00) Asia, Yakutsk, +09</option>
+                            <option value="Asia/Yangon" >(GMT+06:30) Asia, Yangon, +0630</option>
+                            <option value="Asia/Yekaterinburg" >(GMT+05:00) Asia, Yekaterinburg, +05</option>
+                            <option value="Asia/Yerevan" >(GMT+04:00) Asia, Yerevan, +04</option>
+                            <option value="Atlantic/Azores" >(GMT-01:00) Atlantic, Azores, -01</option>
+                            <option value="Atlantic/Bermuda" >(GMT-04:00) Atlantic, Bermuda, AST</option>
+                            <option value="Atlantic/Canary" >(GMT) Atlantic, Canary, WET</option>
+                            <option value="Atlantic/Cape_Verde" >(GMT-01:00) Atlantic, Cape Verde, -01</option>
+                            <option value="Atlantic/Faroe" >(GMT) Atlantic, Faroe, WET</option>
+                            <option value="Atlantic/Madeira" >(GMT) Atlantic, Madeira, WET</option>
+                            <option value="Atlantic/Reykjavik" >(GMT) Atlantic, Reykjavik, GMT</option>
+                            <option value="Atlantic/South_Georgia" >(GMT-02:00) Atlantic, South Georgia, -02</option>
+                            <option value="Atlantic/St_Helena" >(GMT) Atlantic, St. Helena, GMT</option>
+                            <option value="Atlantic/Stanley" >(GMT-03:00) Atlantic, Stanley, -03</option>
+                            <option value="Australia/Adelaide" >(GMT+10:30) Australia, Adelaide, ACDT</option>
+                            <option value="Australia/Brisbane" >(GMT+10:00) Australia, Brisbane, AEST</option>
+                            <option value="Australia/Broken_Hill" >(GMT+10:30) Australia, Broken Hill, ACDT</option>
+                            <option value="Australia/Darwin" >(GMT+09:30) Australia, Darwin, ACST</option>
+                            <option value="Australia/Eucla" >(GMT+08:45) Australia, Eucla, +0845</option>
+                            <option value="Australia/Hobart" >(GMT+11:00) Australia, Hobart, AEDT</option>
+                            <option value="Australia/Lindeman" >(GMT+10:00) Australia, Lindeman, AEST</option>
+                            <option value="Australia/Lord_Howe" >(GMT+11:00) Australia, Lord Howe, +11</option>
+                            <option value="Australia/Melbourne" >(GMT+11:00) Australia, Melbourne, AEDT</option>
+                            <option value="Australia/Perth" >(GMT+08:00) Australia, Perth, AWST</option>
+                            <option value="Australia/Sydney" >(GMT+11:00) Australia, Sydney, AEDT</option>
+                            <option value="Europe/Amsterdam" >(GMT+01:00) Europe, Amsterdam, CET</option>
+                            <option value="Europe/Andorra" >(GMT+01:00) Europe, Andorra, CET</option>
+                            <option value="Europe/Astrakhan" >(GMT+04:00) Europe, Astrakhan, +04</option>
+                            <option value="Europe/Athens" >(GMT+02:00) Europe, Athens, EET</option>
+                            <option value="Europe/Belgrade" >(GMT+01:00) Europe, Belgrade, CET</option>
+                            <option value="Europe/Berlin" >(GMT+01:00) Europe, Berlin, CET</option>
+                            <option value="Europe/Bratislava" >(GMT+01:00) Europe, Bratislava, CET</option>
+                            <option value="Europe/Brussels" >(GMT+01:00) Europe, Brussels, CET</option>
+                            <option value="Europe/Bucharest" >(GMT+02:00) Europe, Bucharest, EET</option>
+                            <option value="Europe/Budapest" >(GMT+01:00) Europe, Budapest, CET</option>
+                            <option value="Europe/Busingen" >(GMT+01:00) Europe, Busingen, CET</option>
+                            <option value="Europe/Chisinau" >(GMT+02:00) Europe, Chisinau, EET</option>
+                            <option value="Europe/Copenhagen" >(GMT+01:00) Europe, Copenhagen, CET</option>
+                            <option value="Europe/Dublin" >(GMT) Europe, Dublin, GMT</option>
+                            <option value="Europe/Gibraltar" >(GMT+01:00) Europe, Gibraltar, CET</option>
+                            <option value="Europe/Guernsey" >(GMT) Europe, Guernsey, GMT</option>
+                            <option value="Europe/Helsinki" >(GMT+02:00) Europe, Helsinki, EET</option>
+                            <option value="Europe/Isle_of_Man" >(GMT) Europe, Isle of Man, GMT</option>
+                            <option value="Europe/Istanbul" >(GMT+03:00) Europe, Istanbul, +03</option>
+                            <option value="Europe/Jersey" >(GMT) Europe, Jersey, GMT</option>
+                            <option value="Europe/Kaliningrad" >(GMT+02:00) Europe, Kaliningrad, EET</option>
+                            <option value="Europe/Kirov" >(GMT+03:00) Europe, Kirov, MSK</option>
+                            <option value="Europe/Kyiv" >(GMT+02:00) Europe, Kyiv, EET</option>
+                            <option value="Europe/Lisbon" >(GMT) Europe, Lisbon, WET</option>
+                            <option value="Europe/Ljubljana" >(GMT+01:00) Europe, Ljubljana, CET</option>
+                            <option value="Europe/London" >(GMT) Europe, London, GMT</option>
+                            <option value="Europe/Luxembourg" >(GMT+01:00) Europe, Luxembourg, CET</option>
+                            <option value="Europe/Madrid" >(GMT+01:00) Europe, Madrid, CET</option>
+                            <option value="Europe/Malta" >(GMT+01:00) Europe, Malta, CET</option>
+                            <option value="Europe/Mariehamn" >(GMT+02:00) Europe, Mariehamn, EET</option>
+                            <option value="Europe/Minsk" >(GMT+03:00) Europe, Minsk, +03</option>
+                            <option value="Europe/Monaco" >(GMT+01:00) Europe, Monaco, CET</option>
+                            <option value="Europe/Moscow" >(GMT+03:00) Europe, Moscow, MSK</option>
+                            <option value="Europe/Oslo" >(GMT+01:00) Europe, Oslo, CET</option>
+                            <option value="Europe/Paris" >(GMT+01:00) Europe, Paris, CET</option>
+                            <option value="Europe/Podgorica" >(GMT+01:00) Europe, Podgorica, CET</option>
+                            <option value="Europe/Prague" >(GMT+01:00) Europe, Prague, CET</option>
+                            <option value="Europe/Riga" >(GMT+02:00) Europe, Riga, EET</option>
+                            <option value="Europe/Rome" >(GMT+01:00) Europe, Rome, CET</option>
+                            <option value="Europe/Samara" >(GMT+04:00) Europe, Samara, +04</option>
+                            <option value="Europe/San_Marino" >(GMT+01:00) Europe, San Marino, CET</option>
+                            <option value="Europe/Sarajevo" >(GMT+01:00) Europe, Sarajevo, CET</option>
+                            <option value="Europe/Saratov" >(GMT+04:00) Europe, Saratov, +04</option>
+                            <option value="Europe/Simferopol" >(GMT+03:00) Europe, Simferopol, MSK</option>
+                            <option value="Europe/Skopje" >(GMT+01:00) Europe, Skopje, CET</option>
+                            <option value="Europe/Sofia" >(GMT+02:00) Europe, Sofia, EET</option>
+                            <option value="Europe/Stockholm" >(GMT+01:00) Europe, Stockholm, CET</option>
+                            <option value="Europe/Tallinn" >(GMT+02:00) Europe, Tallinn, EET</option>
+                            <option value="Europe/Tirane" >(GMT+01:00) Europe, Tirane, CET</option>
+                            <option value="Europe/Ulyanovsk" >(GMT+04:00) Europe, Ulyanovsk, +04</option>
+                            <option value="Europe/Vaduz" >(GMT+01:00) Europe, Vaduz, CET</option>
+                            <option value="Europe/Vatican" >(GMT+01:00) Europe, Vatican, CET</option>
+                            <option value="Europe/Vienna" >(GMT+01:00) Europe, Vienna, CET</option>
+                            <option value="Europe/Vilnius" >(GMT+02:00) Europe, Vilnius, EET</option>
+                            <option value="Europe/Volgograd" >(GMT+03:00) Europe, Volgograd, MSK</option>
+                            <option value="Europe/Warsaw" >(GMT+01:00) Europe, Warsaw, CET</option>
+                            <option value="Europe/Zagreb" >(GMT+01:00) Europe, Zagreb, CET</option>
+                            <option value="Europe/Zurich" >(GMT+01:00) Europe, Zurich, CET</option>
+                            <option value="Indian/Antananarivo" >(GMT+03:00) Indian, Antananarivo, EAT</option>
+                            <option value="Indian/Chagos" >(GMT+06:00) Indian, Chagos, +06</option>
+                            <option value="Indian/Christmas" >(GMT+07:00) Indian, Christmas, +07</option>
+                            <option value="Indian/Cocos" >(GMT+06:30) Indian, Cocos, +0630</option>
+                            <option value="Indian/Comoro" >(GMT+03:00) Indian, Comoro, EAT</option>
+                            <option value="Indian/Kerguelen" >(GMT+05:00) Indian, Kerguelen, +05</option>
+                            <option value="Indian/Mahe" >(GMT+04:00) Indian, Mahe, +04</option>
+                            <option value="Indian/Maldives" >(GMT+05:00) Indian, Maldives, +05</option>
+                            <option value="Indian/Mauritius" >(GMT+04:00) Indian, Mauritius, +04</option>
+                            <option value="Indian/Mayotte" >(GMT+03:00) Indian, Mayotte, EAT</option>
+                            <option value="Indian/Reunion" >(GMT+04:00) Indian, Reunion, +04</option>
+                            <option value="Pacific/Apia" >(GMT+13:00) Pacific, Apia, +13</option>
+                            <option value="Pacific/Auckland" >(GMT+13:00) Pacific, Auckland, NZDT</option>
+                            <option value="Pacific/Bougainville" >(GMT+11:00) Pacific, Bougainville, +11</option>
+                            <option value="Pacific/Chatham" >(GMT+13:45) Pacific, Chatham, +1345</option>
+                            <option value="Pacific/Chuuk" >(GMT+10:00) Pacific, Chuuk, +10</option>
+                            <option value="Pacific/Easter" >(GMT-05:00) Pacific, Easter, -05</option>
+                            <option value="Pacific/Efate" >(GMT+11:00) Pacific, Efate, +11</option>
+                            <option value="Pacific/Fakaofo" >(GMT+13:00) Pacific, Fakaofo, +13</option>
+                            <option value="Pacific/Fiji" >(GMT+12:00) Pacific, Fiji, +12</option>
+                            <option value="Pacific/Funafuti" >(GMT+12:00) Pacific, Funafuti, +12</option>
+                            <option value="Pacific/Galapagos" >(GMT-06:00) Pacific, Galapagos, -06</option>
+                            <option value="Pacific/Gambier" >(GMT-09:00) Pacific, Gambier, -09</option>
+                            <option value="Pacific/Guadalcanal" >(GMT+11:00) Pacific, Guadalcanal, +11</option>
+                            <option value="Pacific/Guam" >(GMT+10:00) Pacific, Guam, ChST</option>
+                            <option value="Pacific/Honolulu" >(GMT-10:00) Pacific, Honolulu, HST</option>
+                            <option value="Pacific/Kanton" >(GMT+13:00) Pacific, Kanton, +13</option>
+                            <option value="Pacific/Kiritimati" >(GMT+14:00) Pacific, Kiritimati, +14</option>
+                            <option value="Pacific/Kosrae" >(GMT+11:00) Pacific, Kosrae, +11</option>
+                            <option value="Pacific/Kwajalein" >(GMT+12:00) Pacific, Kwajalein, +12</option>
+                            <option value="Pacific/Majuro" >(GMT+12:00) Pacific, Majuro, +12</option>
+                            <option value="Pacific/Marquesas" >(GMT-09:30) Pacific, Marquesas, -0930</option>
+                            <option value="Pacific/Midway" >(GMT-11:00) Pacific, Midway, SST</option>
+                            <option value="Pacific/Nauru" >(GMT+12:00) Pacific, Nauru, +12</option>
+                            <option value="Pacific/Niue" >(GMT-11:00) Pacific, Niue, -11</option>
+                            <option value="Pacific/Norfolk" >(GMT+12:00) Pacific, Norfolk, +12</option>
+                            <option value="Pacific/Noumea" >(GMT+11:00) Pacific, Noumea, +11</option>
+                            <option value="Pacific/Pago_Pago" >(GMT-11:00) Pacific, Pago Pago, SST</option>
+                            <option value="Pacific/Palau" >(GMT+09:00) Pacific, Palau, +09</option>
+                            <option value="Pacific/Pitcairn" >(GMT-08:00) Pacific, Pitcairn, -08</option>
+                            <option value="Pacific/Pohnpei" >(GMT+11:00) Pacific, Pohnpei, +11</option>
+                            <option value="Pacific/Port_Moresby" >(GMT+10:00) Pacific, Port Moresby, +10</option>
+                            <option value="Pacific/Rarotonga" >(GMT-10:00) Pacific, Rarotonga, -10</option>
+                            <option value="Pacific/Saipan" >(GMT+10:00) Pacific, Saipan, ChST</option>
+                            <option value="Pacific/Tahiti" >(GMT-10:00) Pacific, Tahiti, -10</option>
+                            <option value="Pacific/Tarawa" >(GMT+12:00) Pacific, Tarawa, +12</option>
+                            <option value="Pacific/Tongatapu" >(GMT+13:00) Pacific, Tongatapu, +13</option>
+                            <option value="Pacific/Wake" >(GMT+12:00) Pacific, Wake, +12</option>
+                            <option value="Pacific/Wallis" >(GMT+12:00) Pacific, Wallis, +12</option>
+                            <option value="UTC" >(GMT) UTC, UTC</option>
                             </select>                                
                         </div><br>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="button"style="background-color: green; color: white;"
                             class="btn text-uppercase br-50 btn-md" id="branch-btn" onclick="createBranch(event)">Save and new</button>
+                            <button type="button" style="background-color: green; color: white;"
+                                    class="btn text-uppercase br-50 btn-md" onclick="saveAndClose()">Save and Close
+                            </button>
                             <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                data-bs-dismiss="modal" onclick="clearForm()">Close</button>
+                                data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>        
+            </div>        
+        </div>
+    </div>
+
+    <div class="modal fade" style="border-radius: 10px;" id="edit-branch-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="editBranchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBranchModalLabel">Edit Branch</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>                    
+                <div class="modal-body">
+                    <form method="post" class="settings_form form_same_branch update_table" id="edit-branch-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="branch_id" id="edit-branchId" value="">
+                        
+                        <div class="inputGroup form-control">
+                            <input type="text" name="name" id="edit-name" autocomplete="off">
+                            <label style="color: black;" class="search-icon" for="edit-name">Name</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text"  name="branch_code" id="edit-branch_code" autocomplete="off" maxlength="4"
+                                oninput="this.value = this.value.toUpperCase()">
+                            <label style="color: black;" class="search-icon" for="edit-branch_code">Branch Code</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="number" name="country_code" id="edit-country_code" autocomplete="off">
+                            <label style="color: black;" class="search-icon" for="edit-country_code">Country Code</label>
+                            <div class="error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timezoneSelect">Select Timezone:</label>
+                            <select class="form-control" id="edit-timezoneSelect" name="country_timezone">
+                                <option value="Africa/Abidjan" >(GMT) Africa, Abidjan, GMT</option>
+                                <option value="Africa/Accra" >(GMT) Africa, Accra, GMT</option>
+                                <option value="Africa/Addis_Ababa" >(GMT+03:00) Africa, Addis Ababa, EAT</option>
+                                <option value="Africa/Algiers" >(GMT+01:00) Africa, Algiers, CET</option>
+                                <option value="Africa/Asmara" >(GMT+03:00) Africa, Asmara, EAT</option>
+                                <option value="Africa/Bamako" >(GMT) Africa, Bamako, GMT</option>
+                                <option value="Africa/Bangui" >(GMT+01:00) Africa, Bangui, WAT</option>
+                                <option value="Africa/Banjul" >(GMT) Africa, Banjul, GMT</option>
+                                <option value="Africa/Bissau" >(GMT) Africa, Bissau, GMT</option>
+                                <option value="Africa/Blantyre" >(GMT+02:00) Africa, Blantyre, CAT</option>
+                                <option value="Africa/Brazzaville" >(GMT+01:00) Africa, Brazzaville, WAT</option>
+                                <option value="Africa/Bujumbura" >(GMT+02:00) Africa, Bujumbura, CAT</option>
+                                <option value="Africa/Cairo" >(GMT+02:00) Africa, Cairo, EET</option>
+                                <option value="Africa/Casablanca" >(GMT+01:00) Africa, Casablanca, +01</option>
+                                <option value="Africa/Ceuta" >(GMT+01:00) Africa, Ceuta, CET</option>
+                                <option value="Africa/Conakry" >(GMT) Africa, Conakry, GMT</option>
+                                <option value="Africa/Dakar" >(GMT) Africa, Dakar, GMT</option>
+                                <option value="Africa/Dar_es_Salaam" >(GMT+03:00) Africa, Dar es Salaam, EAT</option>
+                                <option value="Africa/Djibouti" >(GMT+03:00) Africa, Djibouti, EAT</option>
+                                <option value="Africa/Douala" >(GMT+01:00) Africa, Douala, WAT</option>
+                                <option value="Africa/El_Aaiun" >(GMT+01:00) Africa, El Aaiun, +01</option>
+                                <option value="Africa/Freetown" >(GMT) Africa, Freetown, GMT</option>
+                                <option value="Africa/Gaborone" >(GMT+02:00) Africa, Gaborone, CAT</option>
+                                <option value="Africa/Harare" >(GMT+02:00) Africa, Harare, CAT</option>
+                                <option value="Africa/Johannesburg" >(GMT+02:00) Africa, Johannesburg, SAST</option>
+                                <option value="Africa/Juba" >(GMT+02:00) Africa, Juba, CAT</option>
+                                <option value="Africa/Kampala" >(GMT+03:00) Africa, Kampala, EAT</option>
+                                <option value="Africa/Khartoum" >(GMT+02:00) Africa, Khartoum, CAT</option>
+                                <option value="Africa/Kigali" >(GMT+02:00) Africa, Kigali, CAT</option>
+                                <option value="Africa/Kinshasa" >(GMT+01:00) Africa, Kinshasa, WAT</option>
+                                <option value="Africa/Lagos" >(GMT+01:00) Africa, Lagos, WAT</option>
+                                <option value="Africa/Libreville" >(GMT+01:00) Africa, Libreville, WAT</option>
+                                <option value="Africa/Lome" >(GMT) Africa, Lome, GMT</option>
+                                <option value="Africa/Luanda" >(GMT+01:00) Africa, Luanda, WAT</option>
+                                <option value="Africa/Lubumbashi" >(GMT+02:00) Africa, Lubumbashi, CAT</option>
+                                <option value="Africa/Lusaka" >(GMT+02:00) Africa, Lusaka, CAT</option>
+                                <option value="Africa/Malabo" >(GMT+01:00) Africa, Malabo, WAT</option>
+                                <option value="Africa/Maputo" >(GMT+02:00) Africa, Maputo, CAT</option>
+                                <option value="Africa/Maseru" >(GMT+02:00) Africa, Maseru, SAST</option>
+                                <option value="Africa/Mbabane" >(GMT+02:00) Africa, Mbabane, SAST</option>
+                                <option value="Africa/Mogadishu" >(GMT+03:00) Africa, Mogadishu, EAT</option>
+                                <option value="Africa/Monrovia" >(GMT) Africa, Monrovia, GMT</option>
+                                <option value="Africa/Nairobi" >(GMT+03:00) Africa, Nairobi, EAT</option>
+                                <option value="Africa/Ndjamena" >(GMT+01:00) Africa, Ndjamena, WAT</option>
+                                <option value="Africa/Niamey" >(GMT+01:00) Africa, Niamey, WAT</option>
+                                <option value="Africa/Nouakchott" >(GMT) Africa, Nouakchott, GMT</option>
+                                <option value="Africa/Ouagadougou" >(GMT) Africa, Ouagadougou, GMT</option>
+                                <option value="Africa/Porto-Novo" >(GMT+01:00) Africa, Porto-Novo, WAT</option>
+                                <option value="Africa/Sao_Tome" >(GMT) Africa, Sao Tome, GMT</option>
+                                <option value="Africa/Tripoli" >(GMT+02:00) Africa, Tripoli, EET</option>
+                                <option value="Africa/Tunis" >(GMT+01:00) Africa, Tunis, CET</option>
+                                <option value="Africa/Windhoek" >(GMT+02:00) Africa, Windhoek, CAT</option>
+                                <option value="America/Adak" >(GMT-10:00) America, Adak, HST</option>
+                                <option value="America/Anchorage" >(GMT-09:00) America, Anchorage, AKST</option>
+                                <option value="America/Anguilla" >(GMT-04:00) America, Anguilla, AST</option>
+                                <option value="America/Antigua" >(GMT-04:00) America, Antigua, AST</option>
+                                <option value="America/Araguaina" >(GMT-03:00) America, Araguaina, -03</option>
+                                <option value="America/Argentina/Buenos_Aires" >(GMT-03:00) America, Argentina, Buenos Aires, -03</option>
+                                <option value="America/Argentina/Catamarca" >(GMT-03:00) America, Argentina, Catamarca, -03</option>
+                                <option value="America/Argentina/Cordoba" >(GMT-03:00) America, Argentina, Cordoba, -03</option>
+                                <option value="America/Argentina/Jujuy" >(GMT-03:00) America, Argentina, Jujuy, -03</option>
+                                <option value="America/Argentina/La_Rioja" >(GMT-03:00) America, Argentina, La Rioja, -03</option>
+                                <option value="America/Argentina/Mendoza" >(GMT-03:00) America, Argentina, Mendoza, -03</option>
+                                <option value="America/Argentina/Rio_Gallegos" >(GMT-03:00) America, Argentina, Rio Gallegos, -03</option>
+                                <option value="America/Argentina/Salta" >(GMT-03:00) America, Argentina, Salta, -03</option>
+                                <option value="America/Argentina/San_Juan" >(GMT-03:00) America, Argentina, San Juan, -03</option>
+                                <option value="America/Argentina/San_Luis" >(GMT-03:00) America, Argentina, San Luis, -03</option>
+                                <option value="America/Argentina/Tucuman" >(GMT-03:00) America, Argentina, Tucuman, -03</option>
+                                <option value="America/Argentina/Ushuaia" >(GMT-03:00) America, Argentina, Ushuaia, -03</option>
+                                <option value="America/Aruba" >(GMT-04:00) America, Aruba, AST</option>
+                                <option value="America/Asuncion" >(GMT-03:00) America, Asuncion, -03</option>
+                                <option value="America/Atikokan" >(GMT-05:00) America, Atikokan, EST</option>
+                                <option value="America/Bahia" >(GMT-03:00) America, Bahia, -03</option>
+                                <option value="America/Bahia_Banderas" >(GMT-06:00) America, Bahia Banderas, CST</option>
+                                <option value="America/Barbados" >(GMT-04:00) America, Barbados, AST</option>
+                                <option value="America/Belem" >(GMT-03:00) America, Belem, -03</option>
+                                <option value="America/Belize" >(GMT-06:00) America, Belize, CST</option>
+                                <option value="America/Blanc-Sablon" >(GMT-04:00) America, Blanc-Sablon, AST</option>
+                                <option value="America/Boa_Vista" >(GMT-04:00) America, Boa Vista, -04</option>
+                                <option value="America/Bogota" >(GMT-05:00) America, Bogota, -05</option>
+                                <option value="America/Boise" >(GMT-07:00) America, Boise, MST</option>
+                                <option value="America/Cambridge_Bay" >(GMT-07:00) America, Cambridge Bay, MST</option>
+                                <option value="America/Campo_Grande" >(GMT-04:00) America, Campo Grande, -04</option>
+                                <option value="America/Cancun" >(GMT-05:00) America, Cancun, EST</option>
+                                <option value="America/Caracas" >(GMT-04:00) America, Caracas, -04</option>
+                                <option value="America/Cayenne" >(GMT-03:00) America, Cayenne, -03</option>
+                                <option value="America/Cayman" >(GMT-05:00) America, Cayman, EST</option>
+                                <option value="America/Chicago" >(GMT-06:00) America, Chicago, CST</option>
+                                <option value="America/Chihuahua" >(GMT-06:00) America, Chihuahua, CST</option>
+                                <option value="America/Ciudad_Juarez" >(GMT-07:00) America, Ciudad Juarez, MST</option>
+                                <option value="America/Costa_Rica" >(GMT-06:00) America, Costa Rica, CST</option>
+                                <option value="America/Creston" >(GMT-07:00) America, Creston, MST</option>
+                                <option value="America/Cuiaba" >(GMT-04:00) America, Cuiaba, -04</option>
+                                <option value="America/Curacao" >(GMT-04:00) America, Curacao, AST</option>
+                                <option value="America/Danmarkshavn" >(GMT) America, Danmarkshavn, GMT</option>
+                                <option value="America/Dawson" >(GMT-07:00) America, Dawson, MST</option>
+                                <option value="America/Dawson_Creek" >(GMT-07:00) America, Dawson Creek, MST</option>
+                                <option value="America/Denver" >(GMT-07:00) America, Denver, MST</option>
+                                <option value="America/Detroit" >(GMT-05:00) America, Detroit, EST</option>
+                                <option value="America/Dominica" >(GMT-04:00) America, Dominica, AST</option>
+                                <option value="America/Edmonton" >(GMT-07:00) America, Edmonton, MST</option>
+                                <option value="America/Eirunepe" >(GMT-05:00) America, Eirunepe, -05</option>
+                                <option value="America/El_Salvador" >(GMT-06:00) America, El Salvador, CST</option>
+                                <option value="America/Fort_Nelson" >(GMT-07:00) America, Fort Nelson, MST</option>
+                                <option value="America/Fortaleza" >(GMT-03:00) America, Fortaleza, -03</option>
+                                <option value="America/Glace_Bay" >(GMT-04:00) America, Glace Bay, AST</option>
+                                <option value="America/Goose_Bay" >(GMT-04:00) America, Goose Bay, AST</option>
+                                <option value="America/Grand_Turk" >(GMT-05:00) America, Grand Turk, EST</option>
+                                <option value="America/Grenada" >(GMT-04:00) America, Grenada, AST</option>
+                                <option value="America/Guadeloupe" >(GMT-04:00) America, Guadeloupe, AST</option>
+                                <option value="America/Guatemala" >(GMT-06:00) America, Guatemala, CST</option>
+                                <option value="America/Guayaquil" >(GMT-05:00) America, Guayaquil, -05</option>
+                                <option value="America/Guyana" >(GMT-04:00) America, Guyana, -04</option>
+                                <option value="America/Halifax" >(GMT-04:00) America, Halifax, AST</option>
+                                <option value="America/Havana" >(GMT-05:00) America, Havana, CST</option>
+                                <option value="America/Hermosillo" >(GMT-07:00) America, Hermosillo, MST</option>
+                                <option value="America/Indiana/Indianapolis" >(GMT-05:00) America, Indiana, Indianapolis, EST</option>
+                                <option value="America/Indiana/Knox" >(GMT-06:00) America, Indiana, Knox, CST</option>
+                                <option value="America/Indiana/Marengo" >(GMT-05:00) America, Indiana, Marengo, EST</option>
+                                <option value="America/Indiana/Petersburg" >(GMT-05:00) America, Indiana, Petersburg, EST</option>
+                                <option value="America/Indiana/Tell_City" >(GMT-06:00) America, Indiana, Tell City, CST</option>
+                                <option value="America/Indiana/Vevay" >(GMT-05:00) America, Indiana, Vevay, EST</option>
+                                <option value="America/Indiana/Vincennes" >(GMT-05:00) America, Indiana, Vincennes, EST</option>
+                                <option value="America/Indiana/Winamac" >(GMT-05:00) America, Indiana, Winamac, EST</option>
+                                <option value="America/Inuvik" >(GMT-07:00) America, Inuvik, MST</option>
+                                <option value="America/Iqaluit" >(GMT-05:00) America, Iqaluit, EST</option>
+                                <option value="America/Jamaica" >(GMT-05:00) America, Jamaica, EST</option>
+                                <option value="America/Juneau" >(GMT-09:00) America, Juneau, AKST</option>
+                                <option value="America/Kentucky/Louisville" >(GMT-05:00) America, Kentucky, Louisville, EST</option>
+                                <option value="America/Kentucky/Monticello" >(GMT-05:00) America, Kentucky, Monticello, EST</option>
+                                <option value="America/Kralendijk" >(GMT-04:00) America, Kralendijk, AST</option>
+                                <option value="America/La_Paz" >(GMT-04:00) America, La Paz, -04</option>
+                                <option value="America/Lima" >(GMT-05:00) America, Lima, -05</option>
+                                <option value="America/Los_Angeles" >(GMT-08:00) America, Los Angeles, PST</option>
+                                <option value="America/Lower_Princes" >(GMT-04:00) America, Lower Princes, AST</option>
+                                <option value="America/Maceio" >(GMT-03:00) America, Maceio, -03</option>
+                                <option value="America/Managua" >(GMT-06:00) America, Managua, CST</option>
+                                <option value="America/Manaus" >(GMT-04:00) America, Manaus, -04</option>
+                                <option value="America/Marigot" >(GMT-04:00) America, Marigot, AST</option>
+                                <option value="America/Martinique" >(GMT-04:00) America, Martinique, AST</option>
+                                <option value="America/Matamoros" >(GMT-06:00) America, Matamoros, CST</option>
+                                <option value="America/Mazatlan" >(GMT-07:00) America, Mazatlan, MST</option>
+                                <option value="America/Menominee" >(GMT-06:00) America, Menominee, CST</option>
+                                <option value="America/Merida" >(GMT-06:00) America, Merida, CST</option>
+                                <option value="America/Metlakatla" >(GMT-09:00) America, Metlakatla, AKST</option>
+                                <option value="America/Mexico_City" >(GMT-06:00) America, Mexico City, CST</option>
+                                <option value="America/Miquelon" >(GMT-03:00) America, Miquelon, -03</option>
+                                <option value="America/Moncton" >(GMT-04:00) America, Moncton, AST</option>
+                                <option value="America/Monterrey" >(GMT-06:00) America, Monterrey, CST</option>
+                                <option value="America/Montevideo" >(GMT-03:00) America, Montevideo, -03</option>
+                                <option value="America/Montserrat" >(GMT-04:00) America, Montserrat, AST</option>
+                                <option value="America/Nassau" >(GMT-05:00) America, Nassau, EST</option>
+                                <option value="America/New_York" >(GMT-05:00) America, New York, EST</option>
+                                <option value="America/Nome" >(GMT-09:00) America, Nome, AKST</option>
+                                <option value="America/Noronha" >(GMT-02:00) America, Noronha, -02</option>
+                                <option value="America/North_Dakota/Beulah" >(GMT-06:00) America, North Dakota, Beulah, CST</option>
+                                <option value="America/North_Dakota/Center" >(GMT-06:00) America, North Dakota, Center, CST</option>
+                                <option value="America/North_Dakota/New_Salem" >(GMT-06:00) America, North Dakota, New Salem, CST</option>
+                                <option value="America/Nuuk" >(GMT-02:00) America, Nuuk, -02</option>
+                                <option value="America/Ojinaga" >(GMT-06:00) America, Ojinaga, CST</option>
+                                <option value="America/Panama" >(GMT-05:00) America, Panama, EST</option>
+                                <option value="America/Paramaribo" >(GMT-03:00) America, Paramaribo, -03</option>
+                                <option value="America/Phoenix" >(GMT-07:00) America, Phoenix, MST</option>
+                                <option value="America/Port-au-Prince" >(GMT-05:00) America, Port-au-Prince, EST</option>
+                                <option value="America/Port_of_Spain" >(GMT-04:00) America, Port of Spain, AST</option>
+                                <option value="America/Porto_Velho" >(GMT-04:00) America, Porto Velho, -04</option>
+                                <option value="America/Puerto_Rico" >(GMT-04:00) America, Puerto Rico, AST</option>
+                                <option value="America/Punta_Arenas" >(GMT-03:00) America, Punta Arenas, -03</option>
+                                <option value="America/Rankin_Inlet" >(GMT-06:00) America, Rankin Inlet, CST</option>
+                                <option value="America/Recife" >(GMT-03:00) America, Recife, -03</option>
+                                <option value="America/Regina" >(GMT-06:00) America, Regina, CST</option>
+                                <option value="America/Resolute" >(GMT-06:00) America, Resolute, CST</option>
+                                <option value="America/Rio_Branco" >(GMT-05:00) America, Rio Branco, -05</option>
+                                <option value="America/Santarem" >(GMT-03:00) America, Santarem, -03</option>
+                                <option value="America/Santiago" >(GMT-03:00) America, Santiago, -03</option>
+                                <option value="America/Santo_Domingo" >(GMT-04:00) America, Santo Domingo, AST</option>
+                                <option value="America/Sao_Paulo" >(GMT-03:00) America, Sao Paulo, -03</option>
+                                <option value="America/Scoresbysund" >(GMT-01:00) America, Scoresbysund, -01</option>
+                                <option value="America/Sitka" >(GMT-09:00) America, Sitka, AKST</option>
+                                <option value="America/St_Barthelemy" >(GMT-04:00) America, St. Barthelemy, AST</option>
+                                <option value="America/St_Johns" >(GMT-03:30) America, St. Johns, NST</option>
+                                <option value="America/St_Kitts" >(GMT-04:00) America, St. Kitts, AST</option>
+                                <option value="America/St_Lucia" >(GMT-04:00) America, St. Lucia, AST</option>
+                                <option value="America/St_Thomas" >(GMT-04:00) America, St. Thomas, AST</option>
+                                <option value="America/St_Vincent" >(GMT-04:00) America, St. Vincent, AST</option>
+                                <option value="America/Swift_Current" >(GMT-06:00) America, Swift Current, CST</option>
+                                <option value="America/Tegucigalpa" >(GMT-06:00) America, Tegucigalpa, CST</option>
+                                <option value="America/Thule" >(GMT-04:00) America, Thule, AST</option>
+                                <option value="America/Tijuana" >(GMT-08:00) America, Tijuana, PST</option>
+                                <option value="America/Toronto" >(GMT-05:00) America, Toronto, EST</option>
+                                <option value="America/Tortola" >(GMT-04:00) America, Tortola, AST</option>
+                                <option value="America/Vancouver" >(GMT-08:00) America, Vancouver, PST</option>
+                                <option value="America/Whitehorse" >(GMT-07:00) America, Whitehorse, MST</option>
+                                <option value="America/Winnipeg" >(GMT-06:00) America, Winnipeg, CST</option>
+                                <option value="America/Yakutat" >(GMT-09:00) America, Yakutat, AKST</option>
+                                <option value="Antarctica/Casey" >(GMT+11:00) Antarctica, Casey, +11</option>
+                                <option value="Antarctica/Davis" >(GMT+07:00) Antarctica, Davis, +07</option>
+                                <option value="Antarctica/DumontDUrville" >(GMT+10:00) Antarctica, DumontDUrville, +10</option>
+                                <option value="Antarctica/Macquarie" >(GMT+11:00) Antarctica, Macquarie, AEDT</option>
+                                <option value="Antarctica/Mawson" >(GMT+05:00) Antarctica, Mawson, +05</option>
+                                <option value="Antarctica/McMurdo" >(GMT+13:00) Antarctica, McMurdo, NZDT</option>
+                                <option value="Antarctica/Palmer" >(GMT-03:00) Antarctica, Palmer, -03</option>
+                                <option value="Antarctica/Rothera" >(GMT-03:00) Antarctica, Rothera, -03</option>
+                                <option value="Antarctica/Syowa" >(GMT+03:00) Antarctica, Syowa, +03</option>
+                                <option value="Antarctica/Troll" >(GMT) Antarctica, Troll, +00</option>
+                                <option value="Antarctica/Vostok" >(GMT+06:00) Antarctica, Vostok, +06</option>
+                                <option value="Arctic/Longyearbyen" >(GMT+01:00) Arctic, Longyearbyen, CET</option>
+                                <option value="Asia/Aden" >(GMT+03:00) Asia, Aden, +03</option>
+                                <option value="Asia/Almaty" >(GMT+06:00) Asia, Almaty, +06</option>
+                                <option value="Asia/Amman" >(GMT+03:00) Asia, Amman, +03</option>
+                                <option value="Asia/Anadyr" >(GMT+12:00) Asia, Anadyr, +12</option>
+                                <option value="Asia/Aqtau" >(GMT+05:00) Asia, Aqtau, +05</option>
+                                <option value="Asia/Aqtobe" >(GMT+05:00) Asia, Aqtobe, +05</option>
+                                <option value="Asia/Ashgabat" >(GMT+05:00) Asia, Ashgabat, +05</option>
+                                <option value="Asia/Atyrau" >(GMT+05:00) Asia, Atyrau, +05</option>
+                                <option value="Asia/Baghdad" >(GMT+03:00) Asia, Baghdad, +03</option>
+                                <option value="Asia/Bahrain" >(GMT+03:00) Asia, Bahrain, +03</option>
+                                <option value="Asia/Baku" >(GMT+04:00) Asia, Baku, +04</option>
+                                <option value="Asia/Bangkok" >(GMT+07:00) Asia, Bangkok, +07</option>
+                                <option value="Asia/Barnaul" >(GMT+07:00) Asia, Barnaul, +07</option>
+                                <option value="Asia/Beirut" >(GMT+02:00) Asia, Beirut, EET</option>
+                                <option value="Asia/Bishkek" >(GMT+06:00) Asia, Bishkek, +06</option>
+                                <option value="Asia/Brunei" >(GMT+08:00) Asia, Brunei, +08</option>
+                                <option value="Asia/Chita" >(GMT+09:00) Asia, Chita, +09</option>
+                                <option value="Asia/Choibalsan" >(GMT+08:00) Asia, Choibalsan, +08</option>
+                                <option value="Asia/Colombo" >(GMT+05:30) Asia, Colombo, +0530</option>
+                                <option value="Asia/Damascus" >(GMT+03:00) Asia, Damascus, +03</option>
+                                <option value="Asia/Dhaka" >(GMT+06:00) Asia, Dhaka, +06</option>
+                                <option value="Asia/Dili" >(GMT+09:00) Asia, Dili, +09</option>
+                                <option value="Asia/Dubai" >(GMT+04:00) Asia, Dubai, +04</option>
+                                <option value="Asia/Dushanbe" >(GMT+05:00) Asia, Dushanbe, +05</option>
+                                <option value="Asia/Famagusta" >(GMT+02:00) Asia, Famagusta, EET</option>
+                                <option value="Asia/Gaza" >(GMT+02:00) Asia, Gaza, EET</option>
+                                <option value="Asia/Hebron" >(GMT+02:00) Asia, Hebron, EET</option>
+                                <option value="Asia/Ho_Chi_Minh" >(GMT+07:00) Asia, Ho Chi Minh, +07</option>
+                                <option value="Asia/Hong_Kong" >(GMT+08:00) Asia, Hong Kong, HKT</option>
+                                <option value="Asia/Hovd" >(GMT+07:00) Asia, Hovd, +07</option>
+                                <option value="Asia/Irkutsk" >(GMT+08:00) Asia, Irkutsk, +08</option>
+                                <option value="Asia/Jakarta" >(GMT+07:00) Asia, Jakarta, WIB</option>
+                                <option value="Asia/Jayapura" >(GMT+09:00) Asia, Jayapura, WIT</option>
+                                <option value="Asia/Jerusalem" >(GMT+02:00) Asia, Jerusalem, IST</option>
+                                <option value="Asia/Kabul" >(GMT+04:30) Asia, Kabul, +0430</option>
+                                <option value="Asia/Kamchatka" >(GMT+12:00) Asia, Kamchatka, +12</option>
+                                <option value="Asia/Karachi" >(GMT+05:00) Asia, Karachi, PKT</option>
+                                <option value="Asia/Kathmandu" >(GMT+05:45) Asia, Kathmandu, +0545</option>
+                                <option value="Asia/Khandyga" >(GMT+09:00) Asia, Khandyga, +09</option>
+                                <option value="Asia/Kolkata" selected>(GMT+05:30) Asia, Kolkata, IST</option>
+                                <option value="Asia/Krasnoyarsk" >(GMT+07:00) Asia, Krasnoyarsk, +07</option>
+                                <option value="Asia/Kuala_Lumpur" >(GMT+08:00) Asia, Kuala Lumpur, +08</option>
+                                <option value="Asia/Kuching" >(GMT+08:00) Asia, Kuching, +08</option>
+                                <option value="Asia/Kuwait" >(GMT+03:00) Asia, Kuwait, +03</option>
+                                <option value="Asia/Macau" >(GMT+08:00) Asia, Macau, CST</option>
+                                <option value="Asia/Magadan" >(GMT+11:00) Asia, Magadan, +11</option>
+                                <option value="Asia/Makassar" >(GMT+08:00) Asia, Makassar, WITA</option>
+                                <option value="Asia/Manila" >(GMT+08:00) Asia, Manila, PST</option>
+                                <option value="Asia/Muscat" >(GMT+04:00) Asia, Muscat, +04</option>
+                                <option value="Asia/Nicosia" >(GMT+02:00) Asia, Nicosia, EET</option>
+                                <option value="Asia/Novokuznetsk" >(GMT+07:00) Asia, Novokuznetsk, +07</option>
+                                <option value="Asia/Novosibirsk" >(GMT+07:00) Asia, Novosibirsk, +07</option>
+                                <option value="Asia/Omsk" >(GMT+06:00) Asia, Omsk, +06</option>
+                                <option value="Asia/Oral" >(GMT+05:00) Asia, Oral, +05</option>
+                                <option value="Asia/Phnom_Penh" >(GMT+07:00) Asia, Phnom Penh, +07</option>
+                                <option value="Asia/Pontianak" >(GMT+07:00) Asia, Pontianak, WIB</option>
+                                <option value="Asia/Pyongyang" >(GMT+09:00) Asia, Pyongyang, KST</option>
+                                <option value="Asia/Qatar" >(GMT+03:00) Asia, Qatar, +03</option>
+                                <option value="Asia/Qostanay" >(GMT+06:00) Asia, Qostanay, +06</option>
+                                <option value="Asia/Qyzylorda" >(GMT+05:00) Asia, Qyzylorda, +05</option>
+                                <option value="Asia/Riyadh" >(GMT+03:00) Asia, Riyadh, +03</option>
+                                <option value="Asia/Sakhalin" >(GMT+11:00) Asia, Sakhalin, +11</option>
+                                <option value="Asia/Samarkand" >(GMT+05:00) Asia, Samarkand, +05</option>
+                                <option value="Asia/Seoul" >(GMT+09:00) Asia, Seoul, KST</option>
+                                <option value="Asia/Shanghai" >(GMT+08:00) Asia, Shanghai, CST</option>
+                                <option value="Asia/Singapore" >(GMT+08:00) Asia, Singapore, +08</option>
+                                <option value="Asia/Srednekolymsk" >(GMT+11:00) Asia, Srednekolymsk, +11</option>
+                                <option value="Asia/Taipei" >(GMT+08:00) Asia, Taipei, CST</option>
+                                <option value="Asia/Tashkent" >(GMT+05:00) Asia, Tashkent, +05</option>
+                                <option value="Asia/Tbilisi" >(GMT+04:00) Asia, Tbilisi, +04</option>
+                                <option value="Asia/Tehran" >(GMT+03:30) Asia, Tehran, +0330</option>
+                                <option value="Asia/Thimphu" >(GMT+06:00) Asia, Thimphu, +06</option>
+                                <option value="Asia/Tokyo" >(GMT+09:00) Asia, Tokyo, JST</option>
+                                <option value="Asia/Tomsk" >(GMT+07:00) Asia, Tomsk, +07</option>
+                                <option value="Asia/Ulaanbaatar" >(GMT+08:00) Asia, Ulaanbaatar, +08</option>
+                                <option value="Asia/Urumqi" >(GMT+06:00) Asia, Urumqi, +06</option>
+                                <option value="Asia/Ust-Nera" >(GMT+10:00) Asia, Ust-Nera, +10</option>
+                                <option value="Asia/Vientiane" >(GMT+07:00) Asia, Vientiane, +07</option>
+                                <option value="Asia/Vladivostok" >(GMT+10:00) Asia, Vladivostok, +10</option>
+                                <option value="Asia/Yakutsk" >(GMT+09:00) Asia, Yakutsk, +09</option>
+                                <option value="Asia/Yangon" >(GMT+06:30) Asia, Yangon, +0630</option>
+                                <option value="Asia/Yekaterinburg" >(GMT+05:00) Asia, Yekaterinburg, +05</option>
+                                <option value="Asia/Yerevan" >(GMT+04:00) Asia, Yerevan, +04</option>
+                                <option value="Atlantic/Azores" >(GMT-01:00) Atlantic, Azores, -01</option>
+                                <option value="Atlantic/Bermuda" >(GMT-04:00) Atlantic, Bermuda, AST</option>
+                                <option value="Atlantic/Canary" >(GMT) Atlantic, Canary, WET</option>
+                                <option value="Atlantic/Cape_Verde" >(GMT-01:00) Atlantic, Cape Verde, -01</option>
+                                <option value="Atlantic/Faroe" >(GMT) Atlantic, Faroe, WET</option>
+                                <option value="Atlantic/Madeira" >(GMT) Atlantic, Madeira, WET</option>
+                                <option value="Atlantic/Reykjavik" >(GMT) Atlantic, Reykjavik, GMT</option>
+                                <option value="Atlantic/South_Georgia" >(GMT-02:00) Atlantic, South Georgia, -02</option>
+                                <option value="Atlantic/St_Helena" >(GMT) Atlantic, St. Helena, GMT</option>
+                                <option value="Atlantic/Stanley" >(GMT-03:00) Atlantic, Stanley, -03</option>
+                                <option value="Australia/Adelaide" >(GMT+10:30) Australia, Adelaide, ACDT</option>
+                                <option value="Australia/Brisbane" >(GMT+10:00) Australia, Brisbane, AEST</option>
+                                <option value="Australia/Broken_Hill" >(GMT+10:30) Australia, Broken Hill, ACDT</option>
+                                <option value="Australia/Darwin" >(GMT+09:30) Australia, Darwin, ACST</option>
+                                <option value="Australia/Eucla" >(GMT+08:45) Australia, Eucla, +0845</option>
+                                <option value="Australia/Hobart" >(GMT+11:00) Australia, Hobart, AEDT</option>
+                                <option value="Australia/Lindeman" >(GMT+10:00) Australia, Lindeman, AEST</option>
+                                <option value="Australia/Lord_Howe" >(GMT+11:00) Australia, Lord Howe, +11</option>
+                                <option value="Australia/Melbourne" >(GMT+11:00) Australia, Melbourne, AEDT</option>
+                                <option value="Australia/Perth" >(GMT+08:00) Australia, Perth, AWST</option>
+                                <option value="Australia/Sydney" >(GMT+11:00) Australia, Sydney, AEDT</option>
+                                <option value="Europe/Amsterdam" >(GMT+01:00) Europe, Amsterdam, CET</option>
+                                <option value="Europe/Andorra" >(GMT+01:00) Europe, Andorra, CET</option>
+                                <option value="Europe/Astrakhan" >(GMT+04:00) Europe, Astrakhan, +04</option>
+                                <option value="Europe/Athens" >(GMT+02:00) Europe, Athens, EET</option>
+                                <option value="Europe/Belgrade" >(GMT+01:00) Europe, Belgrade, CET</option>
+                                <option value="Europe/Berlin" >(GMT+01:00) Europe, Berlin, CET</option>
+                                <option value="Europe/Bratislava" >(GMT+01:00) Europe, Bratislava, CET</option>
+                                <option value="Europe/Brussels" >(GMT+01:00) Europe, Brussels, CET</option>
+                                <option value="Europe/Bucharest" >(GMT+02:00) Europe, Bucharest, EET</option>
+                                <option value="Europe/Budapest" >(GMT+01:00) Europe, Budapest, CET</option>
+                                <option value="Europe/Busingen" >(GMT+01:00) Europe, Busingen, CET</option>
+                                <option value="Europe/Chisinau" >(GMT+02:00) Europe, Chisinau, EET</option>
+                                <option value="Europe/Copenhagen" >(GMT+01:00) Europe, Copenhagen, CET</option>
+                                <option value="Europe/Dublin" >(GMT) Europe, Dublin, GMT</option>
+                                <option value="Europe/Gibraltar" >(GMT+01:00) Europe, Gibraltar, CET</option>
+                                <option value="Europe/Guernsey" >(GMT) Europe, Guernsey, GMT</option>
+                                <option value="Europe/Helsinki" >(GMT+02:00) Europe, Helsinki, EET</option>
+                                <option value="Europe/Isle_of_Man" >(GMT) Europe, Isle of Man, GMT</option>
+                                <option value="Europe/Istanbul" >(GMT+03:00) Europe, Istanbul, +03</option>
+                                <option value="Europe/Jersey" >(GMT) Europe, Jersey, GMT</option>
+                                <option value="Europe/Kaliningrad" >(GMT+02:00) Europe, Kaliningrad, EET</option>
+                                <option value="Europe/Kirov" >(GMT+03:00) Europe, Kirov, MSK</option>
+                                <option value="Europe/Kyiv" >(GMT+02:00) Europe, Kyiv, EET</option>
+                                <option value="Europe/Lisbon" >(GMT) Europe, Lisbon, WET</option>
+                                <option value="Europe/Ljubljana" >(GMT+01:00) Europe, Ljubljana, CET</option>
+                                <option value="Europe/London" >(GMT) Europe, London, GMT</option>
+                                <option value="Europe/Luxembourg" >(GMT+01:00) Europe, Luxembourg, CET</option>
+                                <option value="Europe/Madrid" >(GMT+01:00) Europe, Madrid, CET</option>
+                                <option value="Europe/Malta" >(GMT+01:00) Europe, Malta, CET</option>
+                                <option value="Europe/Mariehamn" >(GMT+02:00) Europe, Mariehamn, EET</option>
+                                <option value="Europe/Minsk" >(GMT+03:00) Europe, Minsk, +03</option>
+                                <option value="Europe/Monaco" >(GMT+01:00) Europe, Monaco, CET</option>
+                                <option value="Europe/Moscow" >(GMT+03:00) Europe, Moscow, MSK</option>
+                                <option value="Europe/Oslo" >(GMT+01:00) Europe, Oslo, CET</option>
+                                <option value="Europe/Paris" >(GMT+01:00) Europe, Paris, CET</option>
+                                <option value="Europe/Podgorica" >(GMT+01:00) Europe, Podgorica, CET</option>
+                                <option value="Europe/Prague" >(GMT+01:00) Europe, Prague, CET</option>
+                                <option value="Europe/Riga" >(GMT+02:00) Europe, Riga, EET</option>
+                                <option value="Europe/Rome" >(GMT+01:00) Europe, Rome, CET</option>
+                                <option value="Europe/Samara" >(GMT+04:00) Europe, Samara, +04</option>
+                                <option value="Europe/San_Marino" >(GMT+01:00) Europe, San Marino, CET</option>
+                                <option value="Europe/Sarajevo" >(GMT+01:00) Europe, Sarajevo, CET</option>
+                                <option value="Europe/Saratov" >(GMT+04:00) Europe, Saratov, +04</option>
+                                <option value="Europe/Simferopol" >(GMT+03:00) Europe, Simferopol, MSK</option>
+                                <option value="Europe/Skopje" >(GMT+01:00) Europe, Skopje, CET</option>
+                                <option value="Europe/Sofia" >(GMT+02:00) Europe, Sofia, EET</option>
+                                <option value="Europe/Stockholm" >(GMT+01:00) Europe, Stockholm, CET</option>
+                                <option value="Europe/Tallinn" >(GMT+02:00) Europe, Tallinn, EET</option>
+                                <option value="Europe/Tirane" >(GMT+01:00) Europe, Tirane, CET</option>
+                                <option value="Europe/Ulyanovsk" >(GMT+04:00) Europe, Ulyanovsk, +04</option>
+                                <option value="Europe/Vaduz" >(GMT+01:00) Europe, Vaduz, CET</option>
+                                <option value="Europe/Vatican" >(GMT+01:00) Europe, Vatican, CET</option>
+                                <option value="Europe/Vienna" >(GMT+01:00) Europe, Vienna, CET</option>
+                                <option value="Europe/Vilnius" >(GMT+02:00) Europe, Vilnius, EET</option>
+                                <option value="Europe/Volgograd" >(GMT+03:00) Europe, Volgograd, MSK</option>
+                                <option value="Europe/Warsaw" >(GMT+01:00) Europe, Warsaw, CET</option>
+                                <option value="Europe/Zagreb" >(GMT+01:00) Europe, Zagreb, CET</option>
+                                <option value="Europe/Zurich" >(GMT+01:00) Europe, Zurich, CET</option>
+                                <option value="Indian/Antananarivo" >(GMT+03:00) Indian, Antananarivo, EAT</option>
+                                <option value="Indian/Chagos" >(GMT+06:00) Indian, Chagos, +06</option>
+                                <option value="Indian/Christmas" >(GMT+07:00) Indian, Christmas, +07</option>
+                                <option value="Indian/Cocos" >(GMT+06:30) Indian, Cocos, +0630</option>
+                                <option value="Indian/Comoro" >(GMT+03:00) Indian, Comoro, EAT</option>
+                                <option value="Indian/Kerguelen" >(GMT+05:00) Indian, Kerguelen, +05</option>
+                                <option value="Indian/Mahe" >(GMT+04:00) Indian, Mahe, +04</option>
+                                <option value="Indian/Maldives" >(GMT+05:00) Indian, Maldives, +05</option>
+                                <option value="Indian/Mauritius" >(GMT+04:00) Indian, Mauritius, +04</option>
+                                <option value="Indian/Mayotte" >(GMT+03:00) Indian, Mayotte, EAT</option>
+                                <option value="Indian/Reunion" >(GMT+04:00) Indian, Reunion, +04</option>
+                                <option value="Pacific/Apia" >(GMT+13:00) Pacific, Apia, +13</option>
+                                <option value="Pacific/Auckland" >(GMT+13:00) Pacific, Auckland, NZDT</option>
+                                <option value="Pacific/Bougainville" >(GMT+11:00) Pacific, Bougainville, +11</option>
+                                <option value="Pacific/Chatham" >(GMT+13:45) Pacific, Chatham, +1345</option>
+                                <option value="Pacific/Chuuk" >(GMT+10:00) Pacific, Chuuk, +10</option>
+                                <option value="Pacific/Easter" >(GMT-05:00) Pacific, Easter, -05</option>
+                                <option value="Pacific/Efate" >(GMT+11:00) Pacific, Efate, +11</option>
+                                <option value="Pacific/Fakaofo" >(GMT+13:00) Pacific, Fakaofo, +13</option>
+                                <option value="Pacific/Fiji" >(GMT+12:00) Pacific, Fiji, +12</option>
+                                <option value="Pacific/Funafuti" >(GMT+12:00) Pacific, Funafuti, +12</option>
+                                <option value="Pacific/Galapagos" >(GMT-06:00) Pacific, Galapagos, -06</option>
+                                <option value="Pacific/Gambier" >(GMT-09:00) Pacific, Gambier, -09</option>
+                                <option value="Pacific/Guadalcanal" >(GMT+11:00) Pacific, Guadalcanal, +11</option>
+                                <option value="Pacific/Guam" >(GMT+10:00) Pacific, Guam, ChST</option>
+                                <option value="Pacific/Honolulu" >(GMT-10:00) Pacific, Honolulu, HST</option>
+                                <option value="Pacific/Kanton" >(GMT+13:00) Pacific, Kanton, +13</option>
+                                <option value="Pacific/Kiritimati" >(GMT+14:00) Pacific, Kiritimati, +14</option>
+                                <option value="Pacific/Kosrae" >(GMT+11:00) Pacific, Kosrae, +11</option>
+                                <option value="Pacific/Kwajalein" >(GMT+12:00) Pacific, Kwajalein, +12</option>
+                                <option value="Pacific/Majuro" >(GMT+12:00) Pacific, Majuro, +12</option>
+                                <option value="Pacific/Marquesas" >(GMT-09:30) Pacific, Marquesas, -0930</option>
+                                <option value="Pacific/Midway" >(GMT-11:00) Pacific, Midway, SST</option>
+                                <option value="Pacific/Nauru" >(GMT+12:00) Pacific, Nauru, +12</option>
+                                <option value="Pacific/Niue" >(GMT-11:00) Pacific, Niue, -11</option>
+                                <option value="Pacific/Norfolk" >(GMT+12:00) Pacific, Norfolk, +12</option>
+                                <option value="Pacific/Noumea" >(GMT+11:00) Pacific, Noumea, +11</option>
+                                <option value="Pacific/Pago_Pago" >(GMT-11:00) Pacific, Pago Pago, SST</option>
+                                <option value="Pacific/Palau" >(GMT+09:00) Pacific, Palau, +09</option>
+                                <option value="Pacific/Pitcairn" >(GMT-08:00) Pacific, Pitcairn, -08</option>
+                                <option value="Pacific/Pohnpei" >(GMT+11:00) Pacific, Pohnpei, +11</option>
+                                <option value="Pacific/Port_Moresby" >(GMT+10:00) Pacific, Port Moresby, +10</option>
+                                <option value="Pacific/Rarotonga" >(GMT-10:00) Pacific, Rarotonga, -10</option>
+                                <option value="Pacific/Saipan" >(GMT+10:00) Pacific, Saipan, ChST</option>
+                                <option value="Pacific/Tahiti" >(GMT-10:00) Pacific, Tahiti, -10</option>
+                                <option value="Pacific/Tarawa" >(GMT+12:00) Pacific, Tarawa, +12</option>
+                                <option value="Pacific/Tongatapu" >(GMT+13:00) Pacific, Tongatapu, +13</option>
+                                <option value="Pacific/Wake" >(GMT+12:00) Pacific, Wake, +12</option>
+                                <option value="Pacific/Wallis" >(GMT+12:00) Pacific, Wallis, +12</option>
+                                <option value="UTC" >(GMT) UTC, UTC</option>
+                            </select>                                
+                        </div><br>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" style="background-color: green; color: white;"
+                                    class="btn text-uppercase br-50 btn-md" onclick="editBranch(event)">Update</button>
+                            <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                                data-bs-dismiss="modal">Close</button>
                         </div>
                     </form>
                 </div>        
@@ -557,7 +1579,10 @@
     </div>
 
 
-    <div class="modal fade " id="add-desk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     <!--  -->
+
+
+    <div class="modal fade" id="add-desk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                <div class="modal-content">
@@ -575,33 +1600,75 @@
                                 <div class="error"></div>
                             </div>
                             
-                            <div class="form-grp inputGroup">
-                                <h6 class="selct-box-head">Branch</h6>
-                                    <div class="select-inp">
-                                        <select class="form-control" name="branch_id" id="desk_branch_id">
-                                            <option selected disabled>--select branch--</option>
-                                            {% for i in data %}
-                                            <option value="{{i.id}}">{{i.name}}</option>
-                                            {% endfor %}
-                                        </select>
-                                        <i class="fas fa-chevron-down"></i>
-                                        <div class="error"></div>
-                                    </div>
-                            </div>
+                            
+                            <h6 class="inputGroup selct-box-head">Branch</h6>
+                                <div class="select-inp">
+                                    <select class="form-control" name="branch_id" id="desk_branch_id">
+                                        <option selected disabled>--select branch--</option>
+                                        {% for i in data %}
+                                        <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                    <div class="error"></div>
+                                </div>
+                            
 
                             
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
                               onclick="createDesk(event)">Save and new</button>
+                            <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
+                            onclick="saveAndCloseDesk()">Save and Close</button>
                             <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                data-bs-dismiss="modal" onclick="clearForm()">Close</button>
+                                data-bs-dismiss="modal">Close</button>
                         </div>
                     </form>    
                 </div>
             
         </div>
     </div>
+
+    <div class="modal fade" id="edit-desk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><span>Edit Desk</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" class="settings_form form_same_edit_desk" id="edit_desk_form" action="#">
+                    <!-- {% csrf_token %} -->
+                    <div class="modal-body">
+                        <div class="inputGroup form-control">
+                            <input type="text" name="desk_name" id="edit_desk_name" autocomplete="off">
+                            <label style="color: black;" class="search-icon" for="edit_desk_name">Name</label>
+                            <div class="error"></div>
+                        </div>
+                        <h6 class="inputGroup selct-box-head">Branch</h6>
+                        <div class="select-inp">
+                            <select class="form-control" name="branch_id" id="edit_desk_branch_id">
+                                <option selected disabled>--select branch--</option>
+                                {% for i in data %}
+                                    <option value="{{i.id}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="error"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
+                            onclick="updateDesk(event)">Update</button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>    
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="deleteConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -655,8 +1722,6 @@
     <script src="{% static 'js/app.js' %}"></script>
 
     <script>
-        // change profile pic
-
         $(document).ready(function () {
             var readURL = function (input) {
                 if (input.files && input.files[0]) {
@@ -728,19 +1793,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function clearForm() {
-            // Reset the form elements
-            document.getElementById('branch-form').reset();
-            document.getElementById('user-form').reset();
-            document.getElementById('desk_form').reset();
-
-            // Clear success/error classes and messages
-            $(".error").text("");
-            $(".input-control").removeClass("error success");
-        }
-
-    </script>
 
     <script>
         function showToast(message, icon) {
@@ -765,13 +1817,57 @@
             });
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const noDataImage = document.getElementById('noDataImage');
+            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
 
-        const createBranch=(e)=>{
-            e.preventDefault(); //e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
+            if (noDataImage && visitorDataCount === 0) {
+                noDataImage.classList.remove('d-none');
+            }
+        });
 
-            // const form = document.getElementsByClassName('.visitors-form');
+        let saveAndNewClicked = false;
+        let saveAndCloseClicked = false;
+
+        function resetFormAndState() {
+            $("#branch-form")[0].reset();
+            $(".error").text("");
+            $(".input-control").removeClass("error success");
+            saveAndNewClicked = false;
+            saveAndCloseClicked = false;
+        }
+
+        function saveAndNew() {
+            saveAndNewClicked = true;
+            saveAndCloseClicked = false;
+            createBranch(event);
+        }
+
+        function saveAndClose() {
+            saveAndCloseClicked = true;
+            saveAndNewClicked = false;
+            createBranch(event);
+        }
+
+        function clearFormBranch() {
+            document.getElementById("name").value = "";
+            document.getElementById("branch_code").value = "";
+            document.getElementById("country_code").value = "";
+
+    
+            var inputControls = document.querySelectorAll(".inputGroup");
+            inputControls.forEach(function (inputControl) {
+                inputControl.classList.remove("success", "error");
+                var errorElement = inputControl.querySelector(".error");
+                if (errorElement) {
+                    errorElement.innerHTML = "";
+                }
+            });
+        }
+
+        const createBranch = (e) => {
+            e.preventDefault(); 
+        
             const name = document.getElementById('name');
             const branchCode = document.getElementById('branch_code');
             const countryCode = document.getElementById('country_code');
@@ -820,6 +1916,14 @@
                 if (countryCodeValue === '') {
                     setError(countryCode, 'Enter country code');
                     isValid = false;
+
+                } else if (countryCodeValue.length > 3) {
+                    setError(countryCode, 'Country code should be maximum 3');
+                    isValid = false;
+                } else if (/^0+$/.test(countryCodeValue)) {
+                    setError(countryCode, 'Invalid country code: Cannot be all zeros');
+                    isValid = false;
+                
                 } else {
                     setSuccess(countryCode);
                 }
@@ -828,14 +1932,12 @@
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#branch-form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
                 $(".input-control").removeClass("error success");
-            }
-
-           
+            }    
+            
+            
 
             if (validateInputs()) { // for validating the fields
                 const form = new FormData($("#branch-form")[0]);
@@ -850,23 +1952,53 @@
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: (res) => {  //http response0
+                        success: (res) => { 
                             if (res.status === 400) {   
-                                if (res.type === "branch_code") {
-                                    setError(branch_code, res.error);
-                                }
-                                
+                                if (res.value) {
+                                let errors = res.value;
+
+                                error.forEach(error => {
+                                    if (error.type === "branch_name") {
+                                        setError(name, error.error);
+                                    }
+
+                                    if (error.type === "branch_code") {
+                                        setError(branch_code, error.error)
+                                    }
+                                });
+
+                                }else {
+
+                                    if (res.type === "branch_name") {
+                                        setError(name, res.error);
+                                    }
+
+                                    if (res.type === "branch_code") {
+                                        setError(branch_code, res.error);
+                                    }
+                                }   
                             }
                             if (res.status === 200) {
                                 showToast(res.message, "success")
                                 resetForm();
                                 updateBranchDropdown();
+                                updateUserBranchDropdown();
                                 const branch = res.created_branch_data;
+
+                                const noDataImage = document.getElementById('noDataImage');
+                                if (noDataImage) {
+                                    noDataImage.classList.add('d-none');
+                                }
+                                const branchTable = document.getElementById('branch-settings-card');
+                                if (branchTable) {
+                                    branchTable.style.visibility = 'visible';
+                                }
+
+                                
                                 $('#branch-table').append(`
                                 
-                                <tr class="delete_modal${branch.id}">
-
-                                    <td>${res.branch_data_count}</td>            
+                                <tr class="delete_modal${branch.id}" >
+                                    <td></td>            
                                     <td>${branch.branch_code}</td>
                                     <td>${branch.name}</td>
                                     <td class="text-right">
@@ -876,7 +2008,13 @@
                                                 <i class="mdi mdi-dots-vertical font-size-18"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
-                                               
+                                                    <li data-bs-toggle="modal" data-bs-target="#edit-branch-modal">
+                                                        <a href="#" class="dropdown-item d-flex align-items-center"
+                                                        onclick="openEditModal('${branch.id}', '${branch.name}', '${branch.branch_code}', '${branch.country_code}', '${branch.country_timezone}')">
+                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                    </a>
+                                                </li>
+                                            
                                                 <li onclick="confirmDelete('${branch.id}', 'branch')"><a
                                                     href="#"
                                                     class="dropdown-item d-flex align-items-center"><i
@@ -886,11 +2024,18 @@
                                         </div>
                                     </td>
                                 </tr>
+                                  
                                 
                                     
                                 `);
+                                if (saveAndCloseClicked) {
+                                    $('#add-opportunity').modal('hide');
+                                }
+                                if (saveAndNewClicked) {
+                                    $('#branch-form').resetForm()
+                                }
                                 
-                                
+                                // ${res.branch_data_count}
                             }
 
                         },    
@@ -930,14 +2075,60 @@
             });
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const noDataImage = document.getElementById('noDataImageDesk');
+            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
+
+            if (noDataImage && visitorDataCount === 0) {
+                noDataImage.classList.remove('d-none');
+            }
+        });
+
+        let saveAndNewDeskClicked = false;
+        let saveAndCloseDeskClicked = false;
+
+        function resetFormAndStateDesk() {
+            $("#desk_form")[0].reset();
+            $(".error").text("");
+            $(".input-control").removeClass("error success");
+            saveAndNewDeskClicked = false;
+            saveAndCloseDeskClicked = false;
+        }
+
+        function saveAndNewDesk() {
+            saveAndNewDeskClicked = true;
+            saveAndCloseDeskClicked = false;
+            createDesk(event);
+        }
+
+        function saveAndCloseDesk() {
+            saveAndCloseDeskClicked = true;
+            saveAndNewDeskClicked = false;
+            createDesk(event);
+        }
+
+        function clearForms() {
+                document.getElementById("desk_name").value = "";
+                document.getElementById("desk_branch_id").value = "";
+
+                const inputControls = document.querySelectorAll(".inputGroup");
+                const selectControls =  document.querySelectorAll(".select-inp");
+
+                const allControls = Array.from(inputControls).concat(Array.from(selectControls));
+                
+                allControls.forEach(function (control) {
+                    control.classList.remove("success", "error");
+                    const errorElement = control.querySelector(".error");
+                    if (errorElement) {
+                        errorElement.innerHTML = "";
+                    }
+                });
+            }
+
 
         const createDesk = (e) => {
             e.preventDefault();
-             //e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
 
-            // const form = document.getElementsByClassName('.visitors-form');
             const deskName = document.getElementById('desk_name');
             const deskBranchId = document.getElementById('desk_branch_id');
 
@@ -984,9 +2175,7 @@
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#desk_form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
                 $(".input-control").removeClass("error success");
             };
@@ -1011,11 +2200,21 @@
                                 showToast(res.message, "success")
                                 resetForm();
                                 const desk = res.created_desk_data;
+
+                                const noDataImage = document.getElementById('noDataImageDesk');
+                                if (noDataImage) {
+                                    noDataImage.classList.add('d-none');
+                                }
+                                const DeskTable = document.getElementById('desk-settings-card');
+                                if (DeskTable) {
+                                    DeskTable.style.visibility = 'visible';
+                                }
+
                                 $('#desk-table').append(`
                                 
                                 <tr class="delete_modal${desk.id}">
 
-                                    <td>${res.desk_data_count}</td>
+                                    <td></td>
                                     <td>${desk.desk_name}</td>
                                     <td>${desk.select_branch}</td>
                                     <td class="text-right">
@@ -1025,6 +2224,12 @@
                                                 <i class="mdi mdi-dots-vertical font-size-18"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a href="#" class="dropdown-item d-flex align-items-center" 
+                                                    onclick="openDeskEditModal('${desk.id}', '${desk.desk_name}', '${desk.select_branch}')">
+                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                    </a>
+                                                </li>
                                                 
                                                 <li onclick="confirmDelete('${desk.id}','desk')"><a
                                                         href="#"
@@ -1038,9 +2243,15 @@
                                 
                                     
                                 `);
-                                
+                                if (saveAndCloseDeskClicked) {
+                                    $('#add-desk').modal('hide');
+                                }
+                                if (saveAndNewDeskClicked) {
+                                    $('#desk_form').resetForm()
+                                }
                                 
                             }
+                            
 
                         },    
 
@@ -1079,14 +2290,72 @@
             });
         }
 
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const noDataImage = document.getElementById('noDataImageUser');
+            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
+            
+            if (noDataImage && visitorDataCount === 0) {
+                noDataImage.classList.remove('d-none');
+            }
+        });
+        
+        let saveAndNewClickedUser = false;
+        let saveAndCloseClickedUser = false;
+
+        function resetFormAndStateUser() {
+            $("#user-form")[0].reset();
+            $(".error").text("");
+            $(".input-control").removeClass("error success");
+        }
+
+        function saveAndNewUser() {
+            saveAndNewClickedUser = true;
+            saveAndCloseClickedUser = false;
+
+            if (createUser(event)) {
+                resetFormAndStateUser(); 
+            }
+        }
+
+        function saveAndCloseUser() {
+            saveAndCloseClickedUser = true;
+            saveAndNewClickedUser = false;
+
+            if (createUser(event)) {
+                resetFormAndStateUser(); 
+                $('#add-user').modal('hide'); 
+            }
+        }
+
+
+        
+
+        function clearFormUser() {
+            document.getElementById("first_name").value = "";
+            document.getElementById("last_name").value = "";
+            document.getElementById("user_email").value = "";
+            document.getElementById("user_phone").value = "";
+            document.getElementById("user_name").value = "";
+            document.getElementById("branch_id_usr").value = "";
+
+            const inputControls = document.querySelectorAll(".inputGroup");
+            const selectControls =  document.querySelectorAll(".select-inp");
+
+            const allControls = Array.from(inputControls).concat(Array.from(selectControls));
+            
+            allControls.forEach(function (control) {
+                control.classList.remove("success", "error");
+                const errorElement = control.querySelector(".error");
+                if (errorElement) {
+                    errorElement.innerHTML = "";
+                }
+            });
+        }
+
 
         const createUser=(e)=> {
             e.preventDefault();
-             //e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
-
-            // const form = document.getElementsByClassName('.visitors-form');
             const firstName = document.getElementById('first_name');
             const lastName = document.getElementById('last_name');
             const userEmail = document.getElementById('user_email');
@@ -1155,6 +2424,12 @@
                 if (userPhoneValue === '') {
                     setError(userPhone, 'Phone number is required');
                     isValid = false;
+                } else if (/^0+$/.test(userPhoneValue)) {
+                    setError(userPhone, 'Invalid phone number: Cannot be all zeros');
+                    isValid = false;
+                } else if (/^(\d)\1*$/.test(userPhoneValue)) {
+                    setError(userPhone, 'Invalid phone number: Cannot be the same digit repeated');
+                    isValid = false;
                 }else if (userPhoneValue.length < 8 || userPhoneValue.length > 12) {
                     setError(userPhone, 'Phone number should be minimum 8 or maximum 12');
                     isValid = false;
@@ -1179,9 +2454,7 @@
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#user-form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
                 $(".input-control").removeClass("error success");
             }
@@ -1227,11 +2500,21 @@
                                 resetForm();
                                 updateUserBranchDropdown();
                                 const user = res.created_data
+
+                                const noDataImage = document.getElementById('noDataImageUser');
+                                if (noDataImage) {
+                                    noDataImage.classList.add('d-none');
+                                }
+                                const UserTable = document.getElementById('user-settings-card');
+                                if (UserTable) {
+                                    UserTable.style.visibility = 'visible';
+                                }
+
                                 $('#user-table').append(`
                                 <tr>
-                                    <td>${res.user_data_count}</td>
+                                    <td></td>
                                     <td>${user.first_name} ${user.last_name}</td>
-                                    <td>${user.user_name}</td>
+                                    <td>${user.username}</td>
                                     <td>${user.primary_branch}</td>
                                     <td>${user.user_role}</td>
                                     <td class="text-right">
@@ -1253,14 +2536,22 @@
                                 </tr>
                             
                                 `);
-                                
-                                
+
+                                if (saveAndCloseClickedUser) {
+                                    $('#add-user').modal('hide');
+                                    $('#user-form').resetForm()
+                                }
+
+                                if (saveAndNewClickedUser) {
+                                    $('#user-form').resetForm()
+                                }
+                                                       
                             }
+                            // ${res.user_data_count}
 
                         },    
 
                         error: function (xhr, textStatus, errorThrown) {
-                            // Handle any AJAX errors
                         }
                     });
                 
@@ -1307,40 +2598,8 @@
             });
         }
     </script>
-     <script>
-        function updateUserBranchOptions(data) {
-            const userBranchDropdown = document.getElementById('branch_id_usr');
-            userBranchDropdown.innerHTML = '<option selected disabled>--select branch--</option>';
-            
-            data.forEach(branch => {
-                const option = document.createElement('option');
-                option.value = branch.id;
-                option.textContent = branch.name;
-                userBranchDropdown.appendChild(option);
-            });
-        }
-    
-        // Function to make an AJAX request and update the branch dropdown
-        function updateUserBranchDropdown() {
-            $.ajax({
-                type: 'GET',
-                url: '/get-branches-user/',  // Replace with your actual endpoint for getting branches
-                success: function(data) {
-                    updateUserBranchOptions(data);
-                },
-                error: function(error) {
-                    console.error('Error fetching branches:', error);
-                }
-            });
-        }
-    
-        // Call this function when the page loads to initially populate the branch dropdown
-        window.onload = function() {
-            updateUserBranchDropdown();
-        };
-    </script>
+     
     <script>
-        // Function to dynamically update branch options in the dropdown
         function updateBranchOptions(data) {
             const deskBranchDropdown = document.getElementById('desk_branch_id');
             deskBranchDropdown.innerHTML = '<option selected disabled>--select branch--</option>';
@@ -1353,11 +2612,10 @@
             });
         }
     
-        // Function to make an AJAX request and update the branch dropdown
         function updateBranchDropdown() {
             $.ajax({
                 type: 'GET',
-                url: '/get-branches/',  // Replace with your actual endpoint for getting branches
+                url: '/get-branches/', 
                 success: function(data) {
                     updateBranchOptions(data);
                 },
@@ -1367,23 +2625,770 @@
             });
         }
     
-        // Call this function when the page loads to initially populate the branch dropdown
         window.onload = function() {
             updateBranchDropdown();
         };
     </script>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const noDataImage = document.getElementById('noDataImage');
-            const visitorDataCount = parseInt(noDataImage.getAttribute('data-visitor-data-count')) || 0;
+    <script>
+        function updateUserBranchOptions(data) {
+            const userBranchDropdown = document.getElementById('branch_id_usr');
+            userBranchDropdown.innerHTML = '<option selected disabled>--select branch--</option>';
             
-            if (noDataImage && visitorDataCount === 0) {
-                noDataImage.classList.remove('d-none');
+            data.forEach(branch => {
+                const option = document.createElement('option');
+                option.value = branch.id;
+                option.textContent = branch.name;
+                userBranchDropdown.appendChild(option);
+            });
+        }
+    
+        function updateUserBranchDropdown() {
+            $.ajax({
+                type: 'GET',
+                url: '/get-branches-user/',  
+                success: function(data) {
+                    updateUserBranchOptions(data);
+                },
+                error: function(error) {
+                    console.error('Error fetching branches:', error);
+                }
+            });
+        }
+    
+        window.onload = function() {
+            updateUserBranchDropdown();
+        };
+    </script>
+    <script>
+
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+        let originalValues = {};
+
+        function openEditModal(id, name, branchCode, countryCode, country_timezone) {
+            
+            document.getElementById('edit-branchId').value = id;
+            document.getElementById('edit-name').value = name.trim();
+            document.getElementById('edit-branch_code').value = branchCode.trim();
+            document.getElementById('edit-country_code').value = countryCode.trim();
+            // document.getElementById('edit-timezoneSelect').value = country_timezone.trim();
+
+            originalValues = {
+                id,
+                name: name.trim(),
+                branchCode: branchCode.trim(),
+                countryCode: countryCode.trim(),
+                country_timezone: country_timezone.trim(),
+            };
+
+            const branchIdInput = document.getElementById('edit-branchId');
+            if (branchIdInput) {
+                branchIdInput.value = id;
+            } else {
+                console.error("Element with ID 'edit-branchId' not found");
+            }
+            if (countryCode !== originalValues.country_timezone) {
+                return true;
+            }
+
+            $('#edit-branch-modal').modal('show');
+        }
+
+        const editBranch = (e) => {
+            e.preventDefault();
+
+            const branchId = document.getElementById('edit-branchId');
+            const editName = document.getElementById('edit-name');
+            const editBranchCode = document.getElementById('edit-branch_code');
+            const editCountryCode = document.getElementById('edit-country_code');
+
+            function setError(element, message) {
+               
+               const inputControl = element.parentElement;
+               const errorDisplay = inputControl.querySelector('.error');
+
+               errorDisplay.innerText = message;
+               inputControl.classList.add('error');
+               inputControl.classList.remove('success');
+           }
+
+           const setSuccess = element => {
+               const inputControl = element.parentElement;
+               const errorDisplay = inputControl.querySelector('.error');
+
+               errorDisplay.innerText = '';
+               inputControl.classList.add('success');
+               inputControl.classList.remove('error');
+           };
+
+
+           const validateInputs = () => {
+               const editNameValue = editName.value.trim();
+               const editBranchCodeValue = editBranchCode.value.trim();
+               const editCountryCodeValue = editCountryCode.value.trim();
+               let isValid = true;
+
+               if (editNameValue === '') {
+                   setError(editName, 'Enter Branch name');
+                   isValid = false;
+               } else {
+                   setSuccess(editName);
+               }
+
+               if (editBranchCodeValue === '') {
+                   setError(editBranchCode, 'Enter Branch code');
+                   isValid = false;
+               } else {
+                   setSuccess(editBranchCode);
+               }
+
+
+               if (editCountryCodeValue === '') {
+                   setError(editCountryCode, 'Enter country code');
+                   isValid = false;
+
+               } else if (editCountryCodeValue.length > 3) {
+                   setError(editCountryCode, 'Country code should be maximum 3');
+                   isValid = false;
+               } else if (/^0+$/.test(editCountryCodeValue)) {
+                   setError(editCountryCode, 'Invalid country code: Cannot be all zeros');
+                   isValid = false;
+               
+               } else {
+                   setSuccess(editCountryCode);
+               }
+
+               return isValid;
+           };
+
+           function resetForm() {
+               $("#edit-branch-form")[0].reset();
+               $(".error").text("");
+               $(".input-control").removeClass("error success");
+           }
+
+           let serialNumberCounter = parseInt($('#serial-number-counter').val()) || 1;
+
+            if (validateInputs()) {
+                const form = new FormData($("#edit-branch-form")[0]);
+
+                $.ajax({
+                    url: "/edit_branch/" + branchId.value + "/",  // Update the URL with the correct endpoint
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    data: form,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: (res) => {
+
+                        
+                        if (res.status === 400) {
+                            if (res.status === 400) {   
+                                if (res.value) {
+                                let errors = res.value;
+
+                                error.forEach(error => {
+                                    if (error.type === "branch_name") {
+                                        setError(name, error.error);
+                                    }
+
+                                    if (error.type === "branch_code") {
+                                        setError(branch_code, error.error)
+                                    }
+                                });
+
+                                }else {
+
+                                    if (res.type === "branch_name") {
+                                        setError(name, res.error);
+                                    }
+
+                                    if (res.type === "branch_code") {
+                                        setError(branch_code, res.error);
+                                    }
+                                }   
+                            }
+
+                                
+
+                        }
+                        if (res.status === 200) {
+                            // if (res.type === "countrytimezone") {
+                            //     showToast()
+                            // }
+                            if (valuesChanged(branchId.value)) {
+                                showToast("Branch updated", "success");
+                                $('#edit-branch-modal').modal('hide');
+                                resetForm();
+
+                                $('#serial-number-counter').val(serialNumberCounter + 1);
+                                $(`.delete_modal${branchId.value}`).replaceWith(`
+                                    <tr class="delete_modal${branchId.value}">
+                                        <td></td>            
+                                        <td>${res.updated_branch_data.branch_code}</td>
+                                        <td>${res.updated_branch_data.name}</td>
+                                        <td class="text-right">
+                                            <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle card-drop"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-end">
+                                                    <li data-bs-toggle="modal" data-bs-target="#edit-branch-modal">
+                                                        <a href="#" class="dropdown-item d-flex align-items-center"
+                                                            onclick="openEditModal('${res.updated_branch_data.id}', '${res.updated_branch_data.name}',
+                                                            '${res.updated_branch_data.branch_code}', '${res.updated_branch_data.country_code}',
+                                                             '${res.updated_branch_data.country_timezone}')">
+                                                            <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                        </a>
+                                                    </li>
+                                                    <li onclick="confirmDelete('${branchId.value}', 'branch')"><a
+                                                        href="#"
+                                                        class="dropdown-item d-flex align-items-center"><i
+                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `);
+                            } else {
+                                showToast("No Update", "info");
+                                
+                            }
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        // Handle any AJAX errors
+                    }
+                });
+            }
+            // ${serialNumberCounter}
+        };
+
+        // 
+        
+
+        function valuesChanged(branchId) {
+            const editedValues = {
+                id: branchId,
+                name: document.getElementById('edit-name').value.trim(),
+                branchCode: document.getElementById('edit-branch_code').value.trim(),
+                countryCode: document.getElementById('edit-country_code').value.trim(),
+                // country_timezone: document.getElementById('edit-timezoneSelect').value.trim(),
+            };
+
+            for (const key in editedValues) {
+                if (editedValues[key] !== originalValues[key]) {
+                    return true; 
+                }
+            }
+
+            return false;
+        }
+
+        $(document).ready(function () {
+            $(".edit-branch-form").submit(editBranch);
+        });
+
+    </script>
+    
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI/t1Xl1iNEY5x3nG5ZuMzj4POpW5fZhugl6fRs8="
+        crossorigin="anonymous"></script>
+
+<script>
+
+    function showToast(message, icon) {
+        const toastMixin = Swal.mixin({
+            toast: true,
+            icon: icon,
+            title: 'General Title',
+            animation: false,
+            position: 'top-right',
+            width: '450px',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         });
-    </script>
+        toastMixin.fire({
+            animation: true,
+            title: message
+        });
+    }
 
-   
+    let deskOriginalValues = {};
+
+function openDeskEditModal(deskId, deskName, branchId) {
+    originalValues = {
+        id: deskId,
+        name: deskName,
+        branchId: branchId
+    };
+
+    $('#edit_desk_name').val(deskName);
+    $('#edit_desk_branch_id').val(branchId);
+
+    $('#edit_desk_form').attr('data-desk-id', deskId);
+
+    $('#edit-desk').modal('show');
+}
+
+
+    function updateDesk(event) {
+        event.preventDefault();
+
+        var deskId = $('#edit_desk_form').attr('data-desk-id');
+        var deskName = $('#edit_desk_name').val();
+        var branchId = $('#edit_desk_branch_id').val();
+
+        if (!validateDeskName(deskName) || !validateBranchId(branchId)) {
+            return; // Exit the function if validation fails
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/edit_desk/' + deskId + '/',
+            data: {
+                'desk_name': deskName,
+                'branch_id': branchId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (response) {
+                if (response.status === 200) {
+                    const deskId = response.updated_desk_data.id;
+                    const deskName = response.updated_desk_data.desk_name;
+                    const selectBranch = response.updated_desk_data.select_branch;
+
+                    if (valuesChangedd(deskId)) {
+                        showToast("Desk updated", "success");
+
+                        // Find the existing row in the table and update its content
+                        const existingRow = $(`#desk-table .delete_modal${deskId}`);
+                        existingRow.html(`
+                            <td></td>
+                            <td>${deskName}</td>
+                            <td>${selectBranch}</td>
+                            <td class="text-right">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle card-drop"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a href="#" class="dropdown-item d-flex align-items-center" 
+                                            onclick="openDeskEditModal('${deskId}', '${deskName}', '${selectBranch}')">
+                                                <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                            </a>
+                                        </li>
+                                        <li onclick="confirmDelete('${deskId}','desk')">
+                                            <a href="#" class="dropdown-item d-flex align-items-center">
+                                                <i class="bx bx-trash font-size-16 me-1"></i>Delete
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        `);
+
+                        $('#edit-desk').modal('hide');
+                    } else {
+                        showToast("No Update", "info");
+                        
+                    }
+                } else {
+                    alert('Error updating desk: ' + response.message);
+                }
+            },
+            error: function () {
+                alert('Error updating desk. Please try again.');
+            }
+        });
+    }
+
+    function validateDeskName(deskName) {
+        if (deskName.trim() === '') {
+            setError($('#edit_desk_name'), 'Enter Desk name');
+            return false;
+        } else {
+            setSuccess($('#edit_desk_name'));
+            return true;
+        }
+    }
+
+    function validateBranchId(branchId) {
+        if (branchId === '--select branch--' || branchId === '') {
+            setError($('#edit_desk_branch_id'), 'Please choose a branch');
+            return false;
+        } else {
+            setSuccess($('#edit_desk_branch_id'));
+            return true;
+        }
+    }
+
+    // Helper functions
+    function setError(element, message) {
+        const inputControl = element.parent();
+        const errorDisplay = inputControl.find('.error');
+
+        errorDisplay.text(message);
+        inputControl.addClass('error').removeClass('success');
+    }
+
+    function setSuccess(element) {
+        const inputControl = element.parent();
+        const errorDisplay = inputControl.find('.error');
+
+        errorDisplay.text('');
+        inputControl.addClass('success').removeClass('error');
+    }
+
+    function valuesChangedd(deskId) {
+        const editedValues = {
+            name: $('#edit_desk_name').val().trim(),
+            branchId: $('#edit_desk_branch_id').val().trim()
+        };
+
+        // Check if any of the values are different from the original
+        for (const key in editedValues) {
+            if (editedValues[key] !== originalValues[key]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    $(document).ready(function () {
+        $("#edit_desk_form").submit(updateDesk);
+    });
+
+
+</script>
+<script>
+    // function openEditUserModal(id, first_name, last_name, user_email, user_phone, user_name, user_role, branch_id) {
+    //     // Set values in the edit user modal
+    //     document.getElementById('edit_first_name').value = first_name;
+    //     document.getElementById('edit_last_name').value = last_name;
+    //     document.getElementById('edit_user_email').value = user_email;
+    //     document.getElementById('edit_user_phone').value = user_phone;
+    //     document.getElementById('edit_user_name').value = user_name;
+
+    //     // Set the selected radio button for user role
+    //     var userRoleRadios = document.getElementsByName('user_role');
+    //     for (var i = 0; i < userRoleRadios.length; i++) {
+    //         if (userRoleRadios[i].value === user_role) {
+    //             userRoleRadios[i].checked = true;
+    //         }
+    //     }
+
+    //     // Set the selected option for the branch
+    //     var editBranchSelect = document.getElementById('edit_branch_id_usr');
+    //     for (var i = 0; i < editBranchSelect.options.length; i++) {
+    //         if (editBranchSelect.options[i].value === branch_id) {
+    //             editBranchSelect.options[i].selected = true;
+    //         }
+    //     }
+
+    //     // Set the form action dynamically based on the user ID
+    //     document.getElementById('edit-user-form').action = '/edit_user/' + id + '/';
+        
+    //     // Open the edit user modal
+    //     var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+    //     editUserModal.show();
+    // }
+</script>
+<script>
+    function showToast(message, icon) {
+        const toastMixin = Swal.mixin({
+            toast: true,
+            icon: icon,
+            title: 'General Title',
+            animation: false,
+            position: 'top-right',
+            width: '450px',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        toastMixin.fire({
+            animation: true,
+            title: message
+        });
+    }
+
+        let originalUserValues = {};
+
+        function openEditUserModal(userId, firstName, lastName, userEmail, userPhone, userName, userRole, branchId) {
+            originalUserValues = {
+                id: userId,
+                first_name: firstName,
+                last_name: lastName,
+                user_email: userEmail,
+                user_phone: userPhone,
+                user_name: userName,
+                user_role: userRole,
+                branch_id: branchId
+            };
+
+            $('#edit_first_name').val(firstName);
+            $('#edit_last_name').val(lastName);
+            $('#edit_user_email').val(userEmail);
+            $('#edit_user_phone').val(userPhone);
+            $('#edit_user_name').val(userName);
+            $('#edit-user-form').attr('data-user-id', userId);
+
+            $('input[name="user_role"][value="' + userRole + '"]').prop('checked', true);
+
+            var editBranchSelect = document.getElementById('edit_branch_id_usr');
+            for (var i = 0; i < editBranchSelect.options.length; i++) {
+                if (editBranchSelect.options[i].value === branchId) {
+                    editBranchSelect.options[i].selected = true;
+                }
+            }
+
+            var editBranchSelect = document.getElementById('edit_branch_id_usr');
+            for (var i = 0; i < editBranchSelect.options.length; i++) {
+                if (editBranchSelect.options[i].value === branchId) {
+                    editBranchSelect.options[i].selected = true;
+                }
+            }
+
+            var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+            editUserModal.show();
+        }
+
+        function updateUser(event) {
+            event.preventDefault();
+
+            var userId = $('#edit-user-form').attr('data-user-id');
+            var firstName = $('#edit_first_name').val();
+            var lastName = $('#edit_last_name').val();
+            var userEmail = $('#edit_user_email').val();
+            var userPhone = $('#edit_user_phone').val();
+            var userName = $('#edit_user_name').val();
+            var userRole = document.querySelector('input[name="user_role"]:checked').value;
+            var branchId = $('#edit_branch_id_usr').val();
+
+            if (!validateFirstName(firstName) || !validateLastName(lastName) || !validateUserEmail(userEmail) ||
+            //  !validateUserPhone(userPhone) ||
+              !validateUserName(userName) || !validateBranchId(branchId)) {
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/edit_user/' + userId + '/', 
+                data: {
+                    'first_name': firstName,
+                    'last_name': lastName,
+                    'user_email': userEmail,
+                    'user_phone': userPhone,
+                    'user_name': userName,
+                    'user_role': userRole,
+                    'branch_id': branchId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.status === 200) {
+                        // const updatedUserData = response.updated_data;
+                        const userId = response.updated_data.id;
+                        const firstName = response.updated_data.first_name;
+                        const lastName = response.updated_data.last_name;
+                        const userName = response.updated_data.user_name;
+                        const branchId = response.updated_data.branch_id;
+                        const userRole = response.updated_data.user_role;
+                        const userEmail = response.updated_data.user_email;
+                        const userPhone = response.updated_data.user_phone;
+
+                        if (valuesChangedUser(userId)) {
+                            showToast("User updated", "success");
+                            
+
+                            // appendUserToTable(updatedUserData);
+
+                            const ExistingUserRow = $(`#user-table .delete_modal${userId}`);
+                            ExistingUserRow.html(`
+                                    <td></td>
+                                    <td>${firstName} ${lastName}</td>
+                                    <td>${userName}</td>
+                                    <td>${branchId}</td>
+                                    <td>${userRole}</td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" class="dropdown-toggle card-drop"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
+                                            </a>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li >
+                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal"
+                                                    onclick="openEditUserModal('${userId}', '${firstName}', '${lastName}', '${userEmail}', '${userPhone}', '${userName}', '${userRole}', '${branchId}')">
+                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                    </a>
+                                                </li>
+                                                <li onclick="confirmDelete('${userId}', 'user')">
+                                                    <a href="#" class="dropdown-item d-flex align-items-center">
+                                                        <i class="bx bx-trash font-size-16 me-1"></i>Delete
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                
+                                `);
+                                $('#edit-user').modal('hide');
+
+                            // var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+                            // editUserModal.hide();
+                        } else {
+                            showToast("No Update", "info");
+
+                            // var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+                            // editUserModal.hide();
+                        }
+                    } else {
+                        alert('Error updating user: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('Error updating user. Please try again.');
+                }
+            });
+        }
+
+        function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+        }
+
+        function validateFirstName(firstName) {
+        if (firstName.trim() === '') {
+            setError($('#edit_first_name'), 'Enter First Name');
+            return false;
+        } else {
+            setSuccess($('#edit_first_name'));
+            return true;
+        }
+        }
+
+        function validateLastName(lastName) {
+            if (lastName.trim() === '') {
+                setError($('#edit_last_name'), 'Enter Last Name');
+                return false;
+            } else {
+                setSuccess($('#edit_last_name'));
+                return true;
+            }
+        }
+
+        function validateUserEmail(userEmail) {
+            if (userEmail.trim() === '' || !isValidEmail(userEmail)) {
+                setError($('#edit_user_email'), 'Enter a valid Email');
+                return false;
+            } else {
+                setSuccess($('#edit_user_email'));
+                return true;
+            }
+        }
+
+    //     function validateUserPhone(userPhone) {
+    //     const userPhoneValue = userPhone.val().trim();
+
+    //     if (userPhoneValue === '') {
+    //         setError(userPhone, 'Phone number is required');
+    //         return false;
+    //     } else if (/^0+$/.test(userPhoneValue)) {
+    //         setError(userPhone, 'Invalid phone number: Cannot be all zeros');
+    //         return false;
+    //     } else if (/^(\d)\1*$/.test(userPhoneValue)) {
+    //         setError(userPhone, 'Invalid phone number: Cannot be the same digit repeated');
+    //         return false;
+    //     } else if (userPhoneValue.length < 8 || userPhoneValue.length > 12) {
+    //         setError(userPhone, 'Phone number should be minimum 8 or maximum 12');
+    //         return false;
+    //     } else {
+    //         setSuccess(userPhone);
+    //         return true;
+    //     }
+    // }
+
+        function validateUserName(userName) {
+            if (userName.trim() === '') {
+                setError($('#edit_user_name'), 'Enter User Name');
+                return false;
+            } else {
+                setSuccess($('#edit_user_name'));
+                return true;
+            }
+        }
+
+        function validateBranchId(branchId) {
+            if (branchId === '--select branch--' || branchId === '') {
+                setError($('#edit_branch_id_usr'), 'Please choose a branch');
+                return false;
+            } else {
+                setSuccess($('#edit_branch_id_usr'));
+                return true;
+            }
+        }
+
+        function valuesChangedUser(userId) {
+        const editedValues = {
+            first_name: $('#edit_first_name').val().trim(),
+            last_name: $('#edit_last_name').val().trim(),
+            user_email: $('#edit_user_email').val().trim(),
+            user_phone: $('#edit_user_phone').val().trim(),
+            user_name: $('#edit_user_name').val().trim(),
+            user_role: document.querySelector('input[name="user_role"]:checked').value,
+            branch_id: $('#edit_branch_id_usr').val().trim()
+        };
+
+        for (const key in editedValues) {
+            if (editedValues[key] !== originalValues[key]) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    $(document).ready(function () {
+        $("#edit-user-form").submit(updateUser);
+    });
+</script>
 
 </body>
 

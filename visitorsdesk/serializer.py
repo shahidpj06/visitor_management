@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MainUser
-        fields = ['id', 'first_name', 'last_name', 'user_name', 'user_role', 'primary_branch','auth_user']
+        fields = '__all__'
 
     def get_auth_user(self, obj):
         return obj.auth_user.username
@@ -20,8 +20,8 @@ class BranchSerializer(serializers.ModelSerializer):
     auth_user = serializers.SerializerMethodField()
 
     class Meta:
-        model = Branches
-        fields = ['id', 'name', 'branch_code', 'counter', 'country_code', 'timezone', 'auth_user']
+        model = Branch
+        fields = '__all__'
 
     def get_auth_user(self, obj):
         return obj.auth_user.username    
@@ -33,7 +33,7 @@ class DeskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Desk
-        fields = ['id', 'desk_name', 'select_branch', 'auth_user']
+        fields = '__all__'
 
     def get_auth_user(self, obj):
         return obj.auth_user.username    

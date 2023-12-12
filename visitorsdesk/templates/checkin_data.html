@@ -1,0 +1,27 @@
+
+<tbody>
+    {% for i in checkin_data %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ i.visitor_id }}</td>
+        <td>{{ i.full_name.title }}</td>
+        <td>{{ i.user_host }}</td>
+        <td>{{ i.purpose }}</td>
+        <td>{{ i.checkin_time }}</td>
+        <td>{{ i.checkout_time|default:'Not Checked Out' }}</td>
+        <td>
+            <div class="label label-success ng-hide">
+                <a class="checkoutLink" data-bs-toggle="modal" onclick="checkout_modal('{{ i.id }}','{{ i.visitor_id }}')" href=""
+                    style="font-size: 13px; color: red;">
+                    <span>CHECKOUT</span>
+                </a>
+                <span class="checkedout" style="font-size: 13px; color: green; display: none;">
+                    CHECKED OUT
+                </span>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+

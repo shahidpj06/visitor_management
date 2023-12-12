@@ -30,7 +30,7 @@
 
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #3B65EF;
+    background-color: green;
 }
 
 body {
@@ -387,7 +387,7 @@ body {
     display: block;
     width: 25%;
     height: 25%;
-    background-color: #556ee6;
+    background-color: green;
     border-radius: 100%;
     -webkit-animation: chase-dot-before 2s infinite ease-in-out both;
     animation: chase-dot-before 2s infinite ease-in-out both
