@@ -14,6 +14,10 @@
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
 
 </head>
 <style>
@@ -32,9 +36,39 @@
         border-color: #09c372;
         font-size: 10px;
     }
+        /* .inputGroup {
+            position: relative;
+            margin-bottom: 1em;
+        }
+
+        .inputGroup input {
+            font-size: 1em;
+            padding: 10px;
+            display: block;
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .inputGroup label {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            font-size: 1em;
+            color: #777;
+            pointer-events: none;
+            transition: 0.2s ease all;
+        } */
+
+        /* .inputGroup input:focus + label,
+        .inputGroup input:not(:placeholder-shown) + label {
+            top: -15px;
+            font-size: 0.8em;
+            color: #333;
+        } */
 </style>
 
-<body>
+<body id="for-focus-main">
 
     <div id="preloader">
         <div id="status">
@@ -155,13 +189,13 @@
 
 
 
-        <div class="page-content">
+        <div class="page-content" >
             <div class="container-fluid px-0">
                 <div class="settings-tabs">
                     <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#department-tab" role="tab">
+                            <a class="nav-link " data-bs-toggle="tab" href="#department-tab" role="tab">
                                 <div>
                                     <i class='bx bxs-group stns-tab-icon-2'></i>
                                     <h4 class="stngs-tab-head">New Visitor</h4>
@@ -180,7 +214,7 @@
 
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
                                 <div>
                                     <i class="bx bx-stats stns-tab-icon-6"></i>
                                     <h4 class="stngs-tab-head">Invited Visitor</h4>
@@ -191,15 +225,14 @@
 
                     </ul>
 
-                    <div class="tab-content">
+                    <div class="tab-content" >
                         
 
-                        <div class="tab-pane active" id="department-tab" role="tabpanel">
-                            <div class="settings-card">
+                        <div class="tab-pane " id="department-tab" role="tabpanel">
+                            <div class="settings-card" >
                             
                                 <div class="department-table table-view">
-                                    <div class="table-responsive">
-                                        
+                                    <div class="table-responsive">                                      
                                         <form method="post" id="checkin_form" action="{% url 'new_visitor' %}">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
@@ -255,7 +288,7 @@
                                                 <h6 class="selct-box-head">Host</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
-                                                        <select class="form-control" name="host_id" id="host_id" required>
+                                                        <select class="form-control drp" name="host_id" id="host_id" required>
                                                             
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
@@ -284,32 +317,49 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane" id="opportunity-stages-tab" role="tabpanel">
-                            <div class="settings-card">
-
+                        <div class="tab-pane active" id="opportunity-stages-tab" role="tabpanel">
+                            <div class="settings-card" id="for-focus">
                                 <div class="opportunity-stages-tab table-view">
                                     <div class="table-responsive">
                                         <form method="post" id="visitor_checkin" action="#">
                                             {% csrf_token %}
-                                            <div class="card-body center-text-align" style="padding: 35px;">
+                                            <div class="card-body center-text-align" style="padding: 35px; text-align: center;">
                                                 <h4 style="font-weight: 600;">Invited Visitor Check</h4><br>
-                                                <div class="inputGroup form-control">
-                                                    <input type="text" required="" name="invite_id" id="invite_id"> 
-                                                    <label class="search-icon" for="invite_id">Invite ID</label>
+                                                <div style="display: flex; justify-content: space-between;">
+                                                    <div style="flex: 1;">
+                                                        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+                                                        <dotlottie-player src="https://lottie.host/b3a48700-59e5-49e5-8962-65d4b5e19dce/CEaCFb2mG4.json" background="transparent" speed="1" style="width: 450px; height: 450px; margin-left: 65px;
+                                                        width: 58%;
+                                                        height: 100%; margin-top: 9px " loop autoplay></dotlottie-player>
+                                                        <h5 style="margin-left: 137px;;
+                                                        display: flex;
+                                                        position: absolute;
+                                                        margin-top: -26px; ">Scan Your QR</h5>
+                                                    </div>
+                                                    <h1 style="margin-top: 40px;
+                                                    align-items: center;
+                                                    display: flex; color: #002d00;">OR</h1>
+                                                    <div style="flex: 1; padding-left: 20px;">
+                                                        <div class="inputGroup form-control" style="margin-top: 124px;
+                                                        margin-left: 106px; width: 286px ; border: 3px solid #008a00;">
+                                                            <input type="text" required="" name="invite_id" id="invite_id" placeholder="Enter Visitor ID."> 
+                                                            <label class="search-icon" for="invite_id">Invite ID</label>
+                                                        </div>
+                                                        <span id="error-message" style="color: red; margin-left: 153px;"></span>
+                                                    </div>
                                                 </div>
-                                        
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" id="get-details-btn" style="background-color: green; color: white;"
-                                                        class="btn text-uppercase br-50 btn-md">
-                                                        Get Details
-                                                    </button>
                                                 </div>
                                             </div>
+                                            <button type="submit" id="get-details-btn" style="background-color: green; color: white; display: none;" class="btn text-uppercase br-50 btn-md">
+                                                Get Details
+                                            </button>
                                         </form>                                        
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
+                       
 
                     </div>
                 </div>
@@ -324,7 +374,7 @@
         
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Visitor Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetForm()"></button>
                     </div>
         
                     <div class="modal-body">
@@ -352,7 +402,7 @@
                         <div class="form-group">
                             <label>Desk</label>
                             <select class="form-control" name="desk_name" id="desk_name">
-                                <option selected>--select desk--</option>
+                                <!-- <option selected>--select desk--</option> -->
                                 {% for i in desk_data %}
                                     <option value="{{i.id}}">{{i.desk_name}}</option>
                                 {% endfor %}
@@ -364,7 +414,7 @@
                         <button type="button" id="checkin_modal_btn" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md">
                             Check in
                         </button>                       
-                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-bs-dismiss="modal">
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-bs-dismiss="modal" onclick="resetForm()">
                             Close
                         </button>
                     </div>
@@ -456,11 +506,11 @@
               fetch(`/get_dependent/?branch_id=${branchId}`)
                 .then(response => response.json())
                 .then(data => {
-                  hostDropdown.innerHTML = '<option value="" selected disabled>--select host--</option>';
+                  hostDropdown.innerHTML = '';
                   data.hosts.forEach(host => {
                     hostDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`;
                   });
-                  deskDropdown.innerHTML = '<option value="" selected disabled>--select desk--</option>';
+                  deskDropdown.innerHTML = '';
                   data.desks.forEach(desk => {
                     deskDropdown.innerHTML += `<option value="${desk.id}">${desk.name}</option>`;
                   });
@@ -468,8 +518,8 @@
                 });
             } else {
               // Reset the host dropdown if no branch is selected
-              hostDropdown.innerHTML = '<option value="" selected disabled>--select host--</option>';
-              deskDropdown.innerHTML = '<option value="" selected disabled>--select desk--</option>';
+              hostDropdown.innerHTML = '';
+              deskDropdown.innerHTML = '';
             }
           });
         });
@@ -610,10 +660,10 @@
             function resetForm() {
                 $("#checkin_form")[0].reset();
                 $(".error").text("");
+                $("#desk_id").text("");
+                $("#host_id").text("");
                 $(".input-control").removeClass("error success");
             };
-
-            
 
 
             if (validateInputs()) {
@@ -704,77 +754,65 @@
 
 
     <script>
-        
         $(document).ready(function() {
-    
-            function showToast(message, icon) {
-                const toastMixin = Swal.mixin({
-                    toast: true,
-                    icon: icon,
-                    title: 'General Title',
-                    animation: false,
-                    position: 'top-right',
-                    width: '450px',
-                    showConfirmButton: false,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                });
-                toastMixin.fire({
-                    animation: true,
-                    title: message
-                });
+
+window.onload = function() {
+    document.getElementById("invite_id").focus();
+
+    var settingsCard = document.querySelector('#for-focus-main');                
+    settingsCard.addEventListener('click', function() {
+        document.getElementById("invite_id").focus();
+    });
+};
+
+function checkVisitorDetails(visitorId) {
+    $.ajax({
+        url: `/get-visitor-details/${visitorId}/`,
+        type: 'GET',
+        success: function(data) {
+            if (!data.error) {
+                $('#visitor-detail-modal tbody tr td:nth-child(1)').text(data.visitor_id);
+                $('#visitor-detail-modal tbody tr td:nth-child(2)').text(data.full_name);
+                $('#visitor-detail-modal tbody tr td:nth-child(3)').text(data.select_branch);
+                $('#visitor-detail-modal tbody tr td:nth-child(4)').text(data.purpose);
+                $('#visitor-detail-modal tbody tr td:nth-child(5)').text(data.user_host);
+
+                $('#visitor-detail-modal').modal('show');
+            } else {
+                $('#error-message').text('Visitor not found!').show();
+                $('#visitor-detail-modal').modal('hide');
             }
+        },
+        error: function() {
+            $('#error-message').text('Visitor not found!').show();
+        }
+    });
+}
 
-            function checkVisitorDetails(visitorId) {
-                $.ajax({
-                    url: `/get-visitor-details/${visitorId}/`,
-                    type: 'GET',
-                    success: function(data) {
+function getVisitorDetails() {
+    var visitorId = $('#invite_id').val();
+    if (visitorId) {
+        // Hide any previous error messages
+        $('#error-message').hide();
+        checkVisitorDetails(visitorId);
+    } else {
+        // Display error message below the input field
+        $('#error-message').text('Please enter a valid Visitor ID.').show();
+        $('#visitor-detail-modal').modal('hide');
+    }
+}
 
-                        if (!data.error) {
-                            $('#visitor-detail-modal tbody tr td:nth-child(1)').text(data.visitor_id);
-                            $('#visitor-detail-modal tbody tr td:nth-child(2)').text(data.full_name);
-                            $('#visitor-detail-modal tbody tr td:nth-child(3)').text(data.select_branch);
-                            $('#visitor-detail-modal tbody tr td:nth-child(4)').text(data.purpose);
-                            $('#visitor-detail-modal tbody tr td:nth-child(5)').text(data.user_host);
-                        
-                            $('#visitor-detail-modal').modal('show');
-                        } else {
-                            showToast('Visitor not found!', 'error');
-                            $('#visitor-detail-modal').modal('hide');
-                        }
-                    },
-                    error: function() {
-                        showToast('Visitor not found!', 'error');
-                    }
-                });
-            }
-            
+$('#get-details-btn').on('click', function(event) {
+    event.preventDefault();
+    getVisitorDetails();
+});
 
-            function getVisitorDetails() {
-                var visitorId = $('#invite_id').val();
-                if (visitorId) {
-                    checkVisitorDetails(visitorId);
-                } else {
-                    showToast('Please enter a valid Visitor ID.', 'warning');
-                    $('#visitor-detail-modal').modal('hide');
-                }
-            }
+$('#checkin_modal_btn').on('click', function() {
+    checkInVisitors();
+});
 
-            $('#get-details-btn').on('click', function(event) {
-                event.preventDefault();
-                getVisitorDetails();
-            });
+});
 
-            $('#checkin_modal_btn').on('click', function() {
-                checkInVisitors();
-            });
-
-        });
 
     </script> 
     <script>
@@ -803,6 +841,12 @@
             });
         }
 
+        function resetForm() {
+               $("#visitor_checkin")[0].reset();
+               $(".error").text("");
+               $(".input-control").removeClass("error success");
+           }
+
         const checkVisitor = (e) => {
             e.preventDefault();
 
@@ -820,12 +864,18 @@
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function(data) {
-                    if (data.error) {
-                        showToast(data.error, 'info');
+                    if (data.status == 200) {
+                        showToast(data.message, 'error');
+                        $('#visitor-detail-modal').modal('hide');
+                        resetForm()
                     } else {
                         showToast('Checked in successfully', 'success');
                         $('#visitor-detail-modal').modal('hide');
+                        resetForm()
+
                     }
+
+                    document.getElementById("invite_id").focus();
                 },
                 error: function() {
                     showToast('Error checking in visitor', 'error');

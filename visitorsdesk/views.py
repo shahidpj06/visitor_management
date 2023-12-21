@@ -3,20 +3,26 @@ import qrcode
 from . models import *
 from io import BytesIO
 from . serializer import *
+from django.views import View
 from datetime import datetime
 from celery import shared_task
 from django.conf import settings
 from django.contrib import messages
 from datetime import date, timezone
 from django.http import JsonResponse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
+from django.core.serializers.json import DjangoJSONEncoder
+from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
+from django import forms
 
 
 def is_strong_password(password):
@@ -35,10 +41,15 @@ def is_strong_password(password):
     return True
 
 def user_profile(request):
-    return render(request, 'profile.html')
+    print("request.user::::::::::",request.user.id)
+    auth_user = User.objects.get(id=request.user.id)
+    user_data = MainUser.objects.get(auth_user=request.user.id)
+    context = {
+        'user_data': user_data
+    }
+    return render(request, 'profile.html', context)
 
-def calendar(request):
-    return render(request, 'calendar.html')
+
 
 def register_page(request):
     if request.method == 'POST': 
@@ -87,12 +98,60 @@ def register_page(request):
         my_user = User.objects.create(username=username, email=useremail)
         my_user.set_password(userpassword)
         my_user.save()
+        
         company_id = Company.objects.create(user_profile=my_user)
         MainUser.objects.create(auth_user=my_user, username=username, useremail=useremail, company=company_id, user_role="Company Admin")
         login(request, my_user)
         return JsonResponse({"status": 200, "message": "User registered successfully", "icon": "success"})
     
     return render(request, 'register.html')
+
+@login_required(login_url='login')
+def edit_company_admin(request, user_id):
+    user = get_object_or_404(MainUser, id=user_id)
+
+    if request.method == 'POST':
+        user.first_name = request.POST.get('first_name').strip()
+        print(user.first_name)
+        user.last_name = request.POST.get('last_name').strip()
+        user.useremail = request.POST.get('useremail').strip().lower()
+        user.user_phone = request.POST.get('user_phone').strip()
+        user.username = request.POST.get('username').strip().lower()
+        user.user_role = "Company Admin" 
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        current_password = request.POST.get('current_password')
+
+        if password or confirm_password:
+            if not current_password or not request.user.check_password(current_password):
+                return JsonResponse({"status": 400, "type": "current_password", "error": "Invalid current password."})
+
+            if password != confirm_password:
+                return JsonResponse({"status": 400, "type": "confirm_password", "error": "Passwords do not match."})
+            form = PasswordChangeForm(request.user, {'new_password1': password, 'new_password2': confirm_password})
+
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user) 
+            else:
+                return JsonResponse({"status": 400, "type": "password", "error": form.errors})
+
+        if 'profile_image' in request.FILES:
+            user.profile_image = request.FILES['profile_image']
+        user.about = request.POST.get('about').strip()
+
+        if MainUser.objects.filter(useremail=user.useremail).exclude(id=user.id).exists():
+            return JsonResponse({"status": 400, "type": "user_email", "error": "Email already exists. Please choose a different email."})
+
+        if MainUser.objects.filter(username=user.username).exclude(id=user.id).exists():
+            return JsonResponse({"status": 400, "type": "username", "error": "Username already exists. Please use a different one."})
+
+        user.save()
+        updated_data = UserSerializer(user).data
+        return JsonResponse({"status": 200, 'message': "User updated", 'icon': 'success', 'updated_data': updated_data})
+
+    # user_data = UserSerializer(user).data
+    # return JsonResponse({"status": 200, 'user_data': user_data})
 
 @csrf_exempt
 def login_page(request):
@@ -121,14 +180,16 @@ def login_page(request):
 
 @login_required(login_url='login')
 def dashboard(request):
+    current_date = datetime.today()
     visitor_data = NewVisitor.objects.filter(auth_user=request.user).order_by("id")
-    current_date = date.today()
-    checkout_count = ExitVisitor.objects.filter(auth_user=request.user).count()
+    visitor_today_data = NewVisitor.objects.filter(auth_user=request.user, checkin_time__date=current_date).order_by("id")
+    checkout_count = ExitVisitor.objects.filter(auth_user=request.user, exit_time__date=current_date).count()
     expected_visitor = InviteVisitor.objects.filter(auth_user=request.user).order_by("id")
     context = { # context - mapping to template.
         'visitor_data': visitor_data,
         'checkout_count': checkout_count,
         'expected_visitor': expected_visitor,
+        'visitor_today_data': visitor_today_data
     }
     return render(request, 'dashboard.html', context)
 
@@ -139,8 +200,9 @@ def logout_page(request):
 
 @login_required(login_url='login')
 def main_settings(request):
-    data = Branch.objects.filter(auth_user=request.user).order_by("id") #auth_user=request.user - if the any user was loggedin, they can't see other users da 
-    user_data = MainUser.objects.filter(auth_user=request.user).exclude(user_role='Company Admin')
+    data = Branch.objects.filter(auth_user=request.user).order_by("id") #auth_user=request.user - if the any user was loggedin, they can't see other users data
+    company_data = Company.objects.get(user_profile=request.user)
+    user_data = MainUser.objects.filter(company=company_data.id).exclude(user_role='Company Admin')
     desk_data = Desk.objects.filter(auth_user=request.user)
     context = {
         'data':data,
@@ -176,8 +238,8 @@ def create_branch(request):
             users_data = None
 
         companyid = users_data.company
-        name = request.POST.get("name").strip().lower()
-        if Branch.objects.filter(name=name, auth_user=request.user).exists():
+        name = request.POST.get("name").strip()
+        if Branch.objects.filter(name__iexact=name, auth_user=request.user).exists():
             return JsonResponse({"status": 400, "type": "branch_name", "error": "Branch name must be unique"})
 
         branch_code = request.POST.get("branch_code").strip()
@@ -208,7 +270,7 @@ def edit_branch(request, branch_id):
 
     if request.method == 'POST':
         branch.name = request.POST.get("name").strip().lower()
-        if Branch.objects.filter(name=branch.name, auth_user=request.user).exists():
+        if Branch.objects.filter(name=branch.name, auth_user=request.user).exclude(id=branch.id).exists():
             return JsonResponse({"status": 400, "type": "branch_name", "error": "Branch came must be Unique"})
         
         branch.branch_code = request.POST.get("branch_code").strip()
@@ -223,8 +285,8 @@ def edit_branch(request, branch_id):
         return JsonResponse({"status": 200, 'message': "Branch updated", 'icon': 'success',
                              'updated_branch_data': updated_branch_data, 'branch_data_count': branch_data_count})
 
-    branch_data = BranchSerializer(branch).data
-    return JsonResponse({"status": 200, 'branch_data': branch_data})
+    # branch_data = BranchSerializer(branch).data
+    # return JsonResponse({"status": 200, 'branch_data': branch_data})
 
     
 
@@ -253,7 +315,7 @@ def delete(request):
         delete_id = request.POST.get("delete_id")
         delete_type = request.POST.get("delete_type")
         if delete_type == "user":
-            user = MainUser.objects.get(id=delete_id)
+            user = MainUser.objects.get(id=delete_id) # for getting single user
             user.delete()
             return JsonResponse({'message': "User deleted successfully", 'icon': 'success'})
         if delete_type == 'branch':
@@ -264,8 +326,7 @@ def delete(request):
             desk = Desk.objects.get(id=delete_id)
             desk.delete()
             return JsonResponse({'message': "Desk deleted successfully", 'icon': 'success', 'id': delete_id})
-            
-
+        
 
 @login_required(login_url='login')
 def user_info(request):
@@ -279,18 +340,18 @@ def user_info(request):
         companyid = users_data.company
         first_name = request.POST.get('first_name').strip()
         last_name = request.POST.get('last_name').strip()
-        user_email = request.POST.get('user_email').strip()     
+        user_email = request.POST.get('user_email').strip().lower()     
         user_phone = request.POST.get('user_phone').strip()
-        user_name = request.POST.get('user_name').strip()
+        user_name = request.POST.get('user_name').strip().lower()
 
-        if MainUser.objects.filter(useremail=user_email, auth_user=request.user).exists() and MainUser.objects.filter(username=user_name, auth_user=request.user).exists():
+        if MainUser.objects.filter(useremail=user_email).exists() and MainUser.objects.filter(username=user_name).exists():
             return JsonResponse({'status': 400, 'value': [{"status": 400, "type": "useremail", "error": "Email already exists. Please choose a different email."},
                                 {"status": 400, "type": "username", "error": "Username already exists. Please use a different one."}]})
 
-        elif MainUser.objects.filter(useremail=user_email, auth_user=request.user).exists():
+        elif MainUser.objects.filter(useremail=user_email).exists():
             return JsonResponse({'status': 400, 'type': "useremail", "error": "Email already exists. Please choose a different email." })
         
-        elif MainUser.objects.filter(username=user_name, auth_user=request.user).exists():
+        elif MainUser.objects.filter(username=user_name).exists():
             return JsonResponse({"status": 400, "type": "username", "error": "Username already exists. Please use a different one."})
 
         # user_password = request.POST.get('user_password')
@@ -301,13 +362,13 @@ def user_info(request):
             return JsonResponse({'message': "Please select a branch", 'icon': 'error'})
         branch = Branch.objects.filter(pk=branch_id).first()
 
-        # auth_user_data = User.objects.create_user(username=user_name, email=user_email, password=user_password)
-        # auth_user_data.save()
+        auth_user_data = User.objects.create_user(username=user_name, email=user_email)
+        auth_user_data.save()
         
-        main_user = MainUser.objects.create(auth_user=request.user, first_name=first_name,
+        main_user = MainUser.objects.create(auth_user=auth_user_data, first_name=first_name,
                                 last_name=last_name, useremail=user_email, company=companyid,
                                 user_phone=user_phone, username=user_name,
-                                user_role=user_role,primary_branch=branch)
+                                user_role=user_role, primary_branch=branch)
         
         created_data = UserSerializer(main_user).data
         user_data = MainUser.objects.filter(auth_user=request.user)
@@ -318,14 +379,14 @@ def user_info(request):
 
 @login_required(login_url='login')
 def edit_user(request, user_id):
-    user = get_object_or_404(MainUser, id=user_id, auth_user=request.user)
+    user = get_object_or_404(MainUser, id=user_id)
 
     if request.method == 'POST':
         user.first_name = request.POST.get('first_name').strip()
         user.last_name = request.POST.get('last_name').strip()
-        user.user_email = request.POST.get('user_email').strip()
+        user.useremail = request.POST.get('user_email').strip().lower()
         user.user_phone = request.POST.get('user_phone').strip()
-        user.user_name = request.POST.get('user_name').strip()
+        user.username = request.POST.get('user_name').strip().lower()
         user.user_role = request.POST.get('user_role').strip()
         branch_id = request.POST.get('branch_id')
 
@@ -335,14 +396,13 @@ def edit_user(request, user_id):
         branch = get_object_or_404(Branch, id=branch_id)
         user.primary_branch = branch
 
-        if MainUser.objects.filter(useremail=user.user_email).exclude(id=user.id).exists():
+        if MainUser.objects.filter(useremail=user.useremail).exclude(id=user.id).exists():
             return JsonResponse({"status": 400, "type": "user_email", "error": "Email already exists. Please choose a different email."})
 
-        if MainUser.objects.filter(username=user.user_name).exclude(id=user.id).exists():
+        if MainUser.objects.filter(username=user.username).exclude(id=user.id).exists():
             return JsonResponse({"status": 400, "type": "user_name", "error": "Username already exists. Please use a different one."})
 
         user.save()
-
         updated_data = UserSerializer(user).data
         user_data_count = MainUser.objects.filter(auth_user=request.user).count()
 
@@ -366,10 +426,14 @@ def get_branch_counter(branch_name):
 
 
 def update_branch_counter(branch_name, new_counter):
-    branch = Branch.objects.select_for_update().get(name=branch_name)
-    branch.counter = new_counter
-    branch.save()
-
+    try:
+        branch = Branch.objects.filter(name=branch_name).first()
+        # branch = Branch.objects.select_for_update().get(name=branch_name)
+        branch.counter = new_counter
+        branch.save()
+    except Branch.MultipleObjectsReturned:
+        pass
+        
 
 def generate_visitor_id(companyid, branch_slug, branch_counter):
     branch_code = branch_slug[:2].upper()
@@ -424,10 +488,7 @@ def invite_visitor(request):
         if users_data and users_data.company:
             companyid = users_data.company.id
         else:
-            companyid = None      
-
-        # print(companyid)
-        
+            companyid = None              
         full_name = request.POST.get('full_name').strip()
         
         if full_name is None:
@@ -459,7 +520,7 @@ def invite_visitor(request):
             border=4,
         )
 
-        qr.add_data(f"Check-in ID: {main_user.id}")
+        qr.add_data(visitor_id)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         img_buffer = BytesIO()
@@ -474,10 +535,11 @@ def invite_visitor(request):
             from_date=from_date, to_date=to_date, visitor_phone=visitor_phone, select_branch=branch, user_host=main_user, visitor_id=visitor_id)
         
         created_visitor_data = InviteVisitorSerializer(invite_visitor).data
+        visitor_id = created_visitor_data['visitor_id']
         invite_visitor_data = InviteVisitor.objects.filter(auth_user=request.user)
         invite_visitor_data_count = invite_visitor_data.count()
         return JsonResponse({"status": 200, 'message': "Invited", 'icon': "success", 'form_name': 'invite_visitor',
-                            'created_visitor_data': created_visitor_data, 'invite_visitor_data_count': invite_visitor_data_count})
+                            'created_visitor_data': created_visitor_data, 'invite_visitor_data_count': invite_visitor_data_count, 'visitor_id': visitor_id})
     
 
 @shared_task
@@ -534,8 +596,7 @@ def edit_desk(request, desk_id):
     desk_data = DeskSerializer(desk).data
     return JsonResponse({"status": 200, 'desk_data': desk_data})
 
-
-@login_required(login_url='login')
+# 
 def checkin_visitor(request):
     branch_data = Branch.objects.filter(auth_user=request.user)
     visitor_data = NewVisitor.objects.filter(auth_user=request.user)
@@ -570,7 +631,7 @@ def check_in_visitor(request, visitor_id):
     try:
         visitor = InviteVisitor.objects.get(visitor_id=visitor_id)
         if visitor.checked_in:
-            return JsonResponse({'error': 'Visitor has already been checked in'}, status=400)
+            return JsonResponse({'status': 200, 'message': 'This visitor has already been checked in', 'icon': "error"})
         
         desk_id = request.POST.get('desk_name')
         desk = get_object_or_404(Desk, id=desk_id)
@@ -619,6 +680,7 @@ def new_visitor(request):
         purpose = request.POST.get('purpose').strip()
         branch_id = request.POST.get('branch_id')
         checkin_time = datetime.now()
+        print(checkin_time)
 
         if not branch_id:
             return JsonResponse({'status': 400, 'type': 'branchId', 'error': 'Select a branch'})
@@ -656,15 +718,16 @@ def exit_visitor(request):
         if not exit_desk:
             return JsonResponse({'status': 400, 'message': 'Desk is required', 'icon': 'error'})
         visitor_id = request.POST.get('visitor_id')
+        
         try:
-            visitor = NewVisitor.objects.get(visitor_id=visitor_id)
+            visitor = NewVisitor.objects.filter(visitor_id=visitor_id, auth_user=request.user).first()
         except NewVisitor.DoesNotExist:
             return JsonResponse({'status': 400, 'type': 'notexist', 'error': 'Visitor not found'})
         
         if visitor.checkout_time is not None:
-            return JsonResponse({'status': 400, 'type': 'checkouttime', 'error': 'Visitor has already checked out'})
+            return JsonResponse({'status': 400, 'type': 'checkouttime', 'message': 'Oops! It seems this visitor has already checked out.', 'icon': 'error'})
         
-        exit_time = request.POST.get('exit_time')
+        exit_time = datetime.now()
         visitor_remarks = request.POST.get('visitor_remarks')
 
         current_date = datetime.now().isoformat()
@@ -689,4 +752,92 @@ def append_checkout_modal(request):
     data = NewVisitor.objects.get(id=visitor_id)
     return render(request,'append_checkout_modal.html', {'data':data,'vid':vid})
 
+
+@login_required(login_url='login')
+def create_event(request):
+    if request.method == "POST":
+        try:
+            users_data = MainUser.objects.filter(auth_user=request.user).first()
+        except MainUser.MultipleObjectsReturned:
+            users_data = None
+
+        companyid = users_data.company
+        visitor_name = request.POST.get('visitor_name')
+        print(visitor_name)
+        visitor_email = request.POST.get('visitor_email')
+        event_name = request.POST.get('event_name')
+        print(event_name)
+        visitor_phone = request.POST.get('visitor_phone')
+        starts_at = request.POST.get('starts_at')
+        print(starts_at)
+        ends_at = request.POST.get('ends_at')
+        host_id = request.POST.get('host_id')
+        host = MainUser.objects.filter(pk=host_id).first() 
+        print(host)
+        event_description = request.POST.get('event_description')
+
+        Event.objects.create(
+            auth_user=request.user,
+            company=companyid,
+            visitor_name=visitor_name,
+            visitor_email=visitor_email,
+            visitor_phone=visitor_phone,
+            event_name=event_name,
+            starts_at=starts_at,
+            ends_at=ends_at,
+            event_description=event_description,
+            staff=host
+        )
+        
+        data = {}
+        return JsonResponse(data)
+
+    return JsonResponse({'error': 'Invalid request'})
+
+def get_events(request):
+    try:
+        users_data = MainUser.objects.filter(auth_user=request.user).first()
+    except MainUser.MultipleObjectsReturned:
+        users_data = None
+
+    companyid = users_data.company
+    events = Event.objects.filter(company=companyid)
+
+    event_list = []
+    for event in events:
+        event_list.append({
+            'visitor_name': event.visitor_name,
+            'title': event.event_name,
+            'start': event.starts_at.strftime('%Y-%m-%dT%H:%M:%S%z'),  
+            'end': event.ends_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
+            'description': event.event_description,
+        })
+        # 
+
+    return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
+
+@login_required(login_url='login')
+def calendar(request):
+    checkins = NewVisitor.objects.filter(auth_user=request.user)
+    checkouts = ExitVisitor.objects.filter(auth_user=request.user)
+    event = Event.objects.filter(auth_user=request.user)
+    company_data = Company.objects.get(user_profile=request.user)
+    staff_data = MainUser.objects.filter(company=company_data.id).exclude(user_role='Company Admin')
+
+    context = {
+        'checkins': checkins,
+        'checkouts': checkouts,
+        'event': event,
+        'staff_data': staff_data,
+    }
+    return render(request, 'calendar.html', context)
+
+
+# def calendar_checkins(request):
+#     cal_ckeckins = NewVisitor.objects.filter(auth_user=request.user)
+#     out = []
+#     for checkin in cal_ckeckins:
+#         out.append({
+
+#         })
 

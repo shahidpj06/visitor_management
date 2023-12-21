@@ -6707,7 +6707,7 @@ fieldset:disabled .btn {
     background-color: var(--bs-modal-bg);
     background-clip: padding-box;
     border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
-    border-radius: 0px;
+    border-radius: 8px;
     outline: 0
 }
 

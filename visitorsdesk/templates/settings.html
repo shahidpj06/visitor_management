@@ -443,8 +443,8 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
-                <form method="post" class="settings_form form_same_user_info" id="user-form" action="{% url 'user-info' %}">
-                    {% csrf_token %}
+                <form method="post" class="settings_form form_same_user_info" id="user-form">
+                    <!-- {% csrf_token %} -->
                     <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel"><span>User</span></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1677,10 +1677,9 @@
                <form method="post" action="{% url 'delete' %}">
                     {% csrf_token %}
                         <div class="modal-header">
-                            
                             <input type="text" value="" id="delete_id" name="delete_id">
                             <input type="text" value="" id="delete_type" name="delete_type">
-                            <h5 class="modal-title" id="staticBackdropLabel"><span>Delete Opportunity</span></h5>
+                            <h5 class="modal-title" id="staticBackdropLabel"><span></span></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -1775,8 +1774,11 @@
                             icon: 'success',
                         });
                         $(".delete_modal" + response["id"]).hide()
+                        
 
-                        $('#deleteConfirmationModal').modal('hide'); // Close the modal
+                        $('#deleteConfirmationModal').modal('hide');
+                        
+                        // $('#branch-settings-card').hide() // Close the modal
 
                         // You can perform additional actions if needed
                     },
@@ -1824,6 +1826,7 @@
             if (noDataImage && visitorDataCount === 0) {
                 noDataImage.classList.remove('d-none');
             }
+            
         });
 
         let saveAndNewClicked = false;
@@ -2524,6 +2527,13 @@
                                                 <i class="mdi mdi-dots-vertical font-size-18"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end">
+                                                <li >
+                                                    <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal"
+                                                    onclick="openEditUserModal('${ user.id }', '${ user.first_name }', '${ user.last_name }', '${ user.useremail }',
+                                                                                '${ user.user_phone }', '${ user.username }', '${ user.user_role }', '${ user.primary_branch.id }')" >
+                                                        <i class="bx bx-edit font-size-16 me-1"></i>Edit
+                                                    </a>
+                                                </li>
                                                 
                                                 <li onclick="confirmDelete('${user.id}','user')"><a
                                                         href="#"

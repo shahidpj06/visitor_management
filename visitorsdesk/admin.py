@@ -4,6 +4,8 @@ from . models import *
 # Register your models here.
 admin.site.register(Branch)
 
+admin.site.register(Event)
+
 @admin.register(MainUser)
 class MainUserAdmin(admin.ModelAdmin):
     list_display = [

@@ -21,7 +21,7 @@
     <div class="modal fade " id="add-checkout" data-bs-keyboard="false" tabindex="-1"
     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="border-radius: 8px;">
             <form method="post" id="checkout_form" action="{% url 'exit_visitor' %}">
                 {% csrf_token %}
                 <div class="modal-header">
@@ -33,7 +33,7 @@
                         <div class="form-grp inputGroup">
                             <div class="select-inp">
                                 <select class="form-control" name="exit_desk" id="exit_desk" required>
-                                    <option selected disabled>--select desk--</option>
+                                    <!-- <option selected disabled>--select desk--</option> -->
                                 
                                     <option value="{{data.select_desk.id}}">{{data.select_desk}}</option>
                                 
@@ -43,18 +43,9 @@
                                 <div class="error"></div>
                             </div>
                         </div>
-                        <div class="form-control inputGroup">
-                            <label for="exit_time"><h6>Exit Time</h6></label><br>
-                            <input type="datetime-local" class="form-control" id="exit_time" name="exit_time" required>
-                            <div class="error"></div>
-                        </div>
-                        <input type="text" name="visitor_id" id="visitor_id" value="{{vid}}">
-
-                    
-
-                        <h6>Visitor Remarks</h6>
-                            <label for="number"></label>
-                            <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <input type="hidden" name="visitor_id" id="visitor_id" value="{{vid}}">
+                    <h6 style="font-weight: 600;">Visitor Remarks</h6>
+                        <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
                     
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
@@ -68,19 +59,19 @@
     </div>
     </div>
     <script>
-        function getCurrentDateTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const day = now.getDate().toString().padStart(2, '0');                    
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
+        // function getCurrentDateTime() {
+        //     const now = new Date();
+        //     const year = now.getFullYear();
+        //     const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        //     const day = now.getDate().toString().padStart(2, '0');                    
+        //     const hours = now.getHours().toString().padStart(2, '0');
+        //     const minutes = now.getMinutes().toString().padStart(2, '0');
+        //     return `${year}-${month}-${day}T${hours}:${minutes}`;
+        // }
     
-        $(document).ready(function () {
-            $('#exit_time').attr('min', getCurrentDateTime());
-        });
+        // $(document).ready(function () {
+        //     $('#exit_time').attr('min', getCurrentDateTime());
+        // });
     </script>
     <script>
         function showToast(message, icon) {
@@ -108,7 +99,7 @@
 
         const checkoutModal=(e)=>{
             const exitDesk = document.getElementById('exit_desk');
-            const exitTime = document.getElementById('exit_time');
+            // const exitTime = document.getElementById('exit_time');
 
             function setError(element, message) {
                
@@ -132,22 +123,22 @@
 
             const validateInputs = () => {
                 const exitDeskValue = exitDesk.value.trim();
-                const exitTimeValue = exitTime.value.trim();
+                // const exitTimeValue = exitTime.value.trim();
                 let isValid = true;
 
-                if (exitDeskValue === '--select desk--') {
+                if (exitDeskValue === '--select desk--' || exitDeskValue === '') {
                     setError(exitDesk, 'Choose an exit desk');
                     isValid = false;
                 } else {
                     setSuccess(exitDesk);
                 }
 
-                if (exitTimeValue === '') {
-                    setError(exitTime, 'Choose the exit time');
-                    isValid = false;
-                } else {
-                    setSuccess(exitTime);
-                }
+                // if (exitTimeValue === '') {
+                //     setError(exitTime, 'Choose the exit time');
+                //     isValid = false;
+                // } else {
+                //     setSuccess(exitTime);
+                // }
 
                 return isValid;
             };
@@ -162,23 +153,25 @@
 
            
 
-            if (validateInputs()) { // for validating the fields
+            if (validateInputs()) { 
                 const form = new FormData($("#checkout_form")[0]);
 
                     $.ajax({
                         url: "/exit_visitor/",
-                        method:"POST", //http method for the request.
-                        headers: { // addtional http header for the request
+                        method:"POST",
+                        headers: { 
                             "X-CSRFToken": "{{ csrf_token }}"
                         },
                         data: form,
                         cache: false,
                         processData: false,
                         contentType: false,
-                        success: (res) => {  //http response
+                        success: (res) => { 
                             if (res.status === 400) {   
                                 if (res.type === "checkouttime") {
-                                    setError(exit_time, res.error);
+                                    showToast(res.message, "error")
+                                    $("#add-checkout").modal('hide');
+                                    
                                 }
                                 if (res.type === "notexist") {
                                     setError(visitor_id, res.error);
@@ -187,9 +180,11 @@
                             if (res.status === 200) {
                                 showToast(res.message, "success")
                                 resetForm();
+                                $("#add-checkout").modal('hide');
+                                $('#append_checkout').val(res.checkout_time);
                                 const row = $(`tr[data-visitor-id="${res.visitor_id}"]`);
 
-                                const checkoutTimeElement = row.find(".checkout-time"); // Update with the actual class or selector
+                                const checkoutTimeElement = row.find(".checkout-time"); 
                                 checkoutTimeElement.text(res.checkout_time);
                                 $(".checkoutLink").css("display", "none");
                                 $(".checkedout").css("display", "inline");

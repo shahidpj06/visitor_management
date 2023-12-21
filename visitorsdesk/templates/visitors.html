@@ -234,6 +234,12 @@
                                                 
                                             </div>
                                         </div>
+                                       <!-- <a href="{% url 'create-branch' %}">
+                                        <button type="button" style="background-color: green; color: white;" class="btn waves-effect waves-light me-0"
+                                               data-bs-toggle="modal" data-bs-target="#add-opportunity" onclick="clearFormBranch()">
+                                            <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add Branch
+                                        </button>
+                                        </a>  -->
                                             
 
                                         <div class="inputGroup form-control" >
@@ -283,7 +289,7 @@
                                             <div class="form-grp inputGroup">
                                                 <div class="select-inp append_data">
                                                     <select class="form-control" name="user_id" id="user_id">
-                                                        <!-- <option selected disabled>--select host--</option> -->
+                                                        <!-- <option selected disabled></option> -->
 
                                                     </select>
                                                     <i class="fas fa-chevron-down"></i>
@@ -346,21 +352,21 @@
                                                     <td>{{i.user_host}}</td>
                                                     <td>{{i.purpose}}</td>
                                                     <td>{{i.checkin_time}}</td>
-                                                    <td>{{i.checkout_time| default:'Not Checkedout'}}</td>
+                                                    <td id="append_checkout">{{i.checkout_time| default:'Not Checkedout'}}</td>
                                                     <td>
 
                                                         <div class="label label-success ng-hide">
-                                                        <a class="checkoutLink" data-bs-toggle="modal"
-                                                            onclick="checkout_modal(`{{i.id}}`,`{{i.visitor_id}}`)" href=""
-                                                            style="font-size: 13px; color: red;">
-                                                            <span>CHECKOUT</span>
-                                                        </a>
+                                                            <a class="checkoutLink" data-bs-toggle="modal"
+                                                                onclick="checkout_modal(`{{i.id}}`,`{{i.visitor_id}}`)" href=""
+                                                                style="font-size: 13px; color: red;">
+                                                                <span>CHECKOUT</span>
+                                                            </a>
                                                         <span class="checkedout" style="font-size: 13px; color: green; display: none;">
                                                             CHECKED OUT
                                                         </span>
                                                         </div>
                                                     </td>
-                                                    <!-- <td class="text-right">
+                                                    <!-- <td class="text-right" >
                                                         <div class="dropdown">
                                                             <a href="#" class="dropdown-toggle card-drop"
                                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -620,14 +626,14 @@
                     fetch(`/get_dependent/?branch_id=${branchId}`)
                         .then(response => response.json())
                         .then(data => {
-                            hostDropdown.innerHTML = '<option value="" selected disabled>--select host--</option>';
+                            hostDropdown.innerHTML = '';
                             data.hosts.forEach(host => {
                                 hostDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`;
 
                             });
                         });
                 } else {
-                    hostDropdown.innerHTML = '<option value="" selected disabled>--select host--</option>';
+                    hostDropdown.innerHTML = '';
                 }
             });
         });
@@ -885,10 +891,9 @@
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#visitor-form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
+                $('#user_id').text("");
                 $(".input-control").removeClass("error success");
             };
 

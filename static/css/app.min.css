@@ -1281,7 +1281,7 @@ body {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    background-color: #556ee6;
+    background-color: green;
     color: #fff;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -2593,7 +2593,7 @@ body {
 }
 
 .timeline-icn2 {
-    background-color: #3D67EF;
+    background-color: green;
 }
 
 .inner-accordion .accordion-body {
@@ -3040,7 +3040,7 @@ body {
 
 .blue-clr input,
 .blue-clr h6 {
-    color: #3D6CFF;
+    color: green;
 }
 
 .lists-card {

@@ -14,7 +14,7 @@
     <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
 
@@ -113,14 +113,14 @@
         </header>
 
 
-<!--  -->
 
         <div class="page-content">
             <div class="container-fluid px-0 d-flex align-items-center justify-content-center">
                 <div class="card-profile">
                     <div class="card-body">
                         <div class="profile-banner rounded-top d-flex justify-content-center" 
-                        style="background-image: url(static/images/profile.png);
+                        style="
+                        background-image:efer;
                     background-color: #006400d6;">
                             <img style="height: 135px;
                             width: auto;" src="{% static 'images/dummy.png' %}" alt="" class="img-fluid rounded-circle">
@@ -135,48 +135,136 @@
                             <img src="{% static 'images/india-flag.svg' %}" alt="" class="img-fluid">
                             <h6>Kerala, India</h6>
                         </div>
-                     <h3 class="designation">Add Designation</h3>
+                        <!-- <a data-bs-toggle="modal" data-bs-target="#add-lead"> Add Designation</a> -->
+                     <!-- <h3 class="designation">Add Designation</h3> -->
                      <div class="d-flex active-time align-items-center justify-content-center">
                         <i class="bx bxs-circle"></i>
                        <p>Full Time</p>
                      </div>
                         <div class="d-flex justify-content-center">
-                          <button type="button" class="btn btn-outline-primary waves-effect waves-light profile-btn">
-                                <i class="mdi mdi-account-circle"></i>Follow
-                            </button>
-                            <button type="button" class="btn btn-outline-primary waves-effect waves-light profile-btn">
-                                <i class="mdi mdi-message-settings-outline"></i>Message
-                            </button>
-                            <button type="button" class="btn btn-outline-primary waves-effect waves-light profile-btn">
-                                <i class="mdi mdi-dots-horizontal"></i>More
+                            <button type="button" class="btn waves-effect waves-light profile-btn"
+                            data-bs-toggle="modal" onclick="openEditAdminModal(`{{ user_data.id}}`, `{{ user_data.first_name|default:''}}`, `{{ user_data.last_name|default:'' }}`,`{{ user_data.useremail }}`,
+                            `{{ user_data.user_phone|default:'' }}`, `{{ user_data.username }}`, `{{ user_data.about|default:'' }}`, `{{ user_data.profile_image }}`)" id="edit-profile-btn">
+                                <i class="mdi mdi-account-circle"></i>Edit Profile
                             </button>  
                         </div>
                         <hr class="profile-border my-3">
                         <div class="profile-skills">
-                            <h3>Skills</h3>
-                            <div class="flex-sm">
-                                    <button type="button" class="btn btn-light waves-effect">UI Designer</button>
-                                    <button type="button" class="btn btn-light waves-effect">UX Designer</button>
-                                    <button type="button" class="btn btn-light waves-effect">Design System</button>
-                                    <button type="button" class="btn btn-light waves-effect">Product</button>
-                                    <button type="button" class="btn btn-light waves-effect">UI Designer</button>
-                                    <button type="button" class="btn btn-light waves-effect">UX Designer</button>
-                                    <button type="button" class="btn btn-light waves-effect">Design System</button>
-                            </div>
+                            <h3>About</h3>
+                            
                         </div>
                         
                     </div>
                 </div>
             </div>
-
-
         </div>
-
-
-
-
     </div>
+    <div class="modal fade" id="add-user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
 
+                <form method="post" id="edit_profile">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel"><span>Edit User</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="profile-picture">
+                            <div class="circle">
+                                <img class="profile-pic" src="{% static 'images/dummy.png' %}">
+                                <div class="p-image">
+                                    <i class="fa fa-camera upload-button"></i>
+                                    <input class="file-upload" type="file" name="profile_image" id="profile_image"  accept="{% static 'image/*' %}" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" required="" autocomplete="off" name="first_name" id="first_name">
+                            <label class="search-icon" for="name">First Name</label>
+                        </div>
+                        <div class="inputGroup form-control">
+                            <input type="text" required="" autocomplete="off" name="last_name" id="last_name">
+                            <label class="search-icon" for="name">Last Name</label>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" required="" autocomplete="off" name="username" id="username">
+                            <label class="search-icon" for="name">User Name</label>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" required="" autocomplete="off" name="useremail" id="useremail">
+                            <label class="search-icon" for="name">Email</label>
+                        </div>
+
+                        <div class="inputGroup form-control">
+                            <input type="text" required="" autocomplete="off" name="user_phone" id="user_phone">
+                            <label class="search-icon" for="name">Phone</label>
+                        </div>
+
+
+                        <div class="row my-3">
+                            <div class="col-lg-6">
+                                <h6 class="selct-box-head">Password Option</h6>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <div class="inputGroup form-control">
+                                            <input type="password" required="" autocomplete="off" name="password" id="password">
+                                            <label class="search-icon" for="Password">Change Password</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check ms-3">
+                                        <div class="inputGroup form-control">
+                                            <input type="password" required="" autocomplete="off" name="confirm_password" id="confirm_password">
+                                            <label class="search-icon" for="Password">Confirm Password</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-lg-6 mt-3 mt-md-0">
+                                <h6 class="selct-box-head">User Type</h6>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="formRadios" id="formRadios2">
+                                        <label class="form-check-label" for="formRadios2">
+                                            Manager
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check ms-3">
+                                        <input class="form-check-input" type="radio" name="formRadios" id="formRadios1"
+                                            checked="">
+                                        <label class="form-check-label" for="formRadios1">
+                                            Normal Staff
+                                        </label>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label mt-3">About</label>
+                                <textarea class="form-control" name="About id="exampleFormControlTextarea1" rows="3" name="about" id="about"></textarea>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" style="background-color: green; color: white;" id="save-button" onclick="updateProfile(event)" class="btn text-uppercase br-50 btn-md">Save</button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
     <!-- JAVASCRIPT -->
@@ -188,7 +276,27 @@
     <script src="{% static 'js/app.js' %}"></script>
     <script src="{% static 'js/pages/note.js' %}"></script>
 
+    <script>
+        // change profile pic
 
+        $(document).ready(function () {
+            var readURL = function (input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('.profile-pic').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+            $(".file-upload").on('change', function () {
+                readURL(this);
+            });
+            $(".upload-button").on('click', function () {
+                $(".file-upload").click();
+            });
+        });
+    </script>
     <script>
         // upload image
         const uploadArea = document.querySelector('#uploadArea')
@@ -308,6 +416,45 @@
             };
         };
     </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    $(".appnd_user_btn").click(function() {
+
+        $(".apenduser").append("<tr>\n" +
+            "                                    <td class=\"th_btnpand\">\n" +
+            "                                        <div style=\"cursor: pointer;\" class=\"appnd_user_minus_btn appnd_minus_btn\">-</div>\n" +
+            "                                    </td>\n" +
+            "                                    <td class=\"th_user_role\">\n" +
+            "                                        <select name=\"role_id[]\" class=\"form-control\">\n" +
+            "                                            {% for role in  role_data %}\n" +
+            "                                           <option value=\"{{role.id}}\">{{role.role_name}}</option>\n" +
+            "                                           {% endfor %}\n" +
+            "                                        </select>\n" +
+            "                                    </td>\n" +
+            "                                    <td class=\"th_user_decrptn\">\n" +
+            "                                        <input name=\"role_description[]\" class=\"form-control\">\n" +
+            "                                    </td>\n" +
+            "                                 <td class=\"th_user_strtdate\">\n" +
+            "                                        <div class=\"input-group date\">\n" +
+            "                                            <input name=\"role_start_dt[]\"  min=\"{{today_date}}\" value=\"{{today_date|safe}}\" type=\"date\" class=\"input form-control\" id=\"datetimepicker\"> \n" +
+            "                                        </div>\n" +
+            "                                    </td>\n" +
+            "                                    <td class=\"th_user_enddate\">\n" +
+            "                                        <div class=\"input-group date\">\n" +
+            "                                            <input name=\"role_end_dt[]\" type=\"date\"  min=\"{{today_date}}\"  class=\"input form-control\" id=\"datetimepicker\"> \n" +
+            "                                        </div>\n" +
+            "                                    </td>\n" +
+
+            "                                </tr>");
+        $(".appnd_user_minus_btn").click(function() {
+            $(this).parent().parent().remove();
+        });
+    });
+    });
+    $(".appnd_user_minus_btn").click(function() {
+            $(this).parent().parent().remove();
+        });
+</script>
 
     <script>
         $(document).ready(function () {
@@ -396,6 +543,199 @@
             });
         }
     </script>
+    <!-- <script>
+        $(document).ready(function () {
+            // Handle the "Edit" button click
+            $("#edit-profile-btn").on("click", function () {
+                // Populate the modal with existing user details
+                // You can use the existing data you have on the page and set the values in the modal fields
+                $("#first_name").val("Existing First Name");
+                $("#last_name").val("Existing Last Name");
+                $("#useremail").val("existing@example.com");
+                $("#user_phone").val("Existing Phone Number");
+                $("#password").val("");  // Clear the password field for security reasons
+                $("#confirm_password").val("");
+                $("#current_password").val("");
+                $("#about").val("Existing About");
+    
+                // Show the modal
+                $("#add-user").modal("show");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Handle the form submission
+            $("#save-button").on("click", function () {
+                // Collect form data
+                var formData = {
+                    first_name: $("#first_name").val(),
+                    last_name: $("#last_name").val(),
+                    useremail: $("#useremail").val(),
+                    user_phone: $("#user_phone").val(),
+                    password: $("#password").val(),
+                    confirm_password: $("#confirm_password").val(),
+                    current_password: $("#current_password").val(),
+                    about: $("#about").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'  // Include the CSRF token
+                };
+    
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'edit_company_admin' user_id=user.id %}",  // Update with your actual URL
+                    data: formData,
+                    success: function (response) {
+                        // Handle the success response
+                        if (response.status === 200) {
+                            alert(response.message);  // Display success message (you can customize this)
+                            // Close the modal if needed
+                            $("#add-user").modal("hide");
+                            // Optionally, update the UI with the updated data
+                            // ...
+                        } else {
+                            // Handle other status codes or errors
+                            alert("Error: " + response.message);  // Display error message (you can customize this)
+                        }
+                    },
+                    error: function (error) {
+                        // Handle Ajax errors
+                        console.error("Ajax request failed:", error);
+                    }
+                });
+            });
+        });
+    </script> -->
+    <script>
+        function showToast(message, icon) {
+            const toastMixin = Swal.mixin({
+                toast: true,
+                icon: icon,
+                title: 'General Title',
+                animation: false,
+                position: 'top-right',
+                width: '450px',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+            toastMixin.fire({
+                animation: true,
+                title: message
+            });
+        }
+
+            let originalUserValues = {};
+
+            function openEditAdminModal(userId, firstName, lastName, userEmail, userPhone, userName, userAbout,  profileImage) {
+                alert(firstName)
+                originalUserValues = {
+                    id: userId,
+                    first_name: firstName,
+                    last_name: lastName,
+                    useremail: userEmail,
+                    user_phone: userPhone,
+                    username: userName,
+                    about: userAbout,
+                    profile_image: profileImage
+                };
+
+                $('#first_name').val(firstName);
+                $('#last_name').val(lastName);
+                $('#useremail').val(userEmail);
+                $('#user_phone').val(userPhone);
+                $('#username').val(userName);
+                $('#about').val(userAbout);
+                $('#profile_image').val(profileImage);
+                $('#edit_profile').attr('data-user-id', userId);
+
+
+                var editUserModal = new bootstrap.Modal(document.getElementById('add-user'));
+                editUserModal.show();
+            }
+
+            function updateProfile(event) {
+                event.preventDefault();
+
+                var userId = $('#edit_profile').attr('data-user-id');
+                var firstName = $('#first_name').val();
+                var lastName = $('#last_name').val();
+                var userEmail = $('#useremail').val();
+                var userPhone = $('#user_phone').val();
+                var userName = $('#username').val();
+                var userAbout = $('#about').val();
+                var profileImage = $('#profile_image').val();
+
+                // if (!validateFirstName(firstName) || !validateLastName(lastName) || !validateUserEmail(userEmail) ||
+                // //  !validateUserPhone(userPhone) ||
+                // !validateUserName(userName)) {
+                //     return;
+                // }
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'edit_company_admin/' + userId + '/', 
+                    data: {
+                        'first_name': firstName,
+                        'last_name': lastName,
+                        'user_email': userEmail,
+                        'user_phone': userPhone,
+                        'user_name': userName,
+                        'about' : userAbout,
+                        'profile_image': profileImage,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (response) {
+                        if (response.status === 200) {
+
+                            if (valuesChangedUser(userId)) {
+                                showToast("User updated", "success");
+                                
+
+                                
+                            } else {
+                                showToast("No Update", "info");
+
+                                // var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+                                // editUserModal.hide();
+                            }
+                        } else {
+                            alert('Error updating user: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert('Error updating user. Please try again.');
+                    }
+                });
+            }
+
+            function valuesChangedUser(userId) {
+            const editedValues = {
+                first_name: $('#first_name').val().trim(),
+                last_name: $('#last_name').val().trim(),
+                useremail: $('#user_email').val().trim(),
+                user_phone: $('#user_phone').val().trim(),
+                username: $('#user_name').val().trim(),
+                about: $('#about').val().trim(),
+                profileImage: $('#profile_image').val().trim()
+            };
+
+            for (const key in editedValues) {
+                if (editedValues[key] !== originalValues[key]) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        $(document).ready(function () {
+            $("#edit_profile").submit(updateProfile);
+        });
+    </script>   
 
 </body>
 

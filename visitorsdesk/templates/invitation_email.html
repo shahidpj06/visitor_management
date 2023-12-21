@@ -4,19 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Invitation Email</title>
-    <link rel="shortcut icon" href="static/images/favicon.png">
-    <link href="static/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <link href="static/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="static/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+    <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
 </head>
-<body>
-    <h2>Hi, {{ full_name }}</h2>
-    <h2>You have been invited to visit {{ branch.title }} by {{ main_user }} for {{ purpose }}.</h2><br>
-        <h4>Your Invite ID is</h4>
-        <h1>{{ visitor_id }}</h1><br>
-        <p>Active From: {{ from_date }}</p>
-        <p>Active Till: {{ to_date }}</p>
-    <p>Below is your Check-in QR Code:</p>
-    <img src="cid:qr_code" alt="QR Code">
+<body style="font-family: 'Arial', sans-serif; background-color: #f2f2f2; margin: 0; padding: 0;">
+
+    <div style="max-width: 600px; margin: 0 auto; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+
+        <div style="background-color: green; color: #fff; text-align: center; padding: 20px; border-top-left-radius: 10px; border-top-right-radius: 10px;">
+            <h1 style="margin: 0; font-size: 1.5em;">Veuz Concepts</h1>
+        </div>
+
+        <div style="padding: 20px; text-align: center;">
+            <h2>Hi, {{ full_name }}</h2>
+            <h2>You have been invited to visit {{ branch.title }} by {{ main_user }} for {{ purpose }}.</h2><br>
+            <h4>Your Invite ID is</h4>
+            <h1>{{ visitor_id }}</h1><br>
+            <p>Active From: {{ from_date|safe}}</p>
+            <p>Active Till: {{ to_date|safe}}</p>
+            <p>Below is your Check-in QR Code:</p>
+            <img src="cid:qr_code" alt="QR Code" style="display: block; margin: 0 auto; max-width: 100%;">
+        </div>
+
+       
+        <div style="background-color: green; color: #fff; text-align: center; padding: 10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+            <p>&copy; 2023 Veuz Concepts. All rights reserved.</p>
+        </div>
+
+    </div>
+
 </body>
 </html>

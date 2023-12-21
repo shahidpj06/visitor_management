@@ -22,14 +22,14 @@ class Branch(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class MainUser(models.Model):   
     USER_ROLE_CHOICES = (
         ('Company Admin', 'Company Admin'),
         ('Manager', 'Manager'),
         ('Staff', 'Staff'),
-        ('Host', 'Host'), 
+        ('Host', 'Host'),
     )
     first_name = models.CharField(max_length=25, null=True)
     last_name = models.CharField(max_length=25, null=True)
@@ -40,6 +40,8 @@ class MainUser(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     primary_branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='user_profiles', null=True)
+    profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
 
     def __str__(self): # magic method
         return f"{self.first_name} {self.last_name}"
@@ -110,6 +112,19 @@ class ExitVisitor(models.Model):
 
     def __str__(self):
         return self.auth_user.username
-
     
+class Event(models.Model):
+    visitor_name = models.CharField(max_length=25, null=True)
+    visitor_email = models.EmailField(max_length=25, null=True)
+    visitor_phone = models.CharField(max_length=25, null=True)
+    event_name = models.CharField(max_length=25)
+    starts_at = models.DateTimeField(null=True)
+    ends_at = models.DateTimeField(null=True)
+    event_description = models.TextField(null=True)
+    auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    staff = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='event_host', null=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.event_name
 
