@@ -801,7 +801,9 @@ def get_events(request):
         users_data = None
 
     companyid = users_data.company
+
     events = Event.objects.filter(company=companyid)
+    print("ejenfrienj")
 
     event_list = []
     for event in events:
