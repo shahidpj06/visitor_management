@@ -54,7 +54,11 @@
 
   }.fc-time-grid-event fc-v-event fc-event fc-start fc-end fc-draggable fc-resizable {
     background-color: rgb(0 182 0);
-  }
+  }.error-message {
+    color: red;
+  }.swal2-popup {
+  font-size: 1.6rem !important;
+}
   /* .fc .fc-toolbar>*>:first-child {
     margin-left: 0;
     background: green;
@@ -132,16 +136,19 @@
               <div class="modal-header">
                 <h4 class="modal-title" id="staticBackdropLabel">Add Booking</h4>
                 <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                  
                 </button>
               </div>
         
               <form method="post" id="new-event-form">
+                <!-- {% csrf_token %} -->
                 <div class="modal-body">
         
                   <div class="form-group row">
                     <label for="visitor_name" class="col-sm-4 col-form-label">Visitor Name</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="visitor_name" name="visitor_name" required>
+                      <div class="error-container"></div>
                     </div>
                   </div>
         
@@ -149,6 +156,7 @@
                     <label for="visitor_email" class="col-sm-4 col-form-label">Visitor Email</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="visitor_email" name="visitor_email" required>
+                      <div class="error-container"></div>
                     </div>
                   </div>
         
@@ -156,6 +164,7 @@
                     <label for="visitor_phone" class="col-sm-4 col-form-label">Phone</label>
                     <div class="col-sm-8">
                       <input type="number" class="form-control" id="visitor_phone" name="visitor_phone" required>
+                      <div class="error-container"></div>
                     </div>
                   </div>
         
@@ -163,6 +172,7 @@
                     <label for="title" class="col-sm-4 col-form-label">Purpose</label>
                     <div class="col-sm-8">
                       <input type="text" class="form-control" id="title" name="event_name" required>
+                      <div class="error-container"></div>
                     </div>
                   </div>
         
@@ -198,6 +208,7 @@
                           <option value="{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</option>
                         {% endfor %}
                       </select>
+                      <div class="error-container"></div>
                     </div>
                   </div>
         
@@ -205,11 +216,12 @@
                     <label for="add-event-desc" class="col-sm-4 col-form-label">Description</label>
                     <div class="col-sm-8">
                       <textarea rows="4" class="form-control" name="event_description" id="add-event-desc" required></textarea>
+                      <div class="error-container"></div>
                     </div>
                   </div>
-        
+                  
                 </div>
-        
+                
                 <div class="modal-footer d-flex justify-content-center">
                   <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-dismiss="modal">Close</button>
                   <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md" id="save-event">Create</button>
@@ -219,82 +231,89 @@
             </div>
           </div>
         </div>
-        
+
+        <div class="modal fade" tabindex="-1" role="dialog" id="updateEventModal">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 class="modal-title">Update Event</h4>
+                  </div>
       
-        
-        
-        
-        <div class="modal fade" tabindex="-1" role="dialog" id="editEventModal">
-      <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Edit <span class="eventName"></span></h4>
-              </div>
-              <div class="modal-body">
-                
-                  
-            
-            <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="title">All Day Event ?</label>
-                          <input class='allDayEdit' type="checkbox"></label>
+                  <form method="post" id="update-event-form">
+                      <div class="modal-body">
+                          <div class="row">
+                              <div class="col-xs-12">
+                                  <label class="col-xs-4" for="visitor_name_update">Visitor Name</label>
+                                  <input class="inputModal" type="text" name="visitor_name" id="visitor_name_update" required/>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-xs-12">
+                                  <label class="col-xs-4" for="visitor_email_update">Visitor Email</label>
+                                  <input class="inputModal" type="text" name="visitor_email" id="visitor_email_update" required/>
+                              </div>
+                          </div>
+                          <!-- Add other fields as needed -->
+                          <div class="row">
+                              <div class="col-xs-12">
+                                  <label class="col-xs-4" for="starts-at-update">Starts at</label>
+                                  <input class="inputModal" type="text" name="starts_at" id="starts-at-update" required/>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-xs-12">
+                                  <label class="col-xs-4" for="ends-at-update">Ends at</label>
+                                  <input class="inputModal" type="text" name="ends_at" id="ends-at-update" required/>
+                              </div>
+                          </div>
+                          <!-- Add other fields as needed -->
                       </div>
-                  </div>
-            
-                  <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="title">Event title</label>
-                          <input class="inputModal" type="text" name="editTitle" id="editTitle" />
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="update-event">Update</button>
                       </div>
-                  </div>
-            
-                  <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="starts-at">Starts at</label>
-                          <input class="inputModal" type="text" name="editStartDate" id="editStartDate" />
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="ends-at">Ends at</label>
-                          <input class="inputModal" type="text" name="editEndDate" id="editEndDate" />
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="edit-calendar-type">Calendar</label>
-                          <select class="inputModal" type="text" name="edit-calendar-type" id="edit-calendar-type">
-                            <option value="Sales">Sales</option>
-                            <option value="Lettings">Lettings</option>
-                          </select>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-xs-12">
-                          <label class="col-xs-4" for="edit-event-desc">Description</label>
-                          <textarea rows="4" cols="50" class="inputModal" name="edit-event-desc" id="edit-event-desc"></textarea>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-danger" id="deleteEvent">Delete Event</button>
-                  <button type="button" class="btn btn-primary" id="updateEvent">Save changes</button>
-              </div>
-          </div>
+                  </form>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
       </div>
-  </div>
+      
 
   <div class="col-md-12">    
     <div id='calendar'></div> 
-</div> 
+  </div> 
         
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCit4RJVPT9UiLQCJJPYEBkNTJCslqO4ps&libraries=places"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
   <script>
-
     $(document).ready(function() {
+
+      function showToast(message, icon) {
+        const toastMixin = Swal.mixin({
+            toast: true,
+            icon: icon,
+            title: 'General Title',
+            animation: false,
+            position: 'top-right',
+            width: '450px',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+        toastMixin.fire({
+            animation: true,
+            title: message
+        });
+    }
+
       var calendar = $('#calendar').fullCalendar({
         header: {
           left: 'prev, next today',
@@ -306,82 +325,179 @@
         editable: true,
         eventLimit: true,
         
+        
         select: function (start, end, allDay) {
           $('#new-event-form')[0].reset();
-  
-          $('#starts-at').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-          $('#ends-at').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+          $('.error-container').text("");
+
+          if (calendar.fullCalendar("getView").name === "month") {
+
+            const addTime = moment(start).add(9, 'hours');
+            $('#starts-at').val(addTime.format('YYYY-MM-DD HH:mm:ss'));
+            const previousDay = moment(end).subtract(1, 'days').add(10, 'hours');
+            $('#ends-at').val(previousDay.format('YYYY-MM-DD HH:mm:ss'));
+          }
+          else{
+            $('#starts-at').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+            $('#ends-at').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+          }
+
+
   
           $('#newEventModal').modal('show');
+          
         },
-        eventRender: function(event, element) {
-          // Customize the appearance of each event
+        eventRender: function(event, element, timezone, callback) {
           element.css({
-            'background-color': 'green',
-            'color': 'white',
-            'position': 'relative', 
+              'background-color': 'green',
+              'color': 'white',
+              'position': 'relative', 
           });
 
-          var container = $('<div class="custom-container"></div>');
+          // var container = $('<div class="custom-container"></div>');
+          // var startMoment = moment(event.start);  
+          // var endMoment = moment(event.end);
 
-          var startMoment = moment(event.start);
-          var endMoment = moment(event.end);
-          var topPosition = ((startMoment.hours() * 60) + startMoment.minutes()) * 2;
-          var height = ((endMoment - startMoment) / (60 * 1000)) * 2; 
+          // var topPosition = moment.duration(startMoment.diff(moment().startOf('day'))).asMinutes() / 2;
 
-          container.css({
-            'position': 'absolute',
-            'top': topPosition + 'px',
-            'height': height + 'px',
-            'width': '100%',
-            'background-color': 'rgba(255, 255, 255, 0.8)', 
-            'border': '1px solid #ccc',
-            'padding': '5px',
-            'box-sizing': 'border-box',
-          });
+          // var height = ((endMoment - startMoment) / (60 * 1000)) * 2;
 
-          container.html('<strong>' + event.visitor_name + '</strong><br>' +
-                          'Starts at: ' + startMoment.format('h:mm A') + '<br>' +
-                          'Ends at: ' + endMoment.format('h:mm A'));
+          // container.css({
+          //     'position': 'absolute',
+          //     'top': topPosition + 'px',
+          //     'height': height + 'px',
+          //     'width': '100%',
+          //     'background-color': 'rgba(255, 255, 255, 0.8)',
+          //     'border': '1px solid #ccc',
+          //     'padding': '5px',
+          //     'box-sizing': 'border-box',
+          // });
 
-          element.append(container);
+          // container.html('<strong>' + event.visitor_name + '</strong><br>' +
+          //     'Starts at: ' + startMoment.format('h:mm A') + '<br>' +
+          //     'Ends at: ' + endMoment.format('h:mm A'));
+
+          // element.append(container);
 
           element.find('.fc-title').css({
-            'color': 'white'
+              'color': 'white'
           });
-        },
+      },
+
 
         events: '/get_events/',
+
+        eventClick: function (event) {
+          openUpdateModal(event.id);
+        },
+
+        eventDrop: function (event, delta, revertFunc) {
+          openUpdateModal(event.id);
+        },
+
       });
    
       $('#save-event').on('click', function() {
-        var eventData = {
-          'visitor_name': $('#visitor_name').val(),
-          'visitor_email': $('#visitor_email').val(),
-          'visitor_phone': $('#visitor_phone').val(),
-          'event_name': $('#title').val(),
-          'starts_at': $('#starts-at').val(),
-          'ends_at': $('#ends-at').val(),
-          'host_id': $('#host_id').val(),
-          'event_description': $('#add-event-desc').val(),
-          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        $('.error-container').empty();
+
+        var visitorName = $('#visitor_name').val();
+        if (visitorName.trim() === '') {
+          $('#visitor_name').siblings('.error-container').html('<div class="error-message">Visitor Name is required</div>');
+        }
+
+        var visitorPurpose = $('#title').val();
+        if (visitorPurpose.trim() === '') {
+          $('#title').siblings('.error-container').html('<div class="error-message">Purpose is required</div>');
+        }
+
+        var visitorEmail = $('#visitor_email').val();
+        if (visitorEmail.trim() === '') {
+          $('#visitor_email').siblings('.error-container').html('<div class="error-message">Visitor Email is required</div>');
+        } else if (!isValidEmail(visitorEmail)) {
+          $('#visitor_email').siblings('.error-container').html('<div class="error-message">Enter a valid email address</div>');
+        }
+
+        var visitorPhone = $('#visitor_phone').val();
+        if (visitorPhone.trim() === '') {
+          $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Phone number is required</div>');
+        }else if (!isValidPhone(visitorPhone)) {
+          $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Enter a valid phone number</div>');
+        }
+
+        var hostId = $('#host_id').val();
+        if (hostId === '') {
+          $('#host_id').siblings('.error-container').html('<div class="error-message">Host is required</div>');
+        }
+        if ($('.error-message').length === 0) {
+          var eventData = {
+            
+            'visitor_name': $('#visitor_name').val(),
+            'visitor_email': $('#visitor_email').val(),
+            'visitor_phone': $('#visitor_phone').val(),
+            'event_name': $('#title').val(),
+            'starts_at': $('#starts-at').val(),
+            'ends_at': $('#ends-at').val(),
+            'host_id': $('#host_id').val(),
+            'event_description': $('#add-event-desc').val(),
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          };
         };
+        
+        function isValidPhone(phone) {
+            var phoneRegex = /^[0-9]{8,12}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function isValidEmail(email) {
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(email);
+        }
+
+        if (!visitorName || !visitorPurpose || !visitorEmail || !visitorPhone || !hostId || !isValidEmail(visitorEmail) || !isValidPhone(visitorPhone)) {
+          return;
+        }
   
         $.ajax({
           type: "POST",
           url: '/create_event/',
           data: eventData,
           dataType: "json",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
           success: function (data) {
-            calendar.fullCalendar('refetchEvents');
-            $('#newEventModal').modal('hide');
-            alert("Added Successfully");
+            if (data.status === 400) {
+              showToast(data.message, "error")
+            }
+            else {
+              calendar.fullCalendar('refetchEvents');
+              $('#newEventModal').modal('hide');
+              showToast(data.message, 'success');
+            }
+
           },
           error: function (data) {
-            alert('There is a problem');
+            // alert('There is a problem');
           }
         });
       });
+
+      // function openUpdateModal(eventId) {
+      //   $.ajax({
+      //     type: 'GET',
+      //     url: '/get_event_details/' + eventId + '/', 
+      //     dataType: 'json',
+          
+      //     success: function (data) {
+      //       $('#update-visitor-name').val(data.visitor_name);
+      //       $('#updateEventModal').modal('show');
+      //       alert("eventId")
+      //     },
+      //     error: function (data) {
+      //       console.error('Error fetching event details');
+      //     }
+      //   });
+      // }
 
 
   

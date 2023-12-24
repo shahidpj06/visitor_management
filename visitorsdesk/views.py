@@ -23,6 +23,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_exempt
 from django import forms
+from datetime import timedelta
+from django.db.models import Q
+
 
 
 def is_strong_password(password):
@@ -200,7 +203,7 @@ def logout_page(request):
 
 @login_required(login_url='login')
 def main_settings(request):
-    data = Branch.objects.filter(auth_user=request.user).order_by("id") #auth_user=request.user - if the any user was loggedin, they can't see other users data
+    data = Branch.objects.filter(auth_user=request.user).order_by("id")
     company_data = Company.objects.get(user_profile=request.user)
     user_data = MainUser.objects.filter(company=company_data.id).exclude(user_role='Company Admin')
     desk_data = Desk.objects.filter(auth_user=request.user)
@@ -626,7 +629,7 @@ def get_visitor_details(request, visitor_id):
     except InviteVisitor.DoesNotExist:
         return JsonResponse({'error': 'Visitor not found'}, status=404)
         
-
+# 
 def check_in_visitor(request, visitor_id):
     try:
         visitor = InviteVisitor.objects.get(visitor_id=visitor_id)
@@ -732,7 +735,7 @@ def exit_visitor(request):
 
         current_date = datetime.now().isoformat()
         
-        visitor.checkout_time = exit_time  # Set the checkout time
+        visitor.checkout_time = exit_time  
         visitor.save()
 
 
@@ -760,21 +763,32 @@ def create_event(request):
             users_data = MainUser.objects.filter(auth_user=request.user).first()
         except MainUser.MultipleObjectsReturned:
             users_data = None
-
         companyid = users_data.company
         visitor_name = request.POST.get('visitor_name')
-        print(visitor_name)
         visitor_email = request.POST.get('visitor_email')
         event_name = request.POST.get('event_name')
-        print(event_name)
         visitor_phone = request.POST.get('visitor_phone')
         starts_at = request.POST.get('starts_at')
         print(starts_at)
         ends_at = request.POST.get('ends_at')
+        print(ends_at)
         host_id = request.POST.get('host_id')
         host = MainUser.objects.filter(pk=host_id).first() 
-        print(host)
         event_description = request.POST.get('event_description')
+
+        if Event.objects.filter(Q(auth_user=request.user) & Q(visitor_email=visitor_email)).exists():
+            return JsonResponse({"status": 400, "message": "This visitor already booked a slot.", "icon": "success"})
+        
+        existing_events = Event.objects.filter(
+            Q(auth_user=request.user) & Q(starts_at__date=starts_at.date()) & 
+            (
+                (Q(starts_at__lt=starts_at, ends_at__gt=starts_at)) |
+                (Q(starts_at__lt=ends_at, ends_at__gt=ends_at))
+            )
+        ) 
+
+        if existing_events.exists():
+            return JsonResponse()
 
         Event.objects.create(
             auth_user=request.user,
@@ -789,11 +803,12 @@ def create_event(request):
             staff=host
         )
         
-        data = {}
-        return JsonResponse(data)
+        
+        return JsonResponse({"status": 200, "message": "Successfully booked a slot", "icon": "success"})
 
     return JsonResponse({'error': 'Invalid request'})
 
+@csrf_exempt
 def get_events(request):
     try:
         users_data = MainUser.objects.filter(auth_user=request.user).first()
@@ -801,22 +816,43 @@ def get_events(request):
         users_data = None
 
     companyid = users_data.company
-
     events = Event.objects.filter(company=companyid)
-    print("ejenfrienj")
 
     event_list = []
     for event in events:
-        event_list.append({
-            'visitor_name': event.visitor_name,
-            'title': event.event_name,
-            'start': event.starts_at.strftime('%Y-%m-%dT%H:%M:%S%z'),  
-            'end': event.ends_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
-            'description': event.event_description,
-        })
-        # 
+        if event.starts_at: 
+            starts_at = event.starts_at + timedelta(hours=5, minutes=30)
+            event.ends_at = event.ends_at - timedelta(hours=5, minutes=30)
+            event.ends_at = event.ends_at + timedelta(days=1)
 
-    return JsonResponse(event_list, safe=False, encoder=DjangoJSONEncoder)
+            event_list.append({
+                'visitor_name': event.visitor_name,
+                'title': event.event_name,
+                'start': starts_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
+                'end': event.ends_at.strftime('%Y-%m-%dT%H:%M:%S%z'),
+                'description': event.event_description,
+            })
+
+    return JsonResponse(event_list, safe=False)
+
+
+
+def get_event_details(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+
+    event_details = {
+        'visitor_name': event.visitor_name,
+        'visitor_email': event.visitor_email,
+        'visitor_phone': event.visitor_phone,
+        'event_name': event.event_name,
+        'starts_at': event.starts_at.isoformat(),
+        'ends_at': event.ends_at.isoformat(),
+        'host_id': event.staff.id,
+        'event_description': event.event_description,
+    }
+
+    print("erferferf")
+    return JsonResponse(event_details)
 
 @login_required(login_url='login')
 def calendar(request):
@@ -833,13 +869,4 @@ def calendar(request):
         'staff_data': staff_data,
     }
     return render(request, 'calendar.html', context)
-
-
-# def calendar_checkins(request):
-#     cal_ckeckins = NewVisitor.objects.filter(auth_user=request.user)
-#     out = []
-#     for checkin in cal_ckeckins:
-#         out.append({
-
-#         })
 

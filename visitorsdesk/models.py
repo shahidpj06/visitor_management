@@ -51,19 +51,25 @@ class MainUser(models.Model):
     
 
 class InviteVisitor(models.Model):
-    full_name = models.CharField(max_length=25)
-    visitor_email = models.EmailField()
-    from_date = models.DateTimeField()
-    to_date = models.DateTimeField()
-    visitor_phone = models.CharField(max_length=25)
+    VISITOR_STATUS = {
+        ('Invited Visitor', 'Invited Visitor'),
+        ('Booked Visitor', 'Booked Visitor')
+    }
+    full_name = models.CharField(max_length=25, null=True)
+    visitor_email = models.EmailField(null=True)
+    from_date = models.DateTimeField(null=True)
+    to_date = models.DateTimeField(null=True)
+    visitor_phone = models.CharField(max_length=25, null=True)
     visitor_id = models.CharField(max_length=8, unique=True)
     purpose = models.CharField(max_length=25)
+    visitors_status = models.CharField(max_length=25, choices=VISITOR_STATUS)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     user_host = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='hosted_user')
-    select_branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='invited_vistor')
-    checked_in = models.BooleanField(default=False)
+    select_branch = models.ForeignKey(Branch, on_delete=models.CASCADE, related_name='invited_vistor', null=True)
+    checked_in = models.BooleanField(default=False, null=True)
     checked_out_at = models.DateTimeField(blank=True, null=True)
+    event_description = models.TextField(blank=True, null=True)
     
 
     def __str__(self):
@@ -117,7 +123,7 @@ class Event(models.Model):
     visitor_name = models.CharField(max_length=25, null=True)
     visitor_email = models.EmailField(max_length=25, null=True)
     visitor_phone = models.CharField(max_length=25, null=True)
-    event_name = models.CharField(max_length=25)
+    event_name = models.CharField(max_length=25, null=True)
     starts_at = models.DateTimeField(null=True)
     ends_at = models.DateTimeField(null=True)
     event_description = models.TextField(null=True)
@@ -126,5 +132,5 @@ class Event(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.event_name
+        return self.visitor_name
 

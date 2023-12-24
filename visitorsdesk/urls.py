@@ -32,4 +32,6 @@ urlpatterns = [
     path('check-in-visitor/<str:visitor_id>/', views.check_in_visitor, name='check_in_visitor'),
     path('edit_company_admin/<int:user_id>/', views.edit_company_admin, name='edit_company_admin'),    
     path('get-visitor-details/<str:visitor_id>/', views.get_visitor_details, name='get_visitor_details'),
+    path('get_event_details/<int:event_id>/', views.get_event_details, name='get_event_details'),
+
     ]

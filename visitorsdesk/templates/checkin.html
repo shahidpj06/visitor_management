@@ -789,29 +789,29 @@ function checkVisitorDetails(visitorId) {
     });
 }
 
-function getVisitorDetails() {
-    var visitorId = $('#invite_id').val();
-    if (visitorId) {
-        // Hide any previous error messages
-        $('#error-message').hide();
-        checkVisitorDetails(visitorId);
-    } else {
-        // Display error message below the input field
-        $('#error-message').text('Please enter a valid Visitor ID.').show();
-        $('#visitor-detail-modal').modal('hide');
+    function getVisitorDetails() {
+        var visitorId = $('#invite_id').val();
+        if (visitorId) {
+            // Hide any previous error messages
+            $('#error-message').hide();
+            checkVisitorDetails(visitorId);
+        } else {
+            // Display error message below the input field
+            $('#error-message').text('Please enter a valid Visitor ID.').show();
+            $('#visitor-detail-modal').modal('hide');
+        }
     }
-}
 
-$('#get-details-btn').on('click', function(event) {
-    event.preventDefault();
-    getVisitorDetails();
-});
+    $('#get-details-btn').on('click', function(event) {
+        event.preventDefault();
+        getVisitorDetails();
+    });
 
-$('#checkin_modal_btn').on('click', function() {
-    checkInVisitors();
-});
+    $('#checkin_modal_btn').on('click', function() {
+        checkInVisitors();
+    });
 
-});
+    });
 
 
     </script> 
