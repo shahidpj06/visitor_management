@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,291 +10,549 @@
   <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
-  <link href="{% static 'css/calendar.css' %}" rel="stylesheet" type="text/css" />
+  <!-- <link href="{% static 'css/calendar.css' %}" rel="stylesheet" type="text/css" /> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-      
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet"> 
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-   <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.42/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale-all.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
-  
+
 
 
 </head>
 <style>
-  .fc-avatar-image{
+  .fc-avatar-image {
     display: none;
   }
-  .fc-content{
+
+  .fc-content {
     background-color: green;
     color: white;
   }
-  .fc-day-grid-event fc-h-event fc-event fc-start fc-end fc-draggable{
+
+  .fc-day-grid-event fc-h-event fc-event fc-start fc-end fc-draggable {
     background-color: black;
   }
-  .fc-time{
+
+  .fc-time {
     color: white;
 
-  }.fc-title{
+  }
+
+  .fc-title {
     color: white;
 
-  }.fc-time-grid-event fc-v-event fc-event fc-start fc-end fc-draggable fc-resizable {
+  }
+
+  .fc-time-grid-event fc-v-event fc-event fc-start fc-end fc-draggable fc-resizable {
     background-color: rgb(0 182 0);
-  }.error-message {
+  }
+
+  .error-message {
     color: red;
-  }.swal2-popup {
-  font-size: 1.6rem !important;
-}
-  /* .fc .fc-toolbar>*>:first-child {
-    margin-left: 0;
-    background: green;
+  }
+
+  .swal2-popup {
+    font-size: 1.6rem !important;
+  }
+
+  .loader {
+    display: flex;
+    border: 8px solid #f3f3f3;
+    /* Light grey */
+    border-top: 8px solid green;
+    /* Blue */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  .loader-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    z-index: 9999;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .fc-content {
+    height: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fc-day-grid-event fc-h-event fc-event fc-start fc-end fc-draggable {
+    border-color: greenyellow;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .fc-prev-button fc-button fc-state-default fc-corner-left fc-corner-right {
+    margin-left: 14px !important;
+  }
+
+  .modal-content {
+
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .modal-header {
+    border-radius: 10px;
+  }
+
+  .modal-dialog {
+    border-color: white;
+    /* width: 600px; */
+  }
+
+  .fc-title {
+    color: black;
+
+  } .fc-month-button fc-button fc-state-default fc-corner-left fc-corner-right fc-state-active {
+    height: 39px !important;
     color: white;
+    background: darkgreen;
+  } 
+
+  #deleteConfirmationModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+  }
+
+  .modal-backdrop {
+    backdrop-filter: blur(5px);
+  }
    
-} */
 </style>
+
 <body>
-  
-  
 
-<header id="page-topbar">
-  <div class="navbar-header">
+
+
+
+  <header id="page-topbar">
+    <div class="navbar-header">
       <div class="d-flex align-items-center">
-          <div class="navbar-brand-box">
-              <a href="{% url 'dashboard' %}" class="logo">
-                  <span class="logo-lg">
-                      <img src="{% static '/images/logo.png' %}" alt="" height="23">
-                  </span>
-              </a>
+        <div class="navbar-brand-box">
+          <a href="{% url 'dashboard' %}" class="logo">
+            <span class="logo-lg">
+              <img src="{% static '/images/v_logo.png' %}" alt="" height="100">
+            </span>
+          </a>
+        </div>
+        <button type="button" class="btn btn-sm font-size-16 d-lg-none header-item waves-effect waves-light"
+          data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+          <i class="fa fa-fw fa-bars"></i>
+        </button>
+        <div class="topnav">
+          <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+            <div class="collapse navbar-collapse" id="topnav-menu-content">
+              <ul class="navbar-nav">
+
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'dashboard' %}" id="topnav-dashboard" role="button">
+                    <span key="t-dashboards">Dashboard</span>
+                  </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                  <a class="nav-link" href="{% url 'visitors' %}" id="topnav-pages" role="button">
+                    <span>Visitors</span>
+
+                  </a>
+
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link " href="{% url 'settings' %}" id="topnav-pages" role="button">
+                    <span>Settings</span>
+
+                  </a>
+                </li>
+
+
+              </ul>
+            </div>
+          </nav>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="d-flex justify-content-end align-items-center header-rightside-btns">
+      <a href="{% url 'checkin_visitor' %}">
+        <button type="button" style="background-color: green;
+                color: white;     margin-top: 13px; margin-right: 17px;" class="btn waves-effect waves-light">CHECK
+          IN</button>
+      </a>
+
+      <!-- <div class="dropdown d-inline-block user-dropdown ms-2">
+                <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <img class="rounded-circle header-profile-user"
+                        src="{% static 'images/dummy.png' %}" alt="Header Avatar">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
+                       <span key="t-profile">Profile</span></a>
+
+                   <div class="dropdown-divider"></div>
+                   <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                           class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                           key="t-logout">Logout</span>
+                   </a>
+                </div>
+            </div> -->
+
+    </div>
+  </header>
+
+  <!-- </div>   -->
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="row">
+
+
+    <!-- ADD EVENT MODAL -->
+    <div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="newEventModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="staticBackdropLabel">Add Booking</h4>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+
+            </button>
           </div>
-          <button type="button" class="btn btn-sm font-size-16 d-lg-none header-item waves-effect waves-light"
-              data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
-              <i class="fa fa-fw fa-bars"></i>
-          </button>
 
-          <div class="topnav">
-              <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+          <form method="post" id="new-event-form">
+            <div class="modal-body">
 
-                  <div class="collapse navbar-collapse" id="topnav-menu-content">
-                      <ul class="navbar-nav">
+              <div class="form-group row">
+                <label for="visitor_name" class="col-sm-4 col-form-label">Visitor Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" autocomplete="off" id="visitor_name" name="visitor_name" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
 
-                          <li class="nav-item">
-                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;"  href="{% url 'dashboard' %}" 
-                                  id="topnav-dashboard" role="button">
-                                  <span key="t-dashboards">Dashboard</span>
-                              </a>
-                          </li>
-                          
-                          <li class="nav-item">
-                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;" href="{% url 'visitors' %}"
-                              id="topnav-pages" role="button">
-                              <span>Visitors</span>
-                              
-                          </a>
-                          
-                          </li>
-                          <li class="nav-item">
-                              <a class="nav-link" style="box-sizing: border-box; font-size: 15px;" href="{% url 'settings' %}"
-                                  id="topnav-pages" role="button">
-                                  <span>Settings</span>                                            
-                              </a>                                        
-                          </li>
-                          
-                      </ul>
+              <div class="form-group row">
+                <label for="visitor_email" class="col-sm-4 col-form-label">Visitor Email</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" autocomplete="off" id="visitor_email" name="visitor_email" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="visitor_phone" class="col-sm-4 col-form-label">Phone</label>
+                <div class="col-sm-8">
+                  <input type="number" class="form-control" autocomplete="off" id="visitor_phone" name="visitor_phone" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="title" class="col-sm-4 col-form-label">Purpose</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" autocomplete="off" id="title" name="event_name" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label for="starts-at" class="col-sm-4 col-form-label">Starts at</label>
+                <div class="col-sm-8">
+                  <div class="input-group date" id="starts-at-picker" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#starts-at-picker"
+                      name="starts_at" id="starts-at" required>
+                    <div class="input-group-append" data-target="#starts-at-picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
                   </div>
-              </nav>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="ends-at" class="col-sm-4 col-form-label">Ends at</label>
+                <div class="col-sm-8">
+                  <div class="input-group date" id="ends-at-picker" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#ends-at-picker"
+                      name="ends_at" id="ends-at" required>
+                    <div class="input-group-append" data-target="#ends-at-picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    <div class="error-container"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="branch_id" class="col-sm-4 col-form-label">Branch</label>
+                <div class="col-sm-8">
+                  <select class="form-control" name="branch_id" id="branch_id">
+                    <option selected disabled>--select branch--</option>
+                    {% for j in branch_data %}
+                    <option value="{{ j.id }}">{{ j.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="host_id" class="col-sm-4 col-form-label">Staff</label>
+                <div class="col-sm-8">
+                  <select class="form-control" name="host_id" id="host_id" required>
+                    <!-- {% for i in staff_data %}
+                          <option value="{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</option>
+                        {% endfor %} -->
+                  </select>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label for="add-event-desc" class="col-sm-4 col-form-label">Description</label>
+                <div class="col-sm-8">
+                  <textarea rows="4" class="form-control" name="event_description" id="add-event-desc"
+                    required></textarea>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                data-dismiss="modal">Close</button>
+              <button type="button" style="background-color: green; color: white;"
+                class="btn text-uppercase br-50 btn-md" id="save-event">Create</button>
+            </div>
+
+            <div class="loader-overlay" style="display: none;">
+              <div class="loader"></div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog"
+      id="updateEventModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Update Booking</h4>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+              data-event-id="{{ event.id }}">
+
+            </button>
+          </div>
+
+          <form method="post" id="update-event-form">
+            <!-- <input type="hidden" name="event_id" id="edit-eventId" value=""> -->
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="visitor_name" class="col-sm-4 col-form-label">Visitor Name</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="update-visitor_name" name="visitor_name" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="visitor_email" class="col-sm-4 col-form-label">Visitor Email</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="update-visitor_email" name="visitor_email" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="visitor_phone" class="col-sm-4 col-form-label">Phone</label>
+                <div class="col-sm-8">
+                  <input type="number" class="form-control" id="update-visitor_phone" name="visitor_phone" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="title" class="col-sm-4 col-form-label">Purpose</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="update-title" name="event_name" required>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="starts-at" class="col-sm-4 col-form-label">Starts at</label>
+                <div class="col-sm-8">
+                  <div class="input-group date" id="starts-at-picker" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#starts-at-picker"
+                      name="starts_at" id="update-starts-at" required>
+                    <div class="input-group-append" data-target="#starts-at-picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="ends-at" class="col-sm-4 col-form-label">Ends at</label>
+                <div class="col-sm-8">
+                  <div class="input-group date" id="ends-at-picker" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" data-target="#ends-at-picker"
+                      name="ends_at" id="update-ends-at" required>
+                    <div class="input-group-append" data-target="#ends-at-picker" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    <div class="error-container"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="branch_id" class="col-sm-4 col-form-label">Branch</label>
+                <div class="col-sm-8">
+                  <select class="form-control" name="branch_id" id="update-branch_id">
+                    {% for j in branch_data %}
+                    <option value="{{ j.id }}">{{ j.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="host_id" class="col-sm-4 col-form-label">Staff</label>
+                <div class="col-sm-8">
+                  <select class="form-control" name="host_id" id="update-host_id" required>
+                    <!-- {% for i in staff_data %}
+                          <option value="{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</option>
+                          {% endfor %} -->
+                  </select>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="add-event-desc" class="col-sm-4 col-form-label">Description</label>
+                <div class="col-sm-8">
+                  <textarea rows="4" class="form-control" name="event_description" id="update-add-event-desc"
+                    required></textarea>
+                  <div class="error-container"></div>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="event-id-update" name="event_id" value="{{ event_id }}">
+            <div class="modal-footer d-flex justify-content-center">
+              <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-dismiss="modal">Close</button>
+              <button type="button" style="background-color: green; color: white;"
+                class="btn text-uppercase br-50 btn-md" id="update-event">Update</button>
+              <button type="button" id="delete-event" class="btn btn-light text-uppercase br-50 btn-md"
+                style="background-color: white; color: #c80000;">Delete</button>
+            </div>
+            <div class="loader-overlay" style="display: none;">
+              <div class="loader"></div>
+            </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog" id="deleteConfirmationModal">
+      <div class="modal-dialog d-flex justify-content-center" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Cancel appointment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <p>Do you really want to cancel this appointment?</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+              </div>
           </div>
       </div>
   </div>
-  
-  
-</header>
-<br>
-<br>
-<br>
-<br>
-<div class="row">
-      
-        
-        <!-- ADD EVENT MODAL -->
-        <div class="modal fade" tabindex="-1" role="dialog" id="newEventModal">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="staticBackdropLabel">Add Booking</h4>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-                  
-                </button>
-              </div>
-        
-              <form method="post" id="new-event-form">
-                <!-- {% csrf_token %} -->
-                <div class="modal-body">
-        
-                  <div class="form-group row">
-                    <label for="visitor_name" class="col-sm-4 col-form-label">Visitor Name</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="visitor_name" name="visitor_name" required>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="visitor_email" class="col-sm-4 col-form-label">Visitor Email</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="visitor_email" name="visitor_email" required>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="visitor_phone" class="col-sm-4 col-form-label">Phone</label>
-                    <div class="col-sm-8">
-                      <input type="number" class="form-control" id="visitor_phone" name="visitor_phone" required>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="title" class="col-sm-4 col-form-label">Purpose</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="title" name="event_name" required>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="starts-at" class="col-sm-4 col-form-label">Starts at</label>
-                    <div class="col-sm-8">
-                      <div class="input-group date" id="starts-at-picker" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#starts-at-picker" name="starts_at" id="starts-at" required>
-                        <div class="input-group-append" data-target="#starts-at-picker" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="ends-at" class="col-sm-4 col-form-label">Ends at</label>
-                    <div class="col-sm-8">
-                      <div class="input-group date" id="ends-at-picker" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#ends-at-picker" name="ends_at" id="ends-at" required>
-                        <div class="input-group-append" data-target="#ends-at-picker" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="host_id" class="col-sm-4 col-form-label">Staff</label>
-                    <div class="col-sm-8">
-                      <select class="form-control" name="host_id" id="host_id" required>
-                        {% for i in staff_data %}
-                          <option value="{{ i.id }}">{{ i.first_name }} {{ i.last_name }}</option>
-                        {% endfor %}
-                      </select>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-        
-                  <div class="form-group row">
-                    <label for="add-event-desc" class="col-sm-4 col-form-label">Description</label>
-                    <div class="col-sm-8">
-                      <textarea rows="4" class="form-control" name="event_description" id="add-event-desc" required></textarea>
-                      <div class="error-container"></div>
-                    </div>
-                  </div>
-                  
-                </div>
-                
-                <div class="modal-footer d-flex justify-content-center">
-                  <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-dismiss="modal">Close</button>
-                  <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md" id="save-event">Create</button>
-                </div>
-              </form>
-        
-            </div>
+
+
+
+    <div class="col-md-12">
+      <div id='calendar'></div>
+    </div>
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Logout Confirmation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to logout?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger" onclick="performLogout()">Logout</button>
           </div>
         </div>
-
-        <div class="modal fade" tabindex="-1" role="dialog" id="updateEventModal">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                      <h4 class="modal-title">Update Event</h4>
-                  </div>
-      
-                  <form method="post" id="update-event-form">
-                      <div class="modal-body">
-                          <div class="row">
-                              <div class="col-xs-12">
-                                  <label class="col-xs-4" for="visitor_name_update">Visitor Name</label>
-                                  <input class="inputModal" type="text" name="visitor_name" id="visitor_name_update" required/>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-xs-12">
-                                  <label class="col-xs-4" for="visitor_email_update">Visitor Email</label>
-                                  <input class="inputModal" type="text" name="visitor_email" id="visitor_email_update" required/>
-                              </div>
-                          </div>
-                          <!-- Add other fields as needed -->
-                          <div class="row">
-                              <div class="col-xs-12">
-                                  <label class="col-xs-4" for="starts-at-update">Starts at</label>
-                                  <input class="inputModal" type="text" name="starts_at" id="starts-at-update" required/>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-xs-12">
-                                  <label class="col-xs-4" for="ends-at-update">Ends at</label>
-                                  <input class="inputModal" type="text" name="ends_at" id="ends-at-update" required/>
-                              </div>
-                          </div>
-                          <!-- Add other fields as needed -->
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary" id="update-event">Update</button>
-                      </div>
-                  </form>
-              </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
       </div>
-      
+    </div>
 
-  <div class="col-md-12">    
-    <div id='calendar'></div> 
-  </div> 
-        
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCit4RJVPT9UiLQCJJPYEBkNTJCslqO4ps&libraries=places"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  
-  <script>
-    $(document).ready(function() {
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCit4RJVPT9UiLQCJJPYEBkNTJCslqO4ps&libraries=places"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-      function showToast(message, icon) {
-        const toastMixin = Swal.mixin({
+    <script>
+      $(document).ready(function () {
+
+        function showToast(message, icon) {
+          const toastMixin = Swal.mixin({
             toast: true,
             icon: icon,
             title: 'General Title',
@@ -304,225 +563,515 @@
             timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
-        });
-        toastMixin.fire({
+          });
+          toastMixin.fire({
             animation: true,
             title: message
-        });
-    }
+          });
+        }
 
-      var calendar = $('#calendar').fullCalendar({
-        header: {
-          left: 'prev, next today',
-          center: 'title',
-          right: 'month, agendaWeek, agendaDay'
-        },
-        selectable: true,
-        selectHelper: true,
-        editable: true,
-        eventLimit: true,
-        
-        
-        select: function (start, end, allDay) {
-          $('#new-event-form')[0].reset();
-          $('.error-container').text("");
+        function showLoader() {
+          $(".loader-overlay").show();
+        }
 
-          if (calendar.fullCalendar("getView").name === "month") {
+        function hideLoader() {
+          $(".loader-overlay").hide();
+        }
 
-            const addTime = moment(start).add(9, 'hours');
-            $('#starts-at').val(addTime.format('YYYY-MM-DD HH:mm:ss'));
-            const previousDay = moment(end).subtract(1, 'days').add(10, 'hours');
-            $('#ends-at').val(previousDay.format('YYYY-MM-DD HH:mm:ss'));
-          }
-          else{
-            $('#starts-at').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
-            $('#ends-at').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
-          }
+        const calendar = $('#calendar').fullCalendar({
+          header: {
+            left: 'prev, next today',
+            center: 'title',
+            right: 'month, agendaWeek, agendaDay',
+          },
+          selectable: true,
+          selectHelper: true,
+          editable: true,
+          eventLimit: true,
 
 
-  
-          $('#newEventModal').modal('show');
-          
-        },
-        eventRender: function(event, element, timezone, callback) {
-          element.css({
+          select: function (start, end, allDay) {
+            $('#new-event-form')[0].reset();
+            $('.error-container').text("");
+            $('#host_id').text("");
+
+            if (calendar.fullCalendar("getView").name === "month") {
+
+              const newStartsAt = moment(start).format('YYYY-MM-DD HH:mm:ss');
+              const newEndsAt = moment(end).format('YYYY-MM-DD HH:mm:ss');
+
+              $('#starts-at').val(newStartsAt);
+              $('#ends-at').val(newEndsAt);
+
+              const addTime = moment(start).add(9, 'hours');
+              $('#starts-at').val(addTime.format('YYYY-MM-DD HH:mm:ss'));
+              const previousDay = moment(end).subtract(1, 'days').add(10, 'hours');
+              $('#ends-at').val(previousDay.format('YYYY-MM-DD HH:mm:ss'));
+            }
+            else {
+              $('#starts-at').val(moment(start).format('YYYY-MM-DD HH:mm:ss'));
+              $('#ends-at').val(moment(end).format('YYYY-MM-DD HH:mm:ss'));
+            }
+            $('#newEventModal').modal('show');
+
+          },
+          eventRender: function (event, element, timezone, callback) {
+            element.css({
               'background-color': 'green',
               'color': 'white',
-              'position': 'relative', 
-          });
+              'position': 'relative',
+              'border-color': 'yellowgreen',
+              'padding-left': '11px',
+              'margin': '0px 5px',
+              'display': 'flex',
+              'align-items': 'center',
+              
+            });
 
-          // var container = $('<div class="custom-container"></div>');
-          // var startMoment = moment(event.start);  
-          // var endMoment = moment(event.end);
-
-          // var topPosition = moment.duration(startMoment.diff(moment().startOf('day'))).asMinutes() / 2;
-
-          // var height = ((endMoment - startMoment) / (60 * 1000)) * 2;
-
-          // container.css({
-          //     'position': 'absolute',
-          //     'top': topPosition + 'px',
-          //     'height': height + 'px',
-          //     'width': '100%',
-          //     'background-color': 'rgba(255, 255, 255, 0.8)',
-          //     'border': '1px solid #ccc',
-          //     'padding': '5px',
-          //     'box-sizing': 'border-box',
-          // });
-
-          // container.html('<strong>' + event.visitor_name + '</strong><br>' +
-          //     'Starts at: ' + startMoment.format('h:mm A') + '<br>' +
-          //     'Ends at: ' + endMoment.format('h:mm A'));
-
-          // element.append(container);
-
-          element.find('.fc-title').css({
+            element.find('.fc-title').css({
               'color': 'white'
+            });
+
+            element.find('.fc-time').css({
+              
+            })
+
+            element.find('.fc-list-item-title fc-widget-content').css({
+              'margin-left': '100px'
+            })
+            element.find('.fc-list-item-marker fc-widget-content').css({
+              'display': 'none'
+            })
+
+          },
+
+          eventClick: function (event) {
+            openUpdateModal(event.event_id);
+
+          },
+
+          eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
+            const newStartsAt = event.start.toISOString();
+            const newEndsAt = event.end ? event.end.toISOString() : null;
+
+            $('#update-starts-at').val(newStartsAt.slice(0, -5));
+            $('#update-ends-at').val(newEndsAt ? newEndsAt.slice(0, -5) : '');
+            openUpdateModal(event.event_id);
+          },
+
+
+
+          events: '/get_events/',
+
+        });
+
+
+        function openUpdateModal(event_id) {
+          $.ajax({
+            method: "GET",
+            url: '/get_event_details/' + event_id + '/',
+            success: function (event_details) {
+              if (event_details) {
+                $('#update-visitor_name').val(event_details.visitor_name);
+                $('#update-visitor_email').val(event_details.visitor_email);
+                $('#update-visitor_phone').val(event_details.visitor_phone);
+                $('#update-title').val(event_details.title);
+                $('#update-starts-at').val(event_details.starts_at);
+                $('#update-ends-at').val(event_details.ends_at);
+                $('#update-branch_id').val(event_details.branch_id);
+
+                const changeEvent = new Event('change');
+                $('#update-branch_id').get(0).dispatchEvent(changeEvent);
+
+                setTimeout(function () {
+                  $('#update-host_id').val(event_details.host_id);
+                }, 100);
+
+                $('#update-add-event-desc').val(event_details.description);
+                $('#event-id-update').val(event_id);
+                $('#updateEventModal').modal('show');
+              } else {
+                showToast("Error fetching event details", "error");
+              }
+            },
+            error: function (error) {
+              showToast("Error fetching event details: " + error.statusText, "error");
+            }
           });
-      },
-
-
-        events: '/get_events/',
-
-        eventClick: function (event) {
-          openUpdateModal(event.id);
-        },
-
-        eventDrop: function (event, delta, revertFunc) {
-          openUpdateModal(event.id);
-        },
-
-      });
-   
-      $('#save-event').on('click', function() {
-        $('.error-container').empty();
-
-        var visitorName = $('#visitor_name').val();
-        if (visitorName.trim() === '') {
-          $('#visitor_name').siblings('.error-container').html('<div class="error-message">Visitor Name is required</div>');
         }
 
-        var visitorPurpose = $('#title').val();
-        if (visitorPurpose.trim() === '') {
-          $('#title').siblings('.error-container').html('<div class="error-message">Purpose is required</div>');
-        }
 
-        var visitorEmail = $('#visitor_email').val();
-        if (visitorEmail.trim() === '') {
-          $('#visitor_email').siblings('.error-container').html('<div class="error-message">Visitor Email is required</div>');
-        } else if (!isValidEmail(visitorEmail)) {
-          $('#visitor_email').siblings('.error-container').html('<div class="error-message">Enter a valid email address</div>');
-        }
+        $('#update-event').on('click', function () {
+          $('.error-container').empty();
 
-        var visitorPhone = $('#visitor_phone').val();
-        if (visitorPhone.trim() === '') {
-          $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Phone number is required</div>');
-        }else if (!isValidPhone(visitorPhone)) {
-          $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Enter a valid phone number</div>');
-        }
+          const updateVisitorName = $('#update-visitor_name').val();
+          if (updateVisitorName.trim() === '') {
+            $('#update-visitor_name').siblings('.error-container').html('<div class="error-message">Visitor Name is required</div>');
+          }
 
-        var hostId = $('#host_id').val();
-        if (hostId === '') {
-          $('#host_id').siblings('.error-container').html('<div class="error-message">Host is required</div>');
-        }
-        if ($('.error-message').length === 0) {
-          var eventData = {
-            
-            'visitor_name': $('#visitor_name').val(),
-            'visitor_email': $('#visitor_email').val(),
-            'visitor_phone': $('#visitor_phone').val(),
-            'event_name': $('#title').val(),
-            'starts_at': $('#starts-at').val(),
-            'ends_at': $('#ends-at').val(),
-            'host_id': $('#host_id').val(),
-            'event_description': $('#add-event-desc').val(),
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-          };
-        };
-        
+          const updateVisitorPurpose = $('#update-title').val();
+          if (updateVisitorPurpose.trim() === '') {
+            $('#update-title').siblings('.error-container').html('<div class="error-message">Purpose is required</div>');
+          }
+
+          const updateVisitorEmail = $('#update-visitor_email').val();
+          if (updateVisitorEmail.trim() === '') {
+            $('#update-visitor_email').siblings('.error-container').html('<div class="error-message">Visitor Email is required</div>');
+          } else if (!isValidEmail(updateVisitorEmail)) {
+            $('#update-visitor_email').siblings('.error-container').html('<div class="error-message">Enter a valid email address</div>');
+          }
+
+          const updateVisitorPhone = $('#update-visitor_phone').val();
+          if (updateVisitorPhone.trim() === '') {
+            $('#update-visitor_phone').siblings('.error-container').html('<div class="error-message">Phone number is required</div>');
+          } else if (!isValidPhone(updateVisitorPhone)) {
+            $('#update-visitor_phone').siblings('.error-container').html('<div class="error-message">Enter a valid phone number</div>');
+          }
+
+          const updateBranchId = $('#update-branch_id').val();
+          if (updateBranchId === '' || updateBranchId === null) {
+            $('#update-branch_id').siblings('.error-container').html('<div class="error-message">Branch is required</div>');
+          }
+
+          const updateHostId = $('#update-host_id').val();
+          if (updateHostId === '' || updateHostId === null) {
+            $('#update-host_id').siblings('.error-container').html('<div class="error-message">Host is required</div>');
+          }
+
+          const updateStartsAtValue = $('#update-starts-at').val();
+          const updateEndsAtValue = $('#update-ends-at').val();
+          if (new Date(updateStartsAtValue) >= new Date(updateEndsAtValue)) {
+            $('#update-ends-at').siblings('.error-container').html('<div class="error-message">Start Date must be later than End Date.</div>');
+          }
+
+          if ($('.error-message').length === 0) {
+            const eventId = $('#event-id-update').val();
+            updateEvent(eventId);
+          }
+        });
+
         function isValidPhone(phone) {
-            var phoneRegex = /^[0-9]{8,12}$/;
-            return phoneRegex.test(phone);
+          const phoneRegex = /^[0-9]{8,12}$/;
+          return phoneRegex.test(phone);
         }
 
         function isValidEmail(email) {
-          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return emailRegex.test(email);
         }
 
-        if (!visitorName || !visitorPurpose || !visitorEmail || !visitorPhone || !hostId || !isValidEmail(visitorEmail) || !isValidPhone(visitorPhone)) {
-          return;
+        function updateEvent(eventId) {
+          const updateVisitorName = $('#update-visitor_name').val();
+          const updateVisitorEmail = $('#update-visitor_email').val();
+          const updateVisitorPhone = $('#update-visitor_phone').val();
+          const updateVisitorPurpose = $('#update-title').val();
+          const updateStartsAtValue = $('#update-starts-at').val();
+          const updateEndsAtValue = $('#update-ends-at').val();
+          const updateHostId = $('#update-host_id').val();
+          const updateBranchId = $('#update-branch_id').val();
+
+          if (!updateVisitorName || !updateVisitorPurpose || !updateVisitorEmail || !updateVisitorPhone || !updateHostId || !isValidEmail(updateVisitorEmail) || !isValidPhone(updateVisitorPhone) || !updateBranchId || new Date(updateStartsAtValue) >= new Date(updateEndsAtValue)) {
+            return;
+          }
+          const eventData = {
+            'visitor_name': updateVisitorName,
+            'visitor_email': updateVisitorEmail,
+            'visitor_phone': updateVisitorPhone,
+            'event_name': updateVisitorPurpose,
+            'starts_at': updateStartsAtValue,
+            'ends_at': updateEndsAtValue,
+            'host_id': updateHostId,
+            'branch_id': updateBranchId,
+            'event_description': $('#update-add-event-desc').val(),
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          };
+
+          $.ajax({
+            method: "POST",
+            url: '/update_event/' + eventId + '/',
+            data: eventData,
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}"
+            },
+            beforeSend: function () {
+              showLoader();
+            },
+            success: function (data) {
+              hideLoader();
+              if (data.status === 400) {
+                showToast(data.message, "error");
+              }
+              if (data.status === 200) {
+                calendar.fullCalendar('refetchEvents');
+                $('#updateEventModal').modal('hide');
+                showToast(data.message, 'success');
+              }
+            },
+            error: function (error) {
+              showToast("Error updating event: " + error.statusText, "error");
+            }
+          });
         }
-  
+
+        $('#delete-event').on('click', function () {
+            $('#deleteConfirmationModal').modal('show');
+        });
+
+        $('#confirmDelete').on('click', function () {
+            const eventId = $('#event-id-update').val();
+
+          $.ajax({
+            method: "POST",
+            url: '/event_delete/' + eventId + '/',
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function (data) {
+              if (data.status === 200) {
+                calendar.fullCalendar('refetchEvents');
+                $('#updateEventModal').modal('hide');
+                showToast(data.message, 'success');
+              } else {
+                showToast(data.message, 'error');
+              }
+            },
+            error: function (error) {
+              showToast("Error deleting event: " + error.statusText, "error");
+            }
+          });
+          $('#deleteConfirmationModal').modal('hide');
+        })
+
+        $('#save-event').on('click', function () {
+          $('.error-container').empty();
+
+          const visitorName = $('#visitor_name').val();
+          if (visitorName.trim() === '') {
+            $('#visitor_name').siblings('.error-container').html('<div class="error-message">Visitor Name is required</div>');
+          }
+
+          const visitorPurpose = $('#title').val();
+          if (visitorPurpose.trim() === '') {
+            $('#title').siblings('.error-container').html('<div class="error-message">Purpose is required</div>');
+          }
+
+          const visitorEmail = $('#visitor_email').val();
+          if (visitorEmail.trim() === '') {
+            $('#visitor_email').siblings('.error-container').html('<div class="error-message">Visitor Email is required</div>');
+          } else if (!isValidEmail(visitorEmail)) {
+            $('#visitor_email').siblings('.error-container').html('<div class="error-message">Enter a valid email address</div>');
+          }
+
+          const visitorPhone = $('#visitor_phone').val();
+          if (visitorPhone.trim() === '') {
+            $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Phone number is required</div>');
+          } else if (!isValidPhone(visitorPhone)) {
+            $('#visitor_phone').siblings('.error-container').html('<div class="error-message">Enter a valid phone number</div>');
+          }
+
+          const branchId = $('#branch_id').val();
+          if (branchId === '' || branchId === null) {
+            $('#branch_id').siblings('.error-container').html('<div class="error-message">Branch is required</div>');
+          }
+
+          const hostId = $('#host_id').val();
+          if (hostId === '' || hostId === null) {
+            $('#host_id').siblings('.error-container').html('<div class="error-message">Host is required</div>');
+          }
+
+          const startsAtValue = $('#starts-at').val();
+          const endsAtValue = $('#ends-at').val();
+          if (new Date(startsAtValue) >= new Date(endsAtValue)) {
+            $('#ends-at').siblings('.error-container').html('<div class="error-message">Start Date must be later than End Date.</div>');
+          }
+
+          if ($('.error-message').length === 0) {
+
+            const eventData = {
+              'visitor_name': visitorName,
+              'visitor_email': visitorEmail,
+              'visitor_phone': visitorPhone,
+              'event_name': visitorPurpose,
+              'starts_at': startsAtValue,
+              'ends_at': endsAtValue,
+              'host_id': hostId,
+              'branch_id': branchId,
+              'event_description': $('#add-event-desc').val(),
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+
+            $.ajax({
+              method: "POST",
+              url: '/create_event/',
+              data: eventData,
+              headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+              },
+              beforeSend: function () {
+                showLoader();
+              },
+              success: function (data) {
+                hideLoader();
+                if (data.status === 400) {
+                  showToast(data.message, "error");
+                } else {
+                  calendar.fullCalendar('refetchEvents');
+                  $('#newEventModal').modal('hide');
+                  showToast(data.message, 'success');
+                }
+              },
+              error: function (error) {
+                showToast("Error creating event: " + error.statusText, "error");
+              }
+            });
+          }
+        });
+
+
+
+        $('#starts-at, #ends-at').datetimepicker({
+          format: 'YYYY-MM-DD HH:mm:ss',
+          useCurrent: true,
+        });
+        $('#starts-at').val(moment().hour(10).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
+        $('#ends-at').val(moment().hour(11).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
+
+        $('#update-starts-at, #update-ends-at').datetimepicker({
+          format: 'YYYY-MM-DD HH:mm:ss',
+          useCurrent: true,
+        });
+        $('#update-starts-at').val(moment().hour(10).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
+        $('#update-ends-at').val(moment().hour(11).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const branchDropdown = document.getElementById("branch_id");
+        const hostDropdown = document.getElementById("host_id");
+
+        branchDropdown.addEventListener('click', function () {
+          const branchId = branchDropdown.value;
+          if (branchId) {
+            fetch(`/get_dependent/?branch_id=${branchId}`)
+              .then(respose => respose.json())
+              .then(data => {
+                hostDropdown.innerHTML = '';
+                data.hosts.forEach(host => {
+                  hostDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`
+                });
+              });
+
+          } else {
+            hostDropdown.innerHTML = '';
+          }
+
+        })
+      })
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const branchEditDropdown = document.getElementById("update-branch_id");
+        const hostEditDropdown = document.getElementById("update-host_id");
+
+        branchEditDropdown.addEventListener('change', function () {
+          const branchId = branchEditDropdown.value;
+          if (branchId) {
+            fetch(`/get_dependent/?branch_id=${branchId}`)
+              .then(response => response.json())
+              .then(data => {
+                hostEditDropdown.innerHTML = '';
+                data.hosts.forEach(host => {
+                  hostEditDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`;
+                });
+              });
+          } else {
+            hostEditDropdown.innerHTML = '';
+          }
+        });
+
+        $('#updateEventModal').on('show.bs.modal', function () {
+          const changeEvent = new Event('change');
+          branchEditDropdown.dispatchEvent(changeEvent);
+        });
+      });
+
+    </script>
+    <script>
+      function confirmLogout() {
+        Swal.fire({
+          title: 'Logout Confirmation',
+          text: 'Are you sure you want to logout?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Logout'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            performLogout();
+          }
+        });
+      }
+
+      function performLogout() {
         $.ajax({
-          type: "POST",
-          url: '/create_event/',
-          data: eventData,
-          dataType: "json",
+          url: "/logout/",
+          method: "POST",
           headers: {
             "X-CSRFToken": "{{ csrf_token }}"
           },
           success: function (data) {
-            if (data.status === 400) {
-              showToast(data.message, "error")
-            }
-            else {
-              calendar.fullCalendar('refetchEvents');
-              $('#newEventModal').modal('hide');
-              showToast(data.message, 'success');
-            }
-
+            window.location.href = "/";
           },
-          error: function (data) {
-            // alert('There is a problem');
+          error: function (xhr, textStatus, errorThrown) {
+            console.error("Logout failed:", errorThrown);
           }
         });
-      });
+      }
+    </script>
+    <script>
+      // // Add this code inside your document ready function
+      // $('#update-event').on('click', function () {
+      //   // Existing code...
 
-      // function openUpdateModal(eventId) {
-      //   $.ajax({
-      //     type: 'GET',
-      //     url: '/get_event_details/' + eventId + '/', 
-      //     dataType: 'json',
-          
-      //     success: function (data) {
-      //       $('#update-visitor-name').val(data.visitor_name);
-      //       $('#updateEventModal').modal('show');
-      //       alert("eventId")
-      //     },
-      //     error: function (data) {
-      //       console.error('Error fetching event details');
-      //     }
+      //   $('#delete-event').on('click', function () {
+      //     const eventId = $('#event-id-update').val();
+
+      //     $.ajax({
+      //       method: "POST",
+      //       url: '/delete_event/' + eventId + '/',
+      //       headers: {
+      //         "X-CSRFToken": "{{ csrf_token }}"
+      //       },
+      //       beforeSend: function () {
+      //         showLoader();
+      //       },
+      //       success: function (data) {
+      //         hideLoader();
+      //         if (data.status === 200) {
+      //           calendar.fullCalendar('refetchEvents');
+      //           $('#updateEventModal').modal('hide');
+      //           showToast(data.message, 'success');
+      //         } else {
+      //           showToast(data.message, 'error');
+      //         }
+      //       },
+      //       error: function (error) {
+      //         showToast("Error deleting event: " + error.statusText, "error");
+      //       }
+      //     });
       //   });
-      // }
+
+      //   // Existing code...
+      // });
+
+    </script>
 
 
-  
-      $('#newEventModal').on('shown.bs.modal', function () {
-        var selectedDate = $('#starts-at').val();
-        $.ajax({
-          type: "GET",
-          url: '/get_events/',
-          dataType: "json",
-          success: function (data) {
-          },
-          error: function (data) {
-            console.error('Error fetching events');
-          }
-        });
-      });
-  
-      $('#starts-at, #ends-at').datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss',
-        useCurrent: true,
-      });
-      $('#starts-at').val(moment().hour(10).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
-      $('#ends-at').val(moment().hour(11).minute(0).second(0).format('YYYY-MM-DD HH:mm:ss'));
-    });
-  </script>
 </body>
 
 </html>

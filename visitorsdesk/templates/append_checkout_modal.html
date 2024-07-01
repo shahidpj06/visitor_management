@@ -20,58 +20,65 @@
 
     <div class="modal fade " id="add-checkout" data-bs-keyboard="false" tabindex="-1"
     role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content" style="border-radius: 8px;">
-            <form method="post" id="checkout_form" action="{% url 'exit_visitor' %}">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title"><span>Exit Visitor</span></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h6 class="selct-box-head">Exit Desk</h6>
-                        <div class="form-grp inputGroup">
-                            <div class="select-inp">
-                                <select class="form-control" name="exit_desk" id="exit_desk" required>
-                                    <!-- <option selected disabled>--select desk--</option> -->
-                                
-                                    <option value="{{data.select_desk.id}}">{{data.select_desk}}</option>
-                                
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content" style="border-radius: 8px;">
+                <form method="post" id="checkout_form" action="{% url 'exit_visitor' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title"><span>Exit Visitor</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6 class="selct-box-head">Exit Desk</h6>
+                            <div class="form-grp inputGroup">
+                                <div class="select-inp">
+                                    <select class="form-control" name="exit_desk" id="exit_desk" required>
+                                        <!-- <option selected disabled>--select desk--</option> -->
+                                    
+                                        <option value="{{data.select_desk.id}}">{{data.select_desk}}</option>
+                                    
 
-                                </select>
-                                <i class="fas fa-chevron-down"></i>
-                                <div class="error"></div>
+                                    </select>
+                                    <i class="fas fa-chevron-down"></i>
+                                    <div class="error"></div>
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" name="visitor_id" id="visitor_id" value="{{vid}}">
-                    <h6 style="font-weight: 600;">Visitor Remarks</h6>
-                        <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn text-uppercase br-50 btn-md"
-                    style="background-color: green; color: white;" onclick="checkoutModal(event)">CHECKOUT</button>
-                    <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                        data-bs-dismiss="modal">Close</button>
-                </div>
-            </form>
+
+                            <div class="inputGroup form-control">
+                                <label for="startDateTime">Exit Time</label><br>
+                                <input style="font-size: 13px" type="datetime-local" class="form-control" id="exit_time"
+                                    name="exit_time" min="{{ current_date }}">
+                                <div style="position: absolute ;top: 64px;" class="error"></div>
+                            </div>
+                            <input type="hidden" name="visitor_id" id="visitor_id" value="{{vid}}">
+                        <h6 style="font-weight: 600;">Visitor Remarks</h6>
+                            <textarea class="form-control" name="visitor_remarks" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn text-uppercase br-50 btn-md"
+                        style="background-color: green; color: white;" onclick="checkoutModal(event)">CHECKOUT</button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    </div>
     <script>
-        // function getCurrentDateTime() {
-        //     const now = new Date();
-        //     const year = now.getFullYear();
-        //     const month = (now.getMonth() + 1).toString().padStart(2, '0');
-        //     const day = now.getDate().toString().padStart(2, '0');                    
-        //     const hours = now.getHours().toString().padStart(2, '0');
-        //     const minutes = now.getMinutes().toString().padStart(2, '0');
-        //     return `${year}-${month}-${day}T${hours}:${minutes}`;
-        // }
+        function getCurrentDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');                    
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
     
-        // $(document).ready(function () {
-        //     $('#exit_time').attr('min', getCurrentDateTime());
-        // });
+        $(document).ready(function () {
+            $('#exit_time').attr('min', getCurrentDateTime());
+        });
     </script>
     <script>
         function showToast(message, icon) {
@@ -99,7 +106,6 @@
 
         const checkoutModal=(e)=>{
             const exitDesk = document.getElementById('exit_desk');
-            // const exitTime = document.getElementById('exit_time');
 
             function setError(element, message) {
                
@@ -123,7 +129,6 @@
 
             const validateInputs = () => {
                 const exitDeskValue = exitDesk.value.trim();
-                // const exitTimeValue = exitTime.value.trim();
                 let isValid = true;
 
                 if (exitDeskValue === '--select desk--' || exitDeskValue === '') {
@@ -133,20 +138,11 @@
                     setSuccess(exitDesk);
                 }
 
-                // if (exitTimeValue === '') {
-                //     setError(exitTime, 'Choose the exit time');
-                //     isValid = false;
-                // } else {
-                //     setSuccess(exitTime);
-                // }
-
                 return isValid;
             };
 
             function resetForm() {
-                // Reset the form here
                 $("#checkout_form")[0].reset();
-                // Optionally, you can clear success/error classes and messages if any
                 $(".error").text("");
                 $(".input-control").removeClass("error success");
             }
@@ -181,45 +177,30 @@
                                 showToast(res.message, "success")
                                 resetForm();
                                 $("#add-checkout").modal('hide');
-                                $('#append_checkout').val(res.checkout_time);
-                                const row = $(`tr[data-visitor-id="${res.visitor_id}"]`);
-
-                                const checkoutTimeElement = row.find(".checkout-time"); 
-                                checkoutTimeElement.text(res.checkout_time);
-                                $(".checkoutLink").css("display", "none");
-                                $(".checkedout").css("display", "inline");
-
+                                $(checkoutModalElement).css('visibility', 'hidden'); 
+                                // const visitorId = checkoutModalElement.getAttribute('id').replace('checkoutLink_', '');  
+                                // $(`#checkedOutText_${visitorId}`).css('visibility', 'visible');
                             }
-
                         },    
 
                         error: function (xhr, textStatus, errorThrown) {
-                        // Handle any AJAX errors
                         }
                     });
 
             }
         };
-        // 
 
+        // const showCheckedOutText = (element) => {
+        //     alert("eererf")
+        //     const visitorId = element.getAttribute('id').replace('checkoutLink_', '');
+
+        //     $(`#checkedOutText_${visitorId}`).css('visibility', 'visible');
+        // }; 
+        
         $(document).ready(function () {
             $("#checkout_form").submit(checkoutModal);
         });
     </script>
-    <script>
-    //     window.onload = function() {
-    //     // Get the current date and time in the format required by datetime-local input
-    //     const now = new Date();
-    //     const formattedNow = now.toISOString().slice(0, 16);
-
-    //     // Set the default value and min attribute to the current date and time
-    //     document.getElementById('exit_time').value = formattedNow;
-        
-    //     // Set the min attribute to restrict past dates and times
-    //     document.getElementById('exit_time').min = formattedNow;
-    // }
-      </script>
-      
 
     
      

@@ -36,7 +36,8 @@
         border-color: #09c372;
         font-size: 10px;
     }
-        /* .inputGroup {
+
+    /* .inputGroup {
             position: relative;
             margin-bottom: 1em;
         }
@@ -60,7 +61,7 @@
             transition: 0.2s ease all;
         } */
 
-        /* .inputGroup input:focus + label,
+    /* .inputGroup input:focus + label,
         .inputGroup input:not(:placeholder-shown) + label {
             top: -15px;
             font-size: 0.8em;
@@ -68,7 +69,7 @@
         } */
 </style>
 
-<body id="for-focus-main">
+<body class="">
 
     <div id="preloader">
         <div id="status">
@@ -85,14 +86,13 @@
 
     <div id="layout-wrapper">
 
-
         <header id="page-topbar">
             <div class="navbar-header">
                 <div class="d-flex align-items-center">
                     <div class="navbar-brand-box">
                         <a href="{% url 'dashboard' %}" class="logo">
                             <span class="logo-lg">
-                                <img src="{% static 'images/logo.png' %}" alt="" height="23">
+                                <img src="{% static '/images/v_logo.png' %}" alt="" height="100">
                             </span>
                         </a>
                     </div>
@@ -137,31 +137,31 @@
                 </div>
                 <div class="d-flex align-items-center header-rightside-btns">
                     <a href="{% url 'calendar' %}">
-                        <button type="button" style="background-color: green; color: rgb(255, 255, 255);" class="btn header-item waves-effect waves-light" >CALENDAR
+                        <button type="button" style="background-color: green; color: rgb(255, 255, 255);"
+                            class="btn header-item waves-effect waves-light">CALENDAR
                         </button>
                     </a>
                     <a href="{% url 'checkin_visitor' %}">
-                        <button type="button" style="background-color: green; color: white;" class="btn header-item waves-effect waves-light" >CHECK IN
+                        <button type="button" style="background-color: green; color: white;"
+                            class="btn header-item waves-effect waves-light">CHECK IN
                         </button>
                     </a>
                     <div class="dropdown d-inline-block user-dropdown ms-2">
                         <a class="" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            <img class="rounded-circle header-profile-user"
-                                src="{% static 'images/dummy.png' %}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{% static 'images/dummy.png' %}"
+                                alt="Header Avatar">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a class="dropdown-item" href="{% url 'user_profile' %}"><i class="bx bx-user font-size-16 align-middle me-1"></i>
-                               <span key="t-profile">Profile</span></a>
-                           <!-- <a class="dropdown-item d-block" href="#"><i
-                                   class="bx bx-wrench font-size-16 align-middle me-1"></i> <span
-                                   key="t-settings">Settings</span></a> -->
-                           <div class="dropdown-divider"></div>
-                           <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
-                                   class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
-                                   key="t-logout">Logout</span>
-                           </a>
-                       </div>
+                            <a class="dropdown-item" href="{% url 'user_profile' %}"><i
+                                    class="bx bx-user font-size-16 align-middle me-1"></i>
+                                <span key="t-profile">Profile</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#" onclick="confirmLogout()"><i
+                                    class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i> <span
+                                    key="t-logout">Logout</span>
+                            </a>
+                        </div>
                     </div>
 
                 </div>
@@ -189,9 +189,9 @@
 
 
 
-        <div class="page-content" >
+        <div class="page-content">
             <div class="container-fluid px-0">
-                <div class="settings-tabs">
+                <div class="for-focus-main settings-tabs">
                     <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
 
                         <li class="nav-item waves-effect waves-light">
@@ -214,7 +214,8 @@
 
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab"
+                                onclick="resetForms()">
                                 <div>
                                     <i class="bx bx-stats stns-tab-icon-6"></i>
                                     <h4 class="stngs-tab-head">Invited Visitor</h4>
@@ -225,26 +226,26 @@
 
                     </ul>
 
-                    <div class="tab-content" >
-                        
+                    <div class="tab-content">
+
 
                         <div class="tab-pane " id="department-tab" role="tabpanel">
-                            <div class="settings-card" >
-                            
+                            <div class="settings-card" style="width: 1000px;">
+
                                 <div class="department-table table-view">
-                                    <div class="table-responsive">                                      
+                                    <div class="table-responsive">
                                         <form method="post" id="checkin_form" action="{% url 'new_visitor' %}">
                                             {% csrf_token %}
                                             <div class="card-body center-text-align" style="padding: 35px;">
-                                            <h4 style="font-weight: 600;">New Visitor</h4><br>
-                                            
+                                                <h4 style="font-weight: 600;">New Visitor</h4><br>
+
                                                 <h6 class="selct-box-head">Branch</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
                                                         <select class="form-control" name="branch_id" id="branch_id">
                                                             <option selected disabled>--select branch--</option>
                                                             {% for i in branch_data %}
-                                                            
+
                                                             <option value="{{i.id}}">{{i.name}}</option>
                                                             {% endfor %}
                                                         </select>
@@ -263,33 +264,37 @@
                                                         <div class="error"></div>
                                                     </div>
                                                 </div>
-                        
+
                                                 <div class="inputGroup form-control">
-                        
-                                                    <input style="font-size: 13px" type="text" required="" name="full_name" id="full_name" autocomplete="off">
+
+                                                    <input style="font-size: 13px" type="text" required=""
+                                                        name="full_name" id="full_name" autocomplete="off">
                                                     <label class="search-icon" for="name">Full Name</label>
                                                     <div class="error"></div>
                                                 </div>
-                        
-                        
+
+
                                                 <div class="inputGroup form-control">
-                                                    <input style="font-size: 13px" type="email" required="" name="email" id="email" autocomplete="off">
+                                                    <input style="font-size: 13px" type="email" required="" name="email"
+                                                        id="email" autocomplete="off">
                                                     <label class="search-icon" for="email">Email</label>
                                                     <div class="error"></div>
                                                 </div>
-                        
-                        
+
+
                                                 <div class="inputGroup form-control">
-                                                    <input style="font-size: 13px" type="number" required="" name="phone" id="phone" autocomplete="off">
+                                                    <input style="font-size: 13px" type="number" required=""
+                                                        name="phone" id="phone" autocomplete="off">
                                                     <label class="search-icon" for="number">Phone</label>
                                                     <div class="error"></div>
                                                 </div>
-                        
+
                                                 <h6 class="selct-box-head">Host</h6>
                                                 <div class="form-grp inputGroup">
                                                     <div class="select-inp">
-                                                        <select class="form-control drp" name="host_id" id="host_id" required>
-                                                            
+                                                        <select class="form-control drp" name="host_id" id="host_id"
+                                                            required>
+
                                                         </select>
                                                         <i class="fas fa-chevron-down"></i>
                                                         <div class="error"></div>
@@ -298,39 +303,50 @@
                                                 <input type="hidden" id="visitorId" name="visitor_id">
 
                                                 <div class="inputGroup form-control">
-                        
-                                                    <input style="font-size: 13px" type="text" required="" name="purpose" id="purpose" autocomplete="off">
+
+                                                    <input style="font-size: 13px" type="text" required=""
+                                                        name="purpose" id="purpose" autocomplete="off">
                                                     <label class="search-icon" for="name">Purpose</label>
                                                     <div class="error"></div>
                                                 </div>
 
                                                 <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" style="background-color: green; color: white;" 
-                                                    class="btn text-uppercase br-50 btn-md" onclick="checkinVisitor(event)">Create</button>
-                                                    
+                                                    <button type="button" style="background-color: green; color: white;"
+                                                        class="btn text-uppercase br-50 btn-md"
+                                                        onclick="checkinVisitor(event)">Create</button>
+
                                                 </div>
-                        
+
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="tab-pane active" id="opportunity-stages-tab" role="tabpanel">
-                            <div class="settings-card" id="for-focus">
+                            <div class="for-focus-main settings-card" style="width: 1000px;" id="for-focus">
                                 <div class="opportunity-stages-tab table-view">
                                     <div class="table-responsive">
                                         <form method="post" id="visitor_checkin" action="#">
                                             {% csrf_token %}
-                                            <div class="card-body center-text-align" style="padding: 35px; text-align: center;">
+                                            <div class="card-body center-text-align"
+                                                style="padding: 35px; text-align: center;">
                                                 <h4 style="font-weight: 600;">Invited Visitor Check</h4><br>
                                                 <div style="display: flex; justify-content: space-between;">
                                                     <div style="flex: 1;">
-                                                        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
-                                                        <dotlottie-player src="https://lottie.host/b3a48700-59e5-49e5-8962-65d4b5e19dce/CEaCFb2mG4.json" background="transparent" speed="1" style="width: 450px; height: 450px; margin-left: 65px;
+                                                        <script
+                                                            src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                                                            type="module"></script>
+                                                        <!-- <iframe src="https://lottie.host/embed/b3a48700-59e5-49e5-8962-65d4b5e19dce/CEaCFb2mG4.json" background="transparent" speed="1" style="width: 450px; height: 450px; margin-left: 65px;
                                                         width: 58%;
-                                                        height: 100%; margin-top: 9px " loop autoplay></dotlottie-player>
+                                                        height: 100%; margin-top: 9px "></iframe>  -->
+                                                        <dotlottie-player
+                                                            src="https://lottie.host/b3a48700-59e5-49e5-8962-65d4b5e19dce/CEaCFb2mG4.json"
+                                                            background="transparent" speed="1" style="width: 450px; height: 450px; margin-left: 65px;
+                                                        width: 58%;
+                                                        height: 100%; margin-top: 9px " loop
+                                                            autoplay></dotlottie-player>
                                                         <h5 style="margin-left: 137px;;
                                                         display: flex;
                                                         position: absolute;
@@ -342,41 +358,42 @@
                                                     <div style="flex: 1; padding-left: 20px;">
                                                         <div class="inputGroup form-control" style="margin-top: 124px;
                                                         margin-left: 106px; width: 286px ; border: 3px solid #008a00;">
-                                                            <input type="text" required="" name="invite_id" id="invite_id" placeholder="Enter Visitor ID."> 
-                                                            <label class="search-icon" for="invite_id">Invite ID</label>
+                                                            <input type="text" autocomplete="off" required="" name="invite_id"
+                                                                id="invite_id" placeholder="Enter Visitor ID.">
+                                                            <label class="search-icon" for="invite_id" >Invite ID</label>
                                                         </div>
-                                                        <span id="error-message" style="color: red; margin-left: 153px;"></span>
+                                                        <span id="error-message"
+                                                            style="color: red; margin-left: 153px;"></span>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer d-flex justify-content-center">
                                                 </div>
                                             </div>
-                                            <button type="submit" id="get-details-btn" style="background-color: green; color: white; display: none;" class="btn text-uppercase br-50 btn-md">
+                                            <button type="submit" id="get-details-btn"
+                                                style="background-color: green; color: white; display: none;">
                                                 Get Details
                                             </button>
-                                        </form>                                        
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                       
-
                     </div>
                 </div>
-
             </div>
-<!--  -->
         </div>
-        <div class="modal fade" style="border-radius: 10px;" id="visitor-detail-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="visitor-detail-modal modal fade" style="border-radius: 10px;" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content" style="border-radius: 8px;">
-        
+
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Visitor Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="resetForm()"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            onclick="resetForm()"></button>
                     </div>
-        
+
                     <div class="modal-body">
                         <table class="table">
                             <thead>
@@ -398,23 +415,25 @@
                                 </tr>
                             </tbody>
                         </table>
-        
+
                         <div class="form-group">
                             <label>Desk</label>
-                            <select class="form-control" name="desk_name" id="desk_name">
-                                <!-- <option selected>--select desk--</option> -->
+                            <select class="desk_name form-control" name="desk_name" id="desk_name">
+                                <!-- <option selected>--select desk--</option>
                                 {% for i in desk_data %}
                                     <option value="{{i.id}}">{{i.desk_name}}</option>
-                                {% endfor %}
+                                {% endfor %} -->
                             </select>
                         </div>
                     </div>
-        
+
                     <div class="modal-footer d-flex justify-content-center">
-                        <button type="button" id="checkin_modal_btn" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md">
+                        <button type="button" style="background-color: green; color: white;"
+                            class="checkin_modal_btn btn text-uppercase br-50 btn-md">
                             Check in
-                        </button>                       
-                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-bs-dismiss="modal" onclick="resetForm()">
+                        </button>
+                        <button type="button" class="btn btn-light text-uppercase br-50 btn-md" data-bs-dismiss="modal"
+                            id="close-modal" onclick="resetForm()">
                             Close
                         </button>
                     </div>
@@ -424,7 +443,7 @@
     </div>
 
 
-    
+
     <!-- JAVASCRIPT -->
     <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -434,10 +453,13 @@
     <script src="{% static 'js/app.js' %}"></script>
 
     <script>
+    </script>
+
+    <script>
         $(document).ready(function () {
-            var readURL = function (input) {
+            const readURL = function (input) {
                 if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+                    const reader = new FileReader();
                     reader.onload = function (e) {
                         $('.profile-pic').attr('src', e.target.result);
                     }
@@ -452,76 +474,35 @@
             });
         });
     </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".appnd_user_btn").click(function () {
-
-                $(".apenduser").append("<tr>\n" +
-                    "                                    <td class=\"th_btnpand\">\n" +
-                    "                                        <div style=\"cursor: pointer;\" class=\"appnd_user_minus_btn appnd_minus_btn\">-</div>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_role\">\n" +
-                    "                                        <select name=\"role_id[]\" class=\"form-control\">\n" +
-                    "                                            {% for role in  role_data %}\n" +
-                    "                                           <option value=\"{{role.id}}\">{{role.role_name}}</option>\n" +
-                    "                                           {% endfor %}\n" +
-                    "                                        </select>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_decrptn\">\n" +
-                    "                                        <input name=\"role_description[]\" class=\"form-control\">\n" +
-                    "                                    </td>\n" +
-                    "                                 <td class=\"th_user_strtdate\">\n" +
-                    "                                        <div class=\"input-group date\">\n" +
-                    "                                            <input name=\"role_start_dt[]\"  min=\"{{today_date}}\" value=\"{{today_date|safe}}\" type=\"date\" class=\"input form-control\" id=\"datetimepicker\"> \n" +
-                    "                                        </div>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_enddate\">\n" +
-                    "                                        <div class=\"input-group date\">\n" +
-                    "                                            <input name=\"role_end_dt[]\" type=\"date\"  min=\"{{today_date}}\"  class=\"input form-control\" id=\"datetimepicker\"> \n" +
-                    "                                        </div>\n" +
-                    "                                    </td>\n" +
-
-                    "                                </tr>");
-                $(".appnd_user_minus_btn").click(function () {
-                    $(this).parent().parent().remove();
-                });
-            });
-        });
-        $(".appnd_user_minus_btn").click(function () {
-            $(this).parent().parent().remove();
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-          const branchDropdown = document.getElementById('branch_id');
-          const hostDropdown = document.getElementById('host_id');
-          const deskDropdown = document.getElementById('desk_id');
-      
-          branchDropdown.addEventListener('change', function () {
-            const branchId = branchDropdown.value;
-            if (branchId) {
-              // Make an AJAX request to fetch hosts for the selected branch
-              fetch(`/get_dependent/?branch_id=${branchId}`)
-                .then(response => response.json())
-                .then(data => {
-                  hostDropdown.innerHTML = '';
-                  data.hosts.forEach(host => {
-                    hostDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`;
-                  });
-                  deskDropdown.innerHTML = '';
-                  data.desks.forEach(desk => {
-                    deskDropdown.innerHTML += `<option value="${desk.id}">${desk.name}</option>`;
-                  });
-                  
-                });
-            } else {
-              // Reset the host dropdown if no branch is selected
-              hostDropdown.innerHTML = '';
-              deskDropdown.innerHTML = '';
-            }
-          });
+            const branchDropdown = document.getElementById('branch_id');
+            const hostDropdown = document.getElementById('host_id');
+            const deskDropdown = document.getElementById('desk_id');
+
+            branchDropdown.addEventListener('change', function () {
+                const branchId = branchDropdown.value;
+                if (branchId) {
+                    fetch(`/get_dependent/?branch_id=${branchId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            hostDropdown.innerHTML = '';
+                            data.hosts.forEach(host => {
+                                hostDropdown.innerHTML += `<option value="${host.id}">${host.name}</option>`;
+                            });
+                            deskDropdown.innerHTML = '';
+                            data.desks.forEach(desk => {
+                                deskDropdown.innerHTML += `<option value="${desk.id}">${desk.name}</option>`;
+                            });
+
+                        });
+                } else {
+                    hostDropdown.innerHTML = '';
+                    deskDropdown.innerHTML = '';
+                }
+            });
         });
     </script>
     <script>
@@ -546,9 +527,33 @@
                 title: message
             });
         }
-        
 
-        const checkinVisitor = (e) => { 
+        function resetForms() {
+            document.getElementById("branch_id").value = "";
+            document.getElementById("desk_id").value = "";
+            document.getElementById("full_name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("host_id").value = "";
+            document.getElementById("purpose").value = "";
+
+
+            const inputControls = document.querySelectorAll(".select-inp");
+            const selectControls = document.querySelectorAll(".inputGroup");
+
+            const allControls = Array.from(inputControls).concat(Array.from(selectControls));
+
+            allControls.forEach(function (control) {
+                control.classList.remove("success", "error");
+                const errorElement = control.querySelector(".error");
+                if (errorElement) {
+                    errorElement.innerHTML = "";
+                }
+            });
+        };
+
+
+        const checkinVisitor = (e) => {
             e.preventDefault();//e = event object as an argument, here doesn't not using the event object
 
             const branchId = document.getElementById('branch_id');
@@ -592,7 +597,7 @@
                 const purposeValue = purpose.value.trim();
                 let isValid = true;
 
-                if (branchIdValue === '--select branch--') {
+                if (branchIdValue === '--select branch--' || branchIdValue === '') {
                     setError(branchId, 'Choose a branch');
                     isValid = false;
                 } else {
@@ -631,7 +636,7 @@
                 } else if (/^(\d)\1*$/.test(phoneValue)) {
                     setError(phone, 'Invalid phone number: Cannot be the same digit repeated');
                     isValid = false;
-                }else if (phoneValue.length < 8 || phoneValue.length > 12) {
+                } else if (phoneValue.length < 8 || phoneValue.length > 12) {
                     setError(phone, 'Phone number should be minimum 8 or maximum 12');
                     isValid = false;
                 } else {
@@ -649,7 +654,7 @@
                     setError(purpose, 'Purpose is required');
                     isValid = false;
                 }
-                 else {
+                else {
                     setSuccess(purpose);
                 }
 
@@ -670,41 +675,41 @@
                 const form = new FormData($("#checkin_form")[0])
 
 
-                    $.ajax({
-                        url: "/new_visitor/",
-                        method: "POST", 
-                        headers: { 
-                            "X-CSRFToken": "{{ csrf_token }}"
-                        },
-                        data: form,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        success: (res) => {  
-                            if (res.status === 400) {
-                                if (res.type === "branchId") {
-                                    setError(branch_id, res.error);
-                                }
-                                if (res.type === "deskId") {
-                                    setError(desk_id, res.error);
-                                }
-                                if (res.type === "hostId") {
-                                    setError(host_id, res.error);
-                                }
-
+                $.ajax({
+                    url: "/new_visitor/",
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    data: form,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: (res) => {
+                        if (res.status === 400) {
+                            if (res.type === "branchId") {
+                                setError(branch_id, res.error);
                             }
-                            if (res.status === 200); {
-                                showToast(res.message, "success")
-                                resetForm();
+                            if (res.type === "deskId") {
+                                setError(desk_id, res.error);
+                            }
+                            if (res.type === "hostId") {
+                                setError(host_id, res.error);
                             }
 
-                        },    
-
-                        error: function (xhr, textStatus, errorThrown) {
-                            hideLoader();
                         }
-                    });
-                
+                        if (res.status === 200); {
+                            showToast(res.message, "success")
+                            resetForm();
+                        }
+
+                    },
+
+                    error: function (xhr, textStatus, errorThrown) {
+                        hideLoader();
+                    }
+                });
+
             }
         }
 
@@ -726,14 +731,14 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    performLogout(); 
+                    performLogout();
                 }
             });
         }
 
         function performLogout() {
             $.ajax({
-                url: "/logout/", 
+                url: "/logout/",
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
@@ -754,70 +759,116 @@
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
+            let isModalOpen = false;
 
-window.onload = function() {
-    document.getElementById("invite_id").focus();
+            window.onload = function () {
+                document.getElementById("invite_id").focus();
 
-    var settingsCard = document.querySelector('#for-focus-main');                
-    settingsCard.addEventListener('click', function() {
-        document.getElementById("invite_id").focus();
-    });
-};
+                const settingsCard = document.querySelector('.for-focus-main');
+                settingsCard.addEventListener('click', function () {
+                    if (!isModalOpen) {
+                        document.getElementById("invite_id").focus();
+                    }
+                });
+            };
 
-function checkVisitorDetails(visitorId) {
-    $.ajax({
-        url: `/get-visitor-details/${visitorId}/`,
-        type: 'GET',
-        success: function(data) {
-            if (!data.error) {
-                $('#visitor-detail-modal tbody tr td:nth-child(1)').text(data.visitor_id);
-                $('#visitor-detail-modal tbody tr td:nth-child(2)').text(data.full_name);
-                $('#visitor-detail-modal tbody tr td:nth-child(3)').text(data.select_branch);
-                $('#visitor-detail-modal tbody tr td:nth-child(4)').text(data.purpose);
-                $('#visitor-detail-modal tbody tr td:nth-child(5)').text(data.user_host);
-
-                $('#visitor-detail-modal').modal('show');
-            } else {
-                $('#error-message').text('Visitor not found!').show();
-                $('#visitor-detail-modal').modal('hide');
+            function openModal() {
+                isModalOpen = true;
             }
-        },
-        error: function() {
-            $('#error-message').text('Visitor not found!').show();
+
+            function closeModal() {
+                isModalOpen = false;
+            }
+
+            $('.desk_name').on('click', function () {
+                openModal();
+            });
+
+            $('#close-modal').on('click', function () {
+                closeModal();
+            });
+        });
+
+
+        function checkVisitorDetails(visitorId) {
+            $.ajax({
+                url: `/get-visitor-details/${visitorId}/`,
+                type: 'GET',
+                success: function (data) {
+                    desk_data = data.desk_data_1
+                    desk_data.forEach((data) => $("#desk_name").append(`<option value="${data.id}">${data.desk_name}</option>`))
+
+                    if (!data.error) {
+                        $('.visitor-detail-modal tbody tr td:nth-child(1)').text(data.visitor_id);
+                        $('.visitor-detail-modal tbody tr td:nth-child(2)').text(data.full_name);
+                        $('.visitor-detail-modal tbody tr td:nth-child(3)').text(data.select_branch);
+                        $('.visitor-detail-modal tbody tr td:nth-child(4)').text(data.purpose);
+                        $('.visitor-detail-modal tbody tr td:nth-child(5)').text(data.user_host);
+                        // $('.visitor-detail-modal tbody tr td:nth-child(6)').text(data.select_branch_id);
+
+                        $('.visitor-detail-modal').modal('show');
+                    } else {
+                        $('#error-message').text('Visitor not found!').show();
+                        $('.visitor-detail-modal').modal('hide');
+                        resetForm();
+                    }
+                },
+                error: function () {
+                    $('#error-message').text('Visitor not found!').show();
+                    resetForm();
+                }
+            });
         }
-    });
-}
 
-    function getVisitorDetails() {
-        var visitorId = $('#invite_id').val();
-        if (visitorId) {
-            // Hide any previous error messages
-            $('#error-message').hide();
-            checkVisitorDetails(visitorId);
-        } else {
-            // Display error message below the input field
-            $('#error-message').text('Please enter a valid Visitor ID.').show();
-            $('#visitor-detail-modal').modal('hide');
+
+        function getVisitorDetails() {
+            const visitorId = $('#invite_id').val();
+            if (visitorId) {
+                $('#error-message').hide();
+                checkVisitorDetails(visitorId);
+            } else {
+                $('#error-message').text('Please enter a valid Visitor ID.').show();
+                $('.visitor-detail-modal').modal('hide');
+            }
         }
-    }
 
-    $('#get-details-btn').on('click', function(event) {
-        event.preventDefault();
-        getVisitorDetails();
-    });
+        $('#get-details-btn').on('click', function (event) {
+            event.preventDefault();
+            getVisitorDetails();
+        });
 
-    $('#checkin_modal_btn').on('click', function() {
-        checkInVisitors();
-    });
-
-    });
+        $('.checkin_modal_btn').on('click', function () {
+            checkInVisitors();
+        });
 
 
-    </script> 
+    </script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const branchDropdown = document.getElementById('branch_id');
+            const deskDropdown = document.getElementById('desk_name');
 
+            branchDropdown.addEventListener('change', function () {
+                const branchId = branchDropdown.value;
+                if (branchId) {
 
+                    fetch(`/get_dependent/?branch_id=${branchId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            deskDropdown.innerHTML = '';
+                            data.desks.forEach(desk => {
+                                deskDropdown.innerHTML += `<option value="${desk.id}">${desk.name}</option>`;
+
+                            });
+                        });
+                } else {
+                    deskDropdown.innerHTML = '';
+                }
+            });
+        });
+    </script>
+    <script>
         function showToast(message, icon) {
             const toastMixin = Swal.mixin({
                 toast: true,
@@ -827,7 +878,7 @@ function checkVisitorDetails(visitorId) {
                 position: 'top-right',
                 width: '450px',
                 showConfirmButton: false,
-                timer: 2000,
+                timer: 3000,
                 timerProgressBar: true,
                 didOpen: (toast) => {
                     toast.addEventListener('mouseenter', Swal.stopTimer);
@@ -842,19 +893,101 @@ function checkVisitorDetails(visitorId) {
         }
 
         function resetForm() {
-               $("#visitor_checkin")[0].reset();
-               $(".error").text("");
-               $(".input-control").removeClass("error success");
-           }
+            $("#visitor_checkin")[0].reset();
+            $(".error").text("");
+            $(".input-control").removeClass("error success");
+        }
 
         const checkVisitor = (e) => {
             e.preventDefault();
-
         }
 
-        function checkInVisitors() {
-            var visitorId = $('#invite_id').val();
-            var deskName = $('#desk_name').val();
+        $('.checkin_modal_btn').on('click', function () {
+            const visitorId = $('#invite_id').val();
+            const isBookedVisitor = checkIfBookedVisitor(visitorId);
+            const isInvitedVisitor = checkIfInvitedVisitor(visitorId);
+
+            if (isBookedVisitor) {
+                checkInBookedVisitors(visitorId);
+            }
+            if (isInvitedVisitor) {
+                checkInVisitors(visitorId);
+            }
+        });
+
+        function checkIfBookedVisitor(visitorId) {
+            let isBookedVisitor = false;
+
+            $.ajax({
+                url: `/check-if-booked-visitor/${visitorId}/`,
+                type: 'GET',
+                async: false,
+                success: function (data) {
+                    isBookedVisitor = data.exists;
+                },
+                error: function () {
+                    isBookedVisitor = false;
+                }
+            });
+
+            return isBookedVisitor;
+        }
+
+        function checkIfInvitedVisitor(visitorId) {
+            let isInvitedVisitor = false;
+
+            $.ajax({
+                url: `/check_if_invited_visitor/${visitorId}/`,
+                type: 'GET',
+                async: false,
+                success: function (data) {
+                    isInvitedVisitor = data.exists;
+                },
+                error: function () {
+                    isInvitedVisitor = false;
+                }
+            });
+
+            return isInvitedVisitor;
+        }
+
+        function checkInBookedVisitors(visitorId) {
+            const deskName = $('.desk_name').val();
+
+            $.ajax({
+                url: `/booked_visitor_chkn/${visitorId}/`,
+                type: 'POST',
+                data: { desk_name: deskName },
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function (data) {
+                    if (data.status == 400) {
+                        showToast(data.message, 'error');
+                        $('.visitor-detail-modal').modal('hide');
+                        resetForm();
+                        if (data.type === 'cannot_checkin') {
+                            showToast(data.message, 'error');
+                            $('.visitor-detail-modal').modal('hide');
+                            resetForm();
+                        }
+                    } else {
+                        showToast('Checked in successfully', 'success');
+                        $('.visitor-detail-modal').modal('hide');
+                        resetForm();
+                    }
+
+                    document.getElementById("invite_id").focus();
+                },
+                error: function () {
+                    showToast('Error checking in booked visitor', 'error');
+                    $('.visitor-detail-modal').modal('hide');
+                }
+            });
+        }
+
+        function checkInVisitors(visitorId) {
+            const deskName = $('.desk_name').val();
 
             $.ajax({
                 url: `/check-in-visitor/${visitorId}/`,
@@ -863,27 +996,66 @@ function checkVisitorDetails(visitorId) {
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
-                success: function(data) {
-                    if (data.status == 200) {
+                success: function (data) {
+                    if (data.status === 400) {
                         showToast(data.message, 'error');
-                        $('#visitor-detail-modal').modal('hide');
-                        resetForm()
+                        $('.visitor-detail-modal').modal('hide');
+                        resetForm();
+
+                        if (data.type === 'time_validation') {
+                            showToast(data.message, 'error');
+                            $('.visitor-detail-modal').modal('hide');
+                            resetForm();
+                        }
                     } else {
                         showToast('Checked in successfully', 'success');
-                        $('#visitor-detail-modal').modal('hide');
-                        resetForm()
-
+                        $('.visitor-detail-modal').modal('hide');
+                        resetForm();
                     }
 
                     document.getElementById("invite_id").focus();
                 },
-                error: function() {
+                error: function () {
                     showToast('Error checking in visitor', 'error');
-                    $('#visitor-detail-modal').modal('hide');
+                    $('.visitor-detail-modal').modal('hide');
                 }
             });
         }
 
+    </script>
+    <script>
+        $(document).ready(function () {
+            let isModalOpen = false;
+
+            window.onload = function () {
+                document.getElementById("invite_id").focus();
+
+                const settingsCard = document.querySelector('.for-focus-main');
+                settingsCard.addEventListener('click', function () {
+
+                    if (!isModalOpen) {
+                        document.getElementById("invite_id").focus();
+                    }
+                });
+            };
+
+            function openModal() {
+                isModalOpen = true;
+            }
+
+            function closeModal() {
+                isModalOpen = false;
+            }
+
+
+            $('#myModalOpenButton').on('click', function () {
+                openModal();
+            });
+
+            $('#myModalCloseButton').on('click', function () {
+                closeModal();
+            });
+        });
 
     </script>
 </body>

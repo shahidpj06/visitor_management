@@ -6,8 +6,6 @@ class SetDefaultCompanyMiddleware:
 
     def __call__(self, request):
         if request.user.is_authenticated and not request.user.company:
-            # Set a default company for the user
-            # You might want to implement this logic based on your requirements
             default_company = Company.objects.first()
             if default_company:
                 request.user.company = default_company

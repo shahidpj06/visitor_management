@@ -44,7 +44,7 @@
                     <div class="navbar-brand-box">
                         <a href="{% url 'dashboard' %}" class="logo">
                             <span class="logo-lg">
-                                <img src="{% static 'images/logo.png' %}" alt="" height="23">
+                                <img src="{% static '/images/v_logo.png' %}" alt="" height="100">
                             </span>
                         </a>
                     </div>
@@ -126,15 +126,15 @@
                             width: auto;" src="{% static 'images/dummy.png' %}" alt="" class="img-fluid rounded-circle">
                         </div><br><br>
                         <div class="profile-cntns text-center">
-                            {% if user.is_authenticated %}
-                            <h1 style="font-weight: 600;">{{user.username}}</h1>
-                            <h5>{{user.email}}</h5>
+                            {% if user_data %}
+                            <h1 style="font-weight: 600;">{{user_data.username.title}}</h1>
+                            <h5>{{user_data.useremail}}</h5>
                             {% endif %}
                         </div>
-                        <div class="d-flex profile-location align-items-center text-center justify-content-center mt-3">
+                        <!-- <div class="d-flex profile-location align-items-center text-center justify-content-center mt-3">
                             <img src="{% static 'images/india-flag.svg' %}" alt="" class="img-fluid">
                             <h6>Kerala, India</h6>
-                        </div>
+                        </div> -->
                         <!-- <a data-bs-toggle="modal" data-bs-target="#add-lead"> Add Designation</a> -->
                      <!-- <h3 class="designation">Add Designation</h3> -->
                      <div class="d-flex active-time align-items-center justify-content-center">
@@ -178,7 +178,6 @@
                                     <input class="file-upload" type="file" name="profile_image" id="profile_image"  accept="{% static 'image/*' %}" />
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="inputGroup form-control">
@@ -249,12 +248,9 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label class="form-label mt-3">About</label>
-                                <textarea class="form-control" name="About id="exampleFormControlTextarea1" rows="3" name="about" id="about"></textarea>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="about" id="about"></textarea>
                             </div>
                         </div>
-
-
-
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="button" style="background-color: green; color: white;" id="save-button" onclick="updateProfile(event)" class="btn text-uppercase br-50 btn-md">Save</button>
@@ -519,21 +515,19 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    performLogout(); // Call the logout function if confirmed
+                    performLogout(); 
                 }
             });
         }
 
-        // Function to perform logout
         function performLogout() {
             $.ajax({
-                url: "/logout/",  // Update with your actual logout endpoint
+                url: "/logout/",  
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    // Redirect to login or handle success as needed
                     window.location.href = "/";
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -631,7 +625,6 @@
             let originalUserValues = {};
 
             function openEditAdminModal(userId, firstName, lastName, userEmail, userPhone, userName, userAbout,  profileImage) {
-                alert(firstName)
                 originalUserValues = {
                     id: userId,
                     first_name: firstName,
@@ -677,7 +670,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'edit_company_admin/' + userId + '/', 
+                    url: '/edit_company_admin/' + userId + '/', 
                     data: {
                         'first_name': firstName,
                         'last_name': lastName,

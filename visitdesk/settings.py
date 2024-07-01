@@ -134,3 +134,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "shahidspamm@gmail.com"
 EMAIL_HOST_PASSWORD = "zroq cfwj wtex cpbq"
+

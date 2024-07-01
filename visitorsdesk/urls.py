@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.login_page, name='login'),
+    path('', views.login_redirect, name='login_redirect'),
+    path('login/', views.login_page, name='login'),
     path('delete/', views.delete, name='delete'),
     path('logout/', views.logout_page, name='logout'),
     path('add_desk/', views.add_desk, name='add_desk'),
@@ -12,12 +13,12 @@ urlpatterns = [
     path('settings/', views.main_settings, name='settings'),
     path('visitors/', views.visitors_page, name='visitors'),
     path('register/', views.register_page, name='register'),
+    path('get_events/', views.get_events, name='get_events'),
     path('new_visitor/', views.new_visitor, name='new_visitor'),
     path('create_event/', views.create_event, name='create_event'),
     path('exit_visitor/', views.exit_visitor, name='exit_visitor'),
     path('get-branches/', views.get_branches, name='get_branches'),
     path('user_profile/', views.user_profile, name='user_profile'),
-    path('get_events/', views.get_events, name='get_events'),
     path('get_dependent/', views.get_dependent, name='get_dependent'),
     path('create-branch/', views.create_branch, name='create-branch'),
     path('edit_desk/<int:desk_id>/', views.edit_desk, name='edit_desk'),
@@ -30,8 +31,14 @@ urlpatterns = [
     path('get-branches-user/', views.get_branches_user, name='get_branches-user'),
     path('append_checkout_modal/',views.append_checkout_modal,name='append_checkout_modal'),
     path('check-in-visitor/<str:visitor_id>/', views.check_in_visitor, name='check_in_visitor'),
-    path('edit_company_admin/<int:user_id>/', views.edit_company_admin, name='edit_company_admin'),    
-    path('get-visitor-details/<str:visitor_id>/', views.get_visitor_details, name='get_visitor_details'),
     path('get_event_details/<int:event_id>/', views.get_event_details, name='get_event_details'),
-
+    path('edit_company_admin/<int:user_id>/', views.edit_company_admin, name='edit_company_admin'),    
+    path('booked_visitor_chkn/<str:visitor_id>/', views.booked_visitor_chkn, name='booked_visitor_chkn'),
+    path('get-visitor-details/<str:visitor_id>/', views.get_visitor_details, name='get_visitor_details'),
+    # path('get_booked_visitor/<str:visitor_id>/', views.get_booked_visitor, name='get_booked_visitor'),
+    path('check-if-booked-visitor/<str:visitor_id>/', views.check_if_booked_visitor, name='check_if_booked_visitor'),
+    path('update_event/<int:event_id>/', views.update_event, name='update_event'),
+    path('check_if_invited_visitor/<str:visitor_id>/', views.check_if_invited_visitor, name='check_if_invited_visitor'),
+    path('event_delete/<int:event_id>/', views.event_delete, name='event_delete'),
+    path('login_redirect/', views.login_redirect, name='login_redirect'),
     ]

@@ -79,7 +79,7 @@
                     <div class="navbar-brand-box">
                         <a href="{% url 'dashboard' %}" class="logo">
                             <span class="logo-lg">
-                                <img src="{% static 'images/logo.png' %}" alt="" height="23">
+                                <img src="{% static '/images/v_logo.png' %}" alt="" height="100">
                             </span>
                         </a>
                     </div>
@@ -262,8 +262,7 @@
                                     data-bs-toggle="modal" data-bs-target="#add-user" onclick="clearFormUser()">
                                     <i class="bx bx-plus-circle font-size-15 align-middle me-1"></i> Add User
                                 </button>
-                                </div>
-                                
+                                </div>                     
                             </div>
                             {% endif %}
                         </div>
@@ -535,7 +534,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <button type="button" style="background-color: green; color: white;"
-                         class="btn text-uppercase br-50 btn-md" id="user-btn" onclick="createUser(event)">Save and New</button>
+                         class="btn text-uppercase br-50 btn-md" id="user-btn" onclick="saveAndNewUser()">Save and New</button>
                          <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
                             onclick="saveAndCloseUser()">Save and Close</button>
                         <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
@@ -638,6 +637,7 @@
     </div>
 
 
+    
 
     <div class="modal fade" style="border-radius: 10px;" id="add-opportunity" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -1097,7 +1097,7 @@
                         </div><br>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="button"style="background-color: green; color: white;"
-                            class="btn text-uppercase br-50 btn-md" id="branch-btn" onclick="createBranch(event)">Save and new</button>
+                            class="btn text-uppercase br-50 btn-md" id="branch-btn" onclick="saveAndNew()">Save and new</button>
                             <button type="button" style="background-color: green; color: white;"
                                     class="btn text-uppercase br-50 btn-md" onclick="saveAndClose()">Save and Close
                             </button>
@@ -1116,7 +1116,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editBranchModalLabel">Edit Branch</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="clearEditBranch()" aria-label="Close"></button>
                 </div>                    
                 <div class="modal-body">
                     <form method="post" class="settings_form form_same_branch update_table" id="edit-branch-form">
@@ -1125,20 +1125,20 @@
                         
                         <div class="inputGroup form-control">
                             <input type="text" name="name" id="edit-name" autocomplete="off">
-                            <label style="color: black;" class="search-icon" for="edit-name">Name</label>
+                            <label style="color: black;" class="search-icon" for="name">Name</label>
                             <div class="error"></div>
                         </div>
 
                         <div class="inputGroup form-control">
                             <input type="text"  name="branch_code" id="edit-branch_code" autocomplete="off" maxlength="4"
                                 oninput="this.value = this.value.toUpperCase()">
-                            <label style="color: black;" class="search-icon" for="edit-branch_code">Branch Code</label>
+                            <label style="color: black;" class="search-icon" for="text">Branch Code</label>
                             <div class="error"></div>
                         </div>
 
                         <div class="inputGroup form-control">
                             <input type="number" name="country_code" id="edit-country_code" autocomplete="off">
-                            <label style="color: black;" class="search-icon" for="edit-country_code">Country Code</label>
+                            <label style="color: black;" class="search-icon" for="number">Country Code</label>
                             <div class="error"></div>
                         </div>
 
@@ -1391,7 +1391,7 @@
                                 <option value="Asia/Karachi" >(GMT+05:00) Asia, Karachi, PKT</option>
                                 <option value="Asia/Kathmandu" >(GMT+05:45) Asia, Kathmandu, +0545</option>
                                 <option value="Asia/Khandyga" >(GMT+09:00) Asia, Khandyga, +09</option>
-                                <option value="Asia/Kolkata" selected>(GMT+05:30) Asia, Kolkata, IST</option>
+                                <option value="Asia/Kolkata">(GMT+05:30) Asia, Kolkata, IST</option>
                                 <option value="Asia/Krasnoyarsk" >(GMT+07:00) Asia, Krasnoyarsk, +07</option>
                                 <option value="Asia/Kuala_Lumpur" >(GMT+08:00) Asia, Kuala Lumpur, +08</option>
                                 <option value="Asia/Kuching" >(GMT+08:00) Asia, Kuching, +08</option>
@@ -1570,7 +1570,7 @@
                             <button type="button" style="background-color: green; color: white;"
                                     class="btn text-uppercase br-50 btn-md" onclick="editBranch(event)">Update</button>
                             <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
-                                data-bs-dismiss="modal">Close</button>
+                                data-bs-dismiss="modal" onclick="clearEditBranch()">Close</button>
                         </div>
                     </form>
                 </div>        
@@ -1579,7 +1579,6 @@
     </div>
 
 
-     <!--  -->
 
 
     <div class="modal fade" id="add-desk" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -1618,7 +1617,7 @@
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
                             <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
-                              onclick="createDesk(event)">Save and new</button>
+                              onclick="saveAndNewDesk()">Save and new</button>
                             <button type="button" style="background-color: green; color: white;" class="btn text-uppercase br-50 btn-md"
                             onclick="saveAndCloseDesk()">Save and Close</button>
                             <button type="button" class="btn btn-light text-uppercase br-50 btn-md"
@@ -1695,6 +1694,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1719,12 +1719,12 @@
     <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
     <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
-
+<!-- ok its -->
     <script>
         $(document).ready(function () {
-            var readURL = function (input) {
+            const readURL = function (input) {
                 if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+                    const reader = new FileReader();
                     reader.onload = function (e) {
                         $('.profile-pic').attr('src', e.target.result);
                     }
@@ -1760,8 +1760,8 @@
 
         $(document).ready(function () {
             $("#deleteConfirmationModal form").submit(function (e) {
-                e.preventDefault(); // Prevent the default form submission
-                var formData = $(this).serialize();
+                e.preventDefault(); 
+                const formData = $(this).serialize();
 
                 $.ajax({
                     type: 'POST',
@@ -1858,10 +1858,10 @@
             document.getElementById("country_code").value = "";
 
     
-            var inputControls = document.querySelectorAll(".inputGroup");
+            const inputControls = document.querySelectorAll(".inputGroup");
             inputControls.forEach(function (inputControl) {
                 inputControl.classList.remove("success", "error");
-                var errorElement = inputControl.querySelector(".error");
+                const errorElement = inputControl.querySelector(".error");
                 if (errorElement) {
                     errorElement.innerHTML = "";
                 }
@@ -1942,13 +1942,13 @@
             
             
 
-            if (validateInputs()) { // for validating the fields
+            if (validateInputs()) { 
                 const form = new FormData($("#branch-form")[0]);
 
                     $.ajax({
                         url: "/create-branch/",
-                        method:"POST", //http method for the request.
-                        headers: { // addtional http header for the request
+                        method:"POST", 
+                        headers: { 
                             "X-CSRFToken": "{{ csrf_token }}"
                         },
                         data: form,
@@ -1956,7 +1956,7 @@
                         processData: false,
                         contentType: false,
                         success: (res) => { 
-                            if (res.status === 400) {   
+                            if (res.status === 400) { 
                                 if (res.value) {
                                 let errors = res.value;
 
@@ -2038,7 +2038,6 @@
                                     $('#branch-form').resetForm()
                                 }
                                 
-                                // ${res.branch_data_count}
                             }
 
                         },    
@@ -2332,8 +2331,6 @@
         }
 
 
-        
-
         function clearFormUser() {
             document.getElementById("first_name").value = "";
             document.getElementById("last_name").value = "";
@@ -2463,13 +2460,13 @@
             }
 
 
-            if (validateInputs()) { // for validating the fields
+            if (validateInputs()) { 
                 const form = new FormData($("#user-form")[0]);
 
                     $.ajax({
                         url: "/user-info/",
-                        method:"POST", //http method for the request.
-                        headers: { // addtional http header for the request
+                        method:"POST",
+                        headers: {
                             "X-CSRFToken": "{{ csrf_token }}"
                         },
                         data: form,
@@ -2502,6 +2499,8 @@
                                 showToast(res.message, "success")
                                 resetForm();
                                 updateUserBranchDropdown();
+                                // saveAndNewUser();
+                                // saveAndCloseUser();
                                 const user = res.created_data
 
                                 const noDataImage = document.getElementById('noDataImageUser');
@@ -2569,7 +2568,7 @@
         };
 
         $(document).ready(function () {
-            $("#user-form").submit(createDesk);
+            $("#user-form").submit(createUser);
         });
     </script>
     <script>
@@ -2584,25 +2583,22 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    performLogout(); // Call the logout function if confirmed
+                    performLogout(); 
                 }
             });
         }
 
-        // Function to perform logout
         function performLogout() {
             $.ajax({
-                url: "/logout/",  // Update with your actual logout endpoint
+                url: "/logout/",  
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    // Redirect to login or handle success as needed
                     window.location.href = "/";
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    // Handle error
                     console.error("Logout failed:", errorThrown);
                 }
             });
@@ -2701,7 +2697,7 @@
             document.getElementById('edit-name').value = name.trim();
             document.getElementById('edit-branch_code').value = branchCode.trim();
             document.getElementById('edit-country_code').value = countryCode.trim();
-            // document.getElementById('edit-timezoneSelect').value = country_timezone.trim();
+            document.getElementById('edit-timezoneSelect').value = country_timezone.trim();
 
             originalValues = {
                 id,
@@ -2722,6 +2718,26 @@
             }
 
             $('#edit-branch-modal').modal('show');
+            
+        }
+
+        function clearEditBranch() {
+            document.getElementById("edit-name").value = "";
+            document.getElementById("edit-branch_code").value = "";
+            document.getElementById("edit-country_code").value = "";
+
+            const inputControls = document.querySelectorAll(".inputGroup");
+            const selectControls =  document.querySelectorAll(".select-inp");
+
+            const allControls = Array.from(inputControls).concat(Array.from(selectControls));
+            
+            allControls.forEach(function (control) {
+                control.classList.remove("success", "error");
+                const errorElement = control.querySelector(".error");
+                if (errorElement) {
+                    errorElement.innerHTML = "";
+                }
+            });
         }
 
         const editBranch = (e) => {
@@ -2731,6 +2747,7 @@
             const editName = document.getElementById('edit-name');
             const editBranchCode = document.getElementById('edit-branch_code');
             const editCountryCode = document.getElementById('edit-country_code');
+            const editTimezone = document.getElementById('edit-timezoneSelect');
 
             function setError(element, message) {
                
@@ -2749,7 +2766,7 @@
                errorDisplay.innerText = '';
                inputControl.classList.add('success');
                inputControl.classList.remove('error');
-           };
+           }
 
 
            const validateInputs = () => {
@@ -2790,20 +2807,19 @@
 
                return isValid;
            };
-
            function resetForm() {
                $("#edit-branch-form")[0].reset();
                $(".error").text("");
                $(".input-control").removeClass("error success");
            }
 
-           let serialNumberCounter = parseInt($('#serial-number-counter').val()) || 1;
+        //    let serialNumberCounter = parseInt($('#serial-number-counter').val()) || 1;
 
             if (validateInputs()) {
                 const form = new FormData($("#edit-branch-form")[0]);
 
                 $.ajax({
-                    url: "/edit_branch/" + branchId.value + "/",  // Update the URL with the correct endpoint
+                    url: "/edit_branch/" + branchId.value + "/", 
                     method: "POST",
                     headers: {
                         "X-CSRFToken": "{{ csrf_token }}"
@@ -2813,37 +2829,31 @@
                     processData: false,
                     contentType: false,
                     success: (res) => {
-
-                        
                         if (res.status === 400) {
-                            if (res.status === 400) {   
-                                if (res.value) {
-                                let errors = res.value;
-
+                            if (res.value) {
+                            let errors = res.value;    
                                 error.forEach(error => {
-                                    if (error.type === "branch_name") {
+                                    if (error.type === "edit_branch_name") {
                                         setError(name, error.error);
                                     }
 
-                                    if (error.type === "branch_code") {
+                                    if (error.type === "edit_branch_code") {
                                         setError(branch_code, error.error)
                                     }
                                 });
 
-                                }else {
+                            }else {
 
-                                    if (res.type === "branch_name") {
-                                        setError(name, res.error);
-                                    }
-
-                                    if (res.type === "branch_code") {
+                                if (res.type === "edit_branch_name") {
+                                    showToast("Branch code must be unique")
+                                    setError(name, res.error);
+                                }
+                                
+                                if (res.type === "edit_branch_code") {
                                         setError(branch_code, res.error);
                                     }
                                 }   
-                            }
-
                                 
-
                         }
                         if (res.status === 200) {
                             // if (res.type === "countrytimezone") {
@@ -2854,7 +2864,7 @@
                                 $('#edit-branch-modal').modal('hide');
                                 resetForm();
 
-                                $('#serial-number-counter').val(serialNumberCounter + 1);
+                                // $('#serial-number-counter').val(serialNumberCounter + 1);
                                 $(`.delete_modal${branchId.value}`).replaceWith(`
                                     <tr class="delete_modal${branchId.value}">
                                         <td></td>            
@@ -2892,14 +2902,11 @@
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
-                        // Handle any AJAX errors
                     }
                 });
             }
-            // ${serialNumberCounter}
         };
 
-        // 
         
 
         function valuesChanged(branchId) {
@@ -2908,7 +2915,7 @@
                 name: document.getElementById('edit-name').value.trim(),
                 branchCode: document.getElementById('edit-branch_code').value.trim(),
                 countryCode: document.getElementById('edit-country_code').value.trim(),
-                // country_timezone: document.getElementById('edit-timezoneSelect').value.trim(),
+                country_timezone: document.getElementById('edit-timezoneSelect').value.trim(),
             };
 
             for (const key in editedValues) {
@@ -2975,9 +2982,9 @@ function openDeskEditModal(deskId, deskName, branchId) {
     function updateDesk(event) {
         event.preventDefault();
 
-        var deskId = $('#edit_desk_form').attr('data-desk-id');
-        var deskName = $('#edit_desk_name').val();
-        var branchId = $('#edit_desk_branch_id').val();
+        const deskId = $('#edit_desk_form').attr('data-desk-id');
+        const deskName = $('#edit_desk_name').val();
+        const branchId = $('#edit_desk_branch_id').val();
 
         if (!validateDeskName(deskName) || !validateBranchId(branchId)) {
             return; // Exit the function if validation fails
@@ -3064,7 +3071,6 @@ function openDeskEditModal(deskId, deskName, branchId) {
         }
     }
 
-    // Helper functions
     function setError(element, message) {
         const inputControl = element.parent();
         const errorDisplay = inputControl.find('.error');
@@ -3087,7 +3093,6 @@ function openDeskEditModal(deskId, deskName, branchId) {
             branchId: $('#edit_desk_branch_id').val().trim()
         };
 
-        // Check if any of the values are different from the original
         for (const key in editedValues) {
             if (editedValues[key] !== originalValues[key]) {
                 return true;
@@ -3113,16 +3118,16 @@ function openDeskEditModal(deskId, deskName, branchId) {
     //     document.getElementById('edit_user_name').value = user_name;
 
     //     // Set the selected radio button for user role
-    //     var userRoleRadios = document.getElementsByName('user_role');
-    //     for (var i = 0; i < userRoleRadios.length; i++) {
+    //     const userRoleRadios = document.getElementsByName('user_role');
+    //     for (const i = 0; i < userRoleRadios.length; i++) {
     //         if (userRoleRadios[i].value === user_role) {
     //             userRoleRadios[i].checked = true;
     //         }
     //     }
 
     //     // Set the selected option for the branch
-    //     var editBranchSelect = document.getElementById('edit_branch_id_usr');
-    //     for (var i = 0; i < editBranchSelect.options.length; i++) {
+    //     const editBranchSelect = document.getElementById('edit_branch_id_usr');
+    //     for (const i = 0; i < editBranchSelect.options.length; i++) {
     //         if (editBranchSelect.options[i].value === branch_id) {
     //             editBranchSelect.options[i].selected = true;
     //         }
@@ -3132,7 +3137,7 @@ function openDeskEditModal(deskId, deskName, branchId) {
     //     document.getElementById('edit-user-form').action = '/edit_user/' + id + '/';
         
     //     // Open the edit user modal
-    //     var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+    //     const editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
     //     editUserModal.show();
     // }
 </script>
@@ -3183,41 +3188,41 @@ function openDeskEditModal(deskId, deskName, branchId) {
             $('input[name="user_role"][value="' + userRole + '"]').prop('checked', true);
 
             var editBranchSelect = document.getElementById('edit_branch_id_usr');
-            for (var i = 0; i < editBranchSelect.options.length; i++) {
+            for (let i = 0; i < editBranchSelect.options.length; i++) {
                 if (editBranchSelect.options[i].value === branchId) {
                     editBranchSelect.options[i].selected = true;
                 }
             }
 
             var editBranchSelect = document.getElementById('edit_branch_id_usr');
-            for (var i = 0; i < editBranchSelect.options.length; i++) {
+            for (let i = 0; i < editBranchSelect.options.length; i++) {
                 if (editBranchSelect.options[i].value === branchId) {
                     editBranchSelect.options[i].selected = true;
                 }
             }
 
-            var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+            const editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
             editUserModal.show();
         }
 
         function updateUser(event) {
             event.preventDefault();
 
-            var userId = $('#edit-user-form').attr('data-user-id');
-            var firstName = $('#edit_first_name').val();
-            var lastName = $('#edit_last_name').val();
-            var userEmail = $('#edit_user_email').val();
-            var userPhone = $('#edit_user_phone').val();
-            var userName = $('#edit_user_name').val();
-            var userRole = document.querySelector('input[name="user_role"]:checked').value;
-            var branchId = $('#edit_branch_id_usr').val();
+            const userId = $('#edit-user-form').attr('data-user-id');
+            const firstName = $('#edit_first_name').val();
+            const lastName = $('#edit_last_name').val();
+            const userEmail = $('#edit_user_email').val();
+            const userPhone = $('#edit_user_phone').val();
+            const userName = $('#edit_user_name').val();
+            const userRole = document.querySelector('input[name="user_role"]:checked').value;
+            const branchId = $('#edit_branch_id_usr').val();
 
             if (!validateFirstName(firstName) || !validateLastName(lastName) || !validateUserEmail(userEmail) ||
             //  !validateUserPhone(userPhone) ||
               !validateUserName(userName) || !validateBranchId(branchId)) {
                 return;
             }
-
+            console.log(userId)
             $.ajax({
                 type: 'POST',
                 url: '/edit_user/' + userId + '/', 
@@ -3281,12 +3286,12 @@ function openDeskEditModal(deskId, deskName, branchId) {
                                 `);
                                 $('#edit-user').modal('hide');
 
-                            // var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+                            // const editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
                             // editUserModal.hide();
                         } else {
                             showToast("No Update", "info");
 
-                            // var editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
+                            // const editUserModal = new bootstrap.Modal(document.getElementById('edit-user'));
                             // editUserModal.hide();
                         }
                     } else {
@@ -3399,6 +3404,7 @@ function openDeskEditModal(deskId, deskName, branchId) {
         $("#edit-user-form").submit(updateUser);
     });
 </script>
+
 
 </body>
 

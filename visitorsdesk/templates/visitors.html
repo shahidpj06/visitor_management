@@ -13,6 +13,7 @@
     <link href="{% static 'css/bootstrap.min.css' %}" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
     <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
 
@@ -95,7 +96,7 @@
                     <div class="navbar-brand-box">
                         <a href="{% url 'dashboard' %}" class="logo">
                             <span class="logo-lg">
-                                <img src="{% static 'images/logo.png' %}" alt="" height="23">
+                                <img src="{% static '/images/v_logo.png' %}" alt="" height="100">
                             </span>
                         </a>
                     </div>
@@ -180,7 +181,7 @@
                     <ul class="nav settings-nav nav-pills nav-justified" role="tablist">
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#department-tab" role="tab">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#department-tab" role="tab" onclick="resetForms()">
                                 <div>
                                     <i class='bx bxs-group stns-tab-icon-2'></i>
                                     <h4 class="stngs-tab-head">Visitors</h4>
@@ -199,10 +200,19 @@
 
 
                         <li class="nav-item waves-effect waves-light">
-                            <a class="nav-link" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab">
+                            <a class="nav-link" data-bs-toggle="tab" href="#opportunity-stages-tab" role="tab" onclick="resetForms()">
                                 <div>
                                     <i class="bx bx-stats stns-tab-icon-6"></i>
                                     <h4 class="stngs-tab-head">View Invite</h4>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="nav-item waves-effect waves-light">
+                            <a class="nav-link" data-bs-toggle="tab" href="#view-bookings-tab" role="tab" onclick="resetForms()">
+                                <div>
+                                    <i class="bx bx-stats stns-tab-icon-6"></i>
+                                    <h4 class="stngs-tab-head">View Bookings</h4>
                                 </div>
                             </a>
                         </li>
@@ -212,7 +222,7 @@
 
                     <div class="tab-content">
                         <div class="tab-pane" id="users-tab" role="tabpanel">
-                            <div class="settings-card" style="padding: 45px;">
+                            <div class="settings-card" style="padding: 45px; width: 1000px;">
                                 <h3 style="font-weight: 600;">Invite Visitor</h3>
                                 <form method="post" class="visitors-form form_same_invite_visitor" id="visitor-form"
                                     action="{% url 'invite-visitor' %}">
@@ -303,7 +313,6 @@
                                                 onclick="inviteVisitor(event)">Invite Visitor</button>
                                         </div>
                                         <div id="loader-overlay" style="display: none;">
-                                            <!-- Add your loader animation or image here -->
                                             <div class="loader"></div>
                                         </div>
                                     </div>
@@ -318,13 +327,6 @@
                                 <div class="top-header-div">
                                     <h3>Visitors</h3>
                                     <div class="top-header-rightbtns">
-                                        <form class="app-search d-none d-lg-block">
-                                            <!-- <div class="position-relative">
-                                                <input type="text" class="form-control" placeholder="Search...">
-                                                <span class="bx bx-search-alt"></span>
-                                            </div> -->
-                                        </form>
-
                                     </div>
                                 </div>
                                 <div class="department-table table-view">
@@ -340,7 +342,6 @@
                                                     <th>Checkin Time</th>
                                                     <th>Checkout Time</th>
                                                     <th>Status</th>
-                                                    <!-- <th class="text-right">Action</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -352,76 +353,81 @@
                                                     <td>{{i.user_host}}</td>
                                                     <td>{{i.purpose}}</td>
                                                     <td>{{i.checkin_time}}</td>
-                                                    <td id="append_checkout">{{i.checkout_time| default:'Not Checkedout'}}</td>
                                                     <td>
-
+                                                        {{i.checkout_time| default:'Not Checked Out'}}
+                                                    </td>
+                                                    <td>
                                                         <div class="label label-success ng-hide">
-                                                            <a class="checkoutLink" data-bs-toggle="modal"
-                                                                onclick="checkout_modal(`{{i.id}}`,`{{i.visitor_id}}`)" href=""
-                                                                style="font-size: 13px; color: red;">
+                                                            <a {% if not i.checkout_time %} id="checkoutLink_{{i.visitor_id}}" style="visibility: visible; font-size: 13px; color: red;" class="checkoutLink" data-bs-toggle="modal" onclick="checkout_modal(this, `{{i.id}}`, `{{i.visitor_id}}`)">
                                                                 <span>CHECKOUT</span>
                                                             </a>
-                                                        <span class="checkedout" style="font-size: 13px; color: green; display: none;">
-                                                            CHECKED OUT
-                                                        </span>
+                                                            <span {% else %} class="checkedout" id="checkedOutText_{{i.visitor_id}}" style="font-size: 13px; color: green; visibility: 'visible';">
+                                                                CHECKED OUT
+                                                            </span {% endif %}>
                                                         </div>
                                                     </td>
-                                                    <!-- <td class="text-right" >
-                                                        <div class="dropdown">
-                                                            <a href="#" class="dropdown-toggle card-drop"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <i class="mdi mdi-dots-vertical font-size-18"></i>
-                                                            </a>
-                                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                                <li data-bs-toggle="modal"
-                                                                    data-bs-target="#add-opportunity"><a href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
-                                                                </li>
-                                                                <li data-bs-toggle="modal" data-bs-target="#delete"><a
-                                                                        href="#"
-                                                                        class="dropdown-item d-flex align-items-center"><i
-                                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td> -->
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
-                                        </table>
-<!--  -->
-    
+                                        </table>    
                                     </div>
-                                </div>
-                                
+                                </div>                               
                             </div>
+
                             {% if checkin_visitor_data|length == 0 %}
                             <div class="noDataImage">
-                                <!-- Your image tag or image source goes here -->
                                 <img height="250px" style="width: auto; margin-top: -31px;" src="{% static 'images/nodatafound.png' %}" alt="No Data Image">
                             </div>
-                            <h5 class="noDataImage">No Data Found!</h5>
-                            
+                            <h5 class="noDataImage">No Data Found!</h5>                            
                             {% endif %}
-                            <!-- <div class="checkin-card" style="background-color: green; height: 10px; width: 10px;
-                            padding: 20px 0px;
-                            border-radius: 10px;
-                            display: flex;
-                            margin-top: -245px;">
-                            </div> -->
+
+                            <div class="checkin-data-container">
+
+                            </div>
+                            
+                            {% if checkin_visitor_data.paginator.num_pages > 1 %}
+                            <div class="bottom-pagination-div">
+                                <ul class="pagination pagination-rounded pb-1">
+                                    {% if checkin_visitor_data.has_previous %}
+                                        <li class="page-item">
+                                            <a href="?page={{ checkin_visitor_data.previous_page_number }}" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page_num in checkin_visitor_data.paginator.page_range %}
+                                        {% if checkin_visitor_data.number == page_num %}
+                                            <li class="page-item active">
+                                                <a href="?page={{ page_num }}" class="page-link">{{ page_num }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a href="?page={{ page_num }}" class="page-link">{{ page_num }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if checkin_visitor_data.has_next %}
+                                        <li class="page-item">
+                                            <a href="?page={{ checkin_visitor_data.next_page_number }}" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            {% endif %}
 
                         </div>
 
-                        
-                        
-
-
-
-
                         <div class="tab-pane" id="opportunity-stages-tab" role="tabpanel">
-
-                            <div class="settings-card" id="visitor-settings-card" {% if not visitor_data %} style="visibility: hidden;" {% endif %}>
+                            <div class="settings-card" id="visitor-settings-card" {% if not visitor_data %} style="visibility: hidden; " {% endif %}>
+                                
                                 <div class="top-header-div">
                                     <h3>Invited Visitors</h3>
                                     <div class="top-header-rightbtns">
@@ -447,8 +453,8 @@
                                                     <th>Expiry</th>
                                                     <th>Purpose</th>
                                                     <th>Hosted By</th>
-                                                    <!-- <th>Status</th> -->
-                                                    <!-- <th class="text-right">Action</th> -->
+                                                    <!-- <th>Resend Email</th> -->
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -462,6 +468,120 @@
                                                     <td>{{i.to_date}}</td>
                                                     <td>{{i.purpose}}</td>
                                                     <td>{{i.user_host}}</td>
+                                                    <!-- <td>
+                                                        <i class="fa fa-envelope" style="font-size:18px;color:green ;display: flex;
+                                                        align-content: center;
+                                                        justify-content: center;
+                                                        align-items: center;"></i>
+                                                    </td> -->
+                                
+                                                    <td class="text-right">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle card-drop"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <!-- <i class="mdi mdi-dots-vertical font-size-18"></i> -->
+                                                            </a>
+                                                            <!-- <ul class="">
+                                                                <li data-bs-toggle="modal" data-bs-target=""><a href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-edit font-size-16 me-1"></i>Edit</a>
+                                                                </li>
+                                                                <li data-bs-toggle="modal" data-bs-target="#delete"><a
+                                                                        href="#"
+                                                                        class="dropdown-item d-flex align-items-center"><i
+                                                                            class="bx bx-trash font-size-16 me-1"></i>Delete</a>
+                                                                </li>
+                                                            </ul> -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                              
+                            {% if visitor_data|length == 0 %}
+                            <div id="noDataImage">
+                                <div class="noDataImage">
+                                    <img height="250px" style="width: auto; margin-top: -31px;" src="{% static 'images/ndf-removebg.png' %}" alt="No Data Image">                                
+                                </div>
+                                <div id="noDataImage">
+                                    <h5 class="noDataImage">No Data Found!</h5>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- <div class="bottom-pagination-div">
+                                <ul class="pagination pagination-rounded pb-1">
+                                    <li class="page-item disabled">
+                                        <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">1</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a href="javascript: void(0);" class="page-link">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">3</a>
+                                    </li>
+                
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div> -->
+
+                        </div>
+
+                        <div class="tab-pane" id="view-bookings-tab" role="tabpanel">
+
+                            <div class="settings-card" id="visitor-settings-card" {% if not event_data %} style="visibility: hidden;" {% endif %}>
+                                <div class="top-header-div">
+                                    <h3>Booked Visitors</h3>
+                                    <div class="top-header-rightbtns">
+                                        <!-- <form class="app-search d-none d-lg-block">
+                                            <div class="position-relative">
+                                                <input type="text" class="form-control" placeholder="Search...">
+                                                <span class="bx bx-search-alt"></span>
+                                            </div>
+                                        </form> -->
+
+                                    </div>
+                                </div>
+                                <div class="opportunity-table table-view">
+                                    <div class="table-responsive">
+                                        <table id="invited-visitor-table" class="table table-striped" >
+                                            <thead>
+                                                <tr>
+                                                    <th width="70px">S No</th>
+                                                    <th>Id</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Starts At</th>
+                                                    <th>Ends At</th>
+                                                    <th>Branch</th>
+                                                    <th>Hosted By</th>
+                                                    <th>Purpose</th>
+                                                    <!-- <th>Status</th> -->
+                                                    <!-- <th class="text-right">Action</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in event_data %}
+                                                <tr >
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{i.visitor_id}}</td>
+                                                    <td>{{i.visitor_name}}</td>
+                                                    <td>{{i.visitor_email}}</td>
+                                                    <td>{{i.starts_at}}</td>
+                                                    <td>{{i.ends_at}}</td>
+                                                    <td>{{i.select_branch}}</td>
+                                                    <td>{{i.staff}}</td>
+                                                    <td>{{i.event_name}}</td>
                                                     <!-- <td>
                                                         <div class="label label-success ng-hide checkin"></div>
                                                         <a data-bs-toggle="modal"
@@ -493,15 +613,14 @@
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
-                                        </table>
-                                        
+                                        </table>          
                                     </div>
                                 </div>
                             </div>
-                            {% if visitor_data|length == 0 %}
+                            {% if event_data|length == 0 %}
                             <div id="noDataImage">
                                 <div class="noDataImage">
-                                    <img height="250px" style="width: auto; margin-top: -31px;" src="{% static 'images/ndf-removebg.png' %}" alt="No Data Image">                                
+                                    <img height="250px" style="width: auto; margin-top: -31px;" src="{% static 'images/nodatafound.png' %}" alt="No Data Image">                                
                                 </div>
                                 <div id="noDataImage">
                                     <h5 class="noDataImage">No Data Found!</h5>
@@ -509,14 +628,37 @@
                             </div>
                             {% endif %}
 
+                            <!-- <div class="bottom-pagination-div">
+                                <ul class="pagination pagination-rounded pb-1">
+                                    <li class="page-item disabled">
+                                        <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">1</a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a href="javascript: void(0);" class="page-link">2</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link">3</a>
+                                    </li>
+                
+                                    <li class="page-item">
+                                        <a href="javascript: void(0);" class="page-link"><i class="mdi mdi-chevron-right"></i></a>
+                                    </li>
+                                </ul>
+                            </div> -->
+
                         </div>
 
 
                     </div>
                 </div>
 
+        
             </div>
 
+            
         </div>
 
     </div>
@@ -541,17 +683,12 @@
 
 
     <div id="append_modal"></div>
-
-
-
-    <!-- JAVASCRIPT -->
     <script src="{% static 'libs/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'libs/metismenu/metisMenu.min.js' %}"></script>
     <script src="{% static 'libs/simplebar/simplebar.min.js' %}"></script>
     <script src="{% static 'libs/node-waves/waves.min.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
-
     <script>
         $(document).ready(function () {
             var readURL = function (input) {
@@ -571,48 +708,8 @@
             });
         });
     </script>
-    <!-- <script type="text/javascript">
-        $(document).ready(function () {
-            $(".appnd_user_btn").click(function () {
-
-                $(".apenduser").append("<tr>\n" +
-                    "                                    <td class=\"th_btnpand\">\n" +
-                    "                                        <div style=\"cursor: pointer;\" class=\"appnd_user_minus_btn appnd_minus_btn\">-</div>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_role\">\n" +
-                    "                                        <select name=\"role_id[]\" class=\"form-control\">\n" +
-                    "                                            {% for role in  role_data %}\n" +
-                    "                                           <option value=\"{{role.id}}\">{{role.role_name}}</option>\n" +
-                    "                                           {% endfor %}\n" +
-                    "                                        </select>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_decrptn\">\n" +
-                    "                                        <input name=\"role_description[]\" class=\"form-control\">\n" +
-                    "                                    </td>\n" +
-                    "                                 <td class=\"th_user_strtdate\">\n" +
-                    "                                        <div class=\"input-group date\">\n" +
-                    "                                            <input name=\"role_start_dt[]\"  min=\"{{today_date}}\" value=\"{{today_date|safe}}\" type=\"date\" class=\"input form-control\" id=\"datetimepicker\"> \n" +
-                    "                                        </div>\n" +
-                    "                                    </td>\n" +
-                    "                                    <td class=\"th_user_enddate\">\n" +
-                    "                                        <div class=\"input-group date\">\n" +
-                    "                                            <input name=\"role_end_dt[]\" type=\"date\"  min=\"{{today_date}}\"  class=\"input form-control\" id=\"datetimepicker\"> \n" +
-                    "                                        </div>\n" +
-                    "                                    </td>\n" +
-
-                    "                                </tr>");
-                $(".appnd_user_minus_btn").click(function () {
-                    $(this).parent().parent().remove();
-                });
-            });
-        });
-        $(".appnd_user_minus_btn").click(function () {
-            $(this).parent().parent().remove();
-        }); -->
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- for printing error message in login page -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -622,7 +719,7 @@
             branchDropdown.addEventListener('change', function () {
                 const branchId = branchDropdown.value;
                 if (branchId) {
-                    // Make an AJAX request to fetch hosts for the selected branch
+
                     fetch(`/get_dependent/?branch_id=${branchId}`)
                         .then(response => response.json())
                         .then(data => {
@@ -642,9 +739,8 @@
         $(document).ready(function () {
             function populateExitDeskOptions(selectedDeskId) {
                 const $exitDeskSelect = $('#exit_desk');
-                $exitDeskSelect.empty(); // Clear existing options
+                $exitDeskSelect.empty(); 
 
-                // Populate the "exit_desk" select field based on the selected desk
                 $.get('/get_exit_desks/', { selected_desk_id: selectedDeskId }, function (data) {
                     const exitDesks = data.exit_desks;
                     if (exitDesks.length > 0) {
@@ -658,19 +754,16 @@
                 });
             }
 
-            // Handle the change event for the "desk_id" select field
             $('#desk_id').change(function () {
                 const selectedDeskId = $(this).val();
                 populateExitDeskOptions(selectedDeskId);
             });
 
-            // Additional code for opening the exit modal and form submission...
         });
     </script>
-
     <script>
-        function checkout_modal(id, vid) {
 
+        const checkout_modal = (element, id, vid) => {
             $.ajax({
                 url: "/append_checkout_modal/",
                 data: {
@@ -678,16 +771,26 @@
                     'vid': vid
                 },
                 success: function (result) {
-
                     document.getElementById("append_modal").innerHTML = "";
                     $("#append_modal").empty().html(result);
                     $("#add-checkout").modal('show');
+                    checkoutModalElement = element;
+                    const isCheckedOut = result.includes("CHECKED OUT");
+                    if (isCheckedOut) {
+                        showCheckedOutText(checkoutModalElement);
+                    }
                 }
-            })
-        }
-    </script>
-    <script>
-        
+            });
+        };
+
+        const showCheckedOutText = (element) => {
+            alert("eererf")
+            const visitorId = element.getAttribute('id').replace('checkoutLink_', '');
+
+            $(`#checkedOutText_${visitorId}`).css('visibility', 'visible');
+        }; 
+
+
     </script>
     <script>
         const from_date = document.getElementById('from_date');
@@ -730,9 +833,10 @@
         });
 
     </script> -->
-    
     <script>
-
+    </script>
+    <script>
+        
         function showToast(message, icon) {
             const toastMixin = Swal.mixin({
                 toast: true,
@@ -758,18 +862,38 @@
         function showLoader() {
             $("#loader-overlay").show();
         }
-
+        
         function hideLoader() {
             $("#loader-overlay").hide();
         }
+        
+        function resetForms() {
+            document.getElementById("branch_id").value = "";
+            document.getElementById("full_name").value = "";
+            document.getElementById("visitor_email").value = "";
+            document.getElementById("from_date").value = "";
+            document.getElementById("to_date").value = "";
+            document.getElementById("visitor_phone").value = "";
+            document.getElementById("country_code").value = "";
+            document.getElementById("purpose").value = "";
+            document.getElementById("user_id").value = "";
+    
+            const inputControls = document.querySelectorAll(".select-inp");
+            const selectControls =  document.querySelectorAll(".inputGroup");
+    
+            const allControls = Array.from(inputControls).concat(Array.from(selectControls));
+            
+            allControls.forEach(function (control) {
+                control.classList.remove("success", "error");
+                const errorElement = control.querySelector(".error");
+                if (errorElement) {
+                    errorElement.innerHTML = "";
+                }
+            });
+        };
 
-        //function declaration
         const inviteVisitor = (e) => { 
-            e.preventDefault();//e = event object as an argument, here doesn't not using the event object
-             //assign new formdata using the id on 1st position.
-            //the FormData object is the built in js object for gathering form data
-
-            // const form = document.getElementsByClassName('.visitors-form');
+            e.preventDefault();
             const branchId = document.getElementById('branch_id');
             const fullName = document.getElementById('full_name');
             const visitorEmail = document.getElementById('visitor_email');
@@ -813,7 +937,7 @@
                 const userIdValue = userId.value.trim();
                 let isValid = true;
 
-                if (branchIdValue === '--select branch--') {
+                if (branchIdValue === '--select branch--' || branchIdValue === '') {
                     setError(branchId, 'Select a branch');
                     isValid = false;
                 } else {
@@ -900,14 +1024,13 @@
             
 
 
-            if (validateInputs()) { // for validating the fields
+            if (validateInputs()) { 
                 const form = new FormData($("#visitor-form")[0])
-
 
                     $.ajax({
                         url: "/invite-visitor/",
-                        method: "POST", //http method for the request.
-                        headers: { // addtional http header for the request
+                        method: "POST", 
+                        headers: { 
                             "X-CSRFToken": "{{ csrf_token }}"
                         },
                         data: form,
@@ -917,7 +1040,7 @@
                         beforeSend: function () {
                             showLoader();
                         },
-                        success: (res) => {  //http response
+                        success: (res) => {  
                             hideLoader();
                             if (res.status === 400) {
                                 if (res.type === "branch_id") {
@@ -928,6 +1051,14 @@
                                 }
                                 if (res.type === "full_name") {
                                     setError(full_name, res.error);
+                                }
+                                if (res.type === 'already_invited') {
+                                    showToast(res.message, "error")
+                                    resetForm();
+                                }
+                                if (res.type === "existing_invitation") {
+                                    showToast(res.message, "error");
+                                    resetForm();
                                 }
 
                             }
@@ -985,7 +1116,6 @@
                         },    
 
                         error: function (xhr, textStatus, errorThrown) {
-                            // Handle any AJAX errors
                             hideLoader();
                         }
                     });
@@ -1009,25 +1139,22 @@
                 confirmButtonText: 'Logout'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    performLogout(); // Call the logout function if confirmed
+                    performLogout(); 
                 }
             });
         }
 
-        // Function to perform logout
         function performLogout() {
             $.ajax({
-                url: "/logout/",  // Update with your actual logout endpoint
+                url: "/logout/", 
                 method: "POST",
                 headers: {
                     "X-CSRFToken": "{{ csrf_token }}"
                 },
                 success: function (data) {
-                    // Redirect to login or handle success as needed
                     window.location.href = "/";
                 },
                 error: function (xhr, textStatus, errorThrown) {
-                    // Handle error
                     console.error("Logout failed:", errorThrown);
                 }
             });

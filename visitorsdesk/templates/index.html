@@ -136,7 +136,6 @@
                 <p>Don't have an account ? <a href="{% url 'register' %}" class="fw-medium" style="color: #328a32;
                     "> Signup now
                     </a> </p>
-                <!-- <p>© <script>document.write(new Date().getFullYear())</script> All Rights Reserved. Design & Develop by Veuz concepts.</p> -->
             </div>
         </div>
     </div>
@@ -161,7 +160,7 @@
 
 
                 $.ajax({
-                    url: "/",
+                    url: "/login/",
                     method: "POST",
                     headers: {
                         "X-CSRFToken": "{{ csrf_token }}"

@@ -43,7 +43,7 @@ class MainUser(models.Model):
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     about = models.TextField(null=True, blank=True)
 
-    def __str__(self): # magic method
+    def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
     class Meta:
@@ -51,10 +51,6 @@ class MainUser(models.Model):
     
 
 class InviteVisitor(models.Model):
-    VISITOR_STATUS = {
-        ('Invited Visitor', 'Invited Visitor'),
-        ('Booked Visitor', 'Booked Visitor')
-    }
     full_name = models.CharField(max_length=25, null=True)
     visitor_email = models.EmailField(null=True)
     from_date = models.DateTimeField(null=True)
@@ -62,7 +58,6 @@ class InviteVisitor(models.Model):
     visitor_phone = models.CharField(max_length=25, null=True)
     visitor_id = models.CharField(max_length=8, unique=True)
     purpose = models.CharField(max_length=25)
-    visitors_status = models.CharField(max_length=25, choices=VISITOR_STATUS)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     user_host = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='hosted_user')
@@ -120,6 +115,7 @@ class ExitVisitor(models.Model):
         return self.auth_user.username
     
 class Event(models.Model):
+    visitor_id = models.CharField(max_length=6, null=True)
     visitor_name = models.CharField(max_length=25, null=True)
     visitor_email = models.EmailField(max_length=25, null=True)
     visitor_phone = models.CharField(max_length=25, null=True)
@@ -128,8 +124,10 @@ class Event(models.Model):
     ends_at = models.DateTimeField(null=True)
     event_description = models.TextField(null=True)
     auth_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    select_branch = models.ForeignKey(Branch, on_delete=models.CASCADE, null=True, related_name="branch_event")
     staff = models.ForeignKey(MainUser, on_delete=models.CASCADE, related_name='event_host', null=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    checked_in = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return self.visitor_name

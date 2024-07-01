@@ -4,7 +4,11 @@ from . models import *
 # Register your models here.
 admin.site.register(Branch)
 
-admin.site.register(Event)
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = [
+        "visitor_name"
+    ]
 
 @admin.register(MainUser)
 class MainUserAdmin(admin.ModelAdmin):
